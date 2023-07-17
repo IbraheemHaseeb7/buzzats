@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
+import 'package:flutter_app_1/pages/Login.dart';
 
 void main() {
   runApp(Home());
@@ -70,9 +73,9 @@ class MyApp extends StatelessWidget {
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.normal,
-                      fontSize: 28,
+                      fontSize: 50,
                       color: Color(0xffffffff),
                     ),
                   ),
@@ -204,6 +207,23 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                 ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    },
+                    style: ButtonStyle(
+                        side: MaterialStateProperty.all(const BorderSide(
+                          color: Colors.transparent,
+                        )),
+                        backgroundColor:
+                            MaterialStateProperty.all(Color(0xff141d26))),
+                    child: const Text(
+                      "Login Here",
+                      style: TextStyle(color: Color(0xff4137bd)),
+                    ))
               ],
             ),
           ),

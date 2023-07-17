@@ -48,8 +48,12 @@ class Signup extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24.0),
                       borderSide: BorderSide(color: Colors.white, width: 1),
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: Colors.white, width: 1),
+                    ),
                     floatingLabelStyle:
-                        TextStyle(color: Color.fromRGBO(102, 26, 255, 0.612)),
+                        TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
                       borderSide: BorderSide(color: Colors.white, width: 1),
@@ -65,9 +69,13 @@ class Signup extends StatelessWidget {
                     hintText: "Password",
                     labelStyle: TextStyle(color: Colors.white),
                     floatingLabelStyle:
-                        TextStyle(color: Color.fromRGBO(102, 26, 255, 0.612)),
+                        TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
                     labelText: "Password",
                     border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: Colors.white, width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
                       borderSide: BorderSide(color: Colors.white, width: 1),
                     ),
