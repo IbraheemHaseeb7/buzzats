@@ -1,6 +1,5 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/Signup.dart';
 
 void main() {
   runApp(Home());
@@ -22,103 +21,194 @@ class Home extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Color(0xFF141D26)),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return MaterialApp(
+        home: Scaffold(
+      backgroundColor: Color(0xff141d26),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  "Sign Up",
-                  style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto',
-                      color: Color.fromARGB(255, 255, 255, 255)),
+                const Align(
+                  alignment: Alignment.center,
+                  child:
+
+                      ///***If you have exported images you must have to copy those images in assets/images directory.
+                      Image(
+                    image: AssetImage("lib\\Assets\\Buzz-removebg-preview.jpg"),
+                    height: 50,
+                    width: 130,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  "To get started, enter your COMSATS E-mail Id",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: 'Roboto',
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(
-                        color: const Color.fromARGB(255, 110, 110, 110)),
-                    hintText: "COMSATS Email Address",
-                    labelStyle: TextStyle(color: Colors.white),
-                    labelText: "Email",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    floatingLabelStyle:
-                        TextStyle(color: Color.fromRGBO(102, 26, 255, 0.612)),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 170),
+                  child: Align(
+                    alignment: Alignment(0.0, 0.0),
+                    child: Text(
+                      "What's Buzzing Today...",
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 17,
+                        color: Color(0xffffffff),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(
-                        color: const Color.fromARGB(255, 110, 110, 110)),
-                    hintText: "Password",
-                    labelStyle: TextStyle(color: Colors.white),
-                    floatingLabelStyle:
-                        TextStyle(color: Color.fromRGBO(102, 26, 255, 0.612)),
-                    labelText: "Password",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 100, 0, 20),
+                  child: Text(
+                    "Sign Up",
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 28,
+                      color: Color(0xffffffff),
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: null,
-                  child: Text("Sign In"),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(102, 26, 255, 0.612)),
-                    foregroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(255, 255, 255, 1)),
-                    fixedSize: MaterialStateProperty.all(Size(400, 55)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                    )),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                  child: Text(
+                    "Let's get you started...",
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 14,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                ),
+                Stack(
+                  alignment: Alignment.topLeft,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {},
+                      color: Color(0xff4137bd),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        side: BorderSide(color: Color(0xff4137bd), width: 1),
+                      ),
+                      padding: EdgeInsets.all(16),
+                      textColor: Color(0xffffffff),
+                      height: 50,
+                      minWidth: MediaQuery.of(context).size.width,
+                      child: const Text(
+                        "          Sign up with Google",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
+                      child:
+
+                          ///***If you have exported images you must have to copy those images in assets/images directory.
+                          Image(
+                        image: AssetImage("lib\\Assets\\icons8-google-48.png"),
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "                      OR                     ",
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14,
+                        color: Color(0xffffffff),
+                      ),
+                    ),
+                  ),
+                ),
+                Stack(
+                  alignment: Alignment.topLeft,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Signup()),
+                        );
+                      },
+                      color: Color(0xff4137bd),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        side: BorderSide(color: Color(0xff4137bd), width: 1),
+                      ),
+                      padding: EdgeInsets.all(16),
+                      textColor: Color(0xffffffff),
+                      height: 50,
+                      minWidth: MediaQuery.of(context).size.width,
+                      child: const Text(
+                        "          Sign up with Email",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                      child:
+
+                          ///***If you have exported images you must have to copy those images in assets/images directory.
+                          Image(
+                        image: AssetImage(
+                            "lib\\Assets\\icons8-circled-envelope-48.png"),
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: Text(
+                    "Have an account already?",
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 14,
+                      color: Color(0xffffffff),
+                    ),
                   ),
                 ),
               ],
             ),
-            Positioned(
-              top: 0,
-              child: Image.asset(
-                "images\\Screenshot_2023-07-12_170657-removebg-preview.png",
-                alignment: Alignment.topCenter,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
-    );
+    ));
   }
 }
