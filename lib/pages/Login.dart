@@ -23,10 +23,8 @@ class LoginScreen extends StatelessWidget {
                   const Align(
                     alignment: Alignment.center,
                     child:
-
-                        ///***If you have exported images you must have to copy those images in assets/images directory.
                         Image(
-                      image: AssetImage("images/Buzz-removebg-preview.jpg"),
+                      image: AssetImage("lib/Assets/Buzz-removebg-preview.jpg"),
                       height: 50,
                       width: 130,
                       fit: BoxFit.contain,
@@ -63,8 +61,6 @@ class LoginScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
                     child: TextField(
-                      controller: TextEditingController(
-                          text: "student@cuilahore.edu.pk"),
                       obscureText: false,
                       textAlign: TextAlign.left,
                       maxLines: 1,
@@ -75,21 +71,21 @@ class LoginScreen extends StatelessWidget {
                         color: Color(0xffffffff),
                       ),
                       decoration: InputDecoration(
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 1),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 1),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 1),
-                        ),
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide:
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide:
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide:
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                      ),
                         labelText: "Email",
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -97,12 +93,13 @@ class LoginScreen extends StatelessWidget {
                           fontSize: 15,
                           color: Color(0xffa099fc),
                         ),
-                        hintText: "Enter Text",
+                        
+                        hintText: "student@cuilahore.edu.pk",
                         hintStyle: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
-                          color: Color(0xff000000),
+                          color: Color.fromARGB(211, 255, 255, 255),
                         ),
                         filled: true,
                         fillColor: Color(0x00ffffff),
@@ -112,7 +109,6 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   TextField(
-                    controller: TextEditingController(text: "123456"),
                     obscureText: true,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -126,17 +122,17 @@ class LoginScreen extends StatelessWidget {
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 1),
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 1),
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 1),
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
                       labelText: "Password",
                       labelStyle: TextStyle(
@@ -145,12 +141,12 @@ class LoginScreen extends StatelessWidget {
                         fontSize: 15,
                         color: Color(0xffa099fc),
                       ),
-                      hintText: "Enter Text",
+                      hintText: "••••••••",
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
-                        color: Color(0xff000000),
+                        color: Color.fromARGB(211, 255, 255, 255),
                       ),
                       filled: true,
                       fillColor: Color(0x00ffffff),
