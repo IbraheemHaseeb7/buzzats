@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/OTP.dart';
 
 void main() {
   runApp(LoginScreen());
@@ -22,8 +23,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   const Align(
                     alignment: Alignment.center,
-                    child:
-                        Image(
+                    child: Image(
                       image: AssetImage("lib/Assets/Buzz-removebg-preview.jpg"),
                       height: 50,
                       width: 130,
@@ -71,21 +71,21 @@ class LoginScreen extends StatelessWidget {
                         color: Color(0xffffffff),
                       ),
                       decoration: InputDecoration(
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
-                      ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:
+                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:
+                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:
+                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        ),
                         labelText: "Email",
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -93,13 +93,12 @@ class LoginScreen extends StatelessWidget {
                           fontSize: 15,
                           color: Color(0xffa099fc),
                         ),
-                        
                         hintText: "student@cuilahore.edu.pk",
                         hintStyle: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
-                          color: Color.fromARGB(211, 255, 255, 255),
+                          color: Color.fromARGB(129, 255, 255, 255),
                         ),
                         filled: true,
                         fillColor: Color(0x00ffffff),
@@ -146,7 +145,7 @@ class LoginScreen extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
-                        color: Color.fromARGB(211, 255, 255, 255),
+                        color: Color.fromARGB(129, 255, 255, 255),
                       ),
                       filled: true,
                       fillColor: Color(0x00ffffff),
@@ -172,7 +171,12 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OTP()),
+                      );
+                    },
                     color: Color(0xff4137bd),
                     elevation: 0,
                     shape: RoundedRectangleBorder(

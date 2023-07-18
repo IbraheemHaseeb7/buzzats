@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: OTP(),
+      home: MyApp(),
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
               .colorScheme
@@ -38,9 +38,7 @@ class MyApp extends StatelessWidget {
               children: [
                 const Align(
                   alignment: Alignment.center,
-                  child:
-
-                      Image(
+                  child: Image(
                     image: AssetImage("lib\\Assets\\Buzz-removebg-preview.jpg"),
                     height: 50,
                     width: 130,
@@ -118,9 +116,7 @@ class MyApp extends StatelessWidget {
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
-                      child:
-
-                          Image(
+                      child: Image(
                         image: AssetImage("lib\\Assets\\icons8-google-48.png"),
                         height: 32,
                         width: 32,
@@ -177,10 +173,9 @@ class MyApp extends StatelessWidget {
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                      child:
-
-                          Image(
-                        image: AssetImage("lib\\Assets\\icons8-circled-envelope-48.png"),
+                      child: Image(
+                        image: AssetImage(
+                            "lib\\Assets\\icons8-circled-envelope-48.png"),
                         height: 32,
                         width: 32,
                         fit: BoxFit.cover,
@@ -189,7 +184,7 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
                 Padding(
-  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
                   child: Row(
                     children: [
                       Text(
@@ -203,7 +198,7 @@ class MyApp extends StatelessWidget {
                           color: Color(0xffffffff),
                         ),
                       ),
-                      SizedBox(width:2), 
+                      SizedBox(width: 2),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -218,8 +213,7 @@ class MyApp extends StatelessWidget {
                           ),
                           backgroundColor:
                               MaterialStateProperty.all(Color(0xff141d26)),
-                          minimumSize: 
-                          MaterialStateProperty.all(Size(20, 20)),    
+                          minimumSize: MaterialStateProperty.all(Size(20, 20)),
                         ),
                         child: Text(
                           "Login Here",
@@ -229,8 +223,6 @@ class MyApp extends StatelessWidget {
                     ],
                   ),
                 )
-
-
               ],
             ),
           ),
