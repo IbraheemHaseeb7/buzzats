@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
                   alignment: Alignment.center,
                   child:
 
-                      ///***If you have exported images you must have to copy those images in assets/images directory.
                       Image(
                     image: AssetImage("lib\\Assets\\Buzz-removebg-preview.jpg"),
                     height: 50,
@@ -97,14 +96,14 @@ class MyApp extends StatelessWidget {
                   children: [
                     MaterialButton(
                       onPressed: () {},
-                      color: Color(0xff4137bd),
+                      color: Color(0xffffffff),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         side: BorderSide(color: Color(0xff4137bd), width: 1),
                       ),
                       padding: EdgeInsets.all(16),
-                      textColor: Color(0xffffffff),
+                      textColor: Color.fromARGB(255, 0, 0, 0),
                       height: 50,
                       minWidth: MediaQuery.of(context).size.width,
                       child: const Text(
@@ -120,7 +119,6 @@ class MyApp extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
                       child:
 
-                          ///***If you have exported images you must have to copy those images in assets/images directory.
                           Image(
                         image: AssetImage("lib\\Assets\\icons8-google-48.png"),
                         height: 32,
@@ -180,10 +178,8 @@ class MyApp extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
                       child:
 
-                          ///***If you have exported images you must have to copy those images in assets/images directory.
                           Image(
-                        image: AssetImage(
-                            "lib\\Assets\\icons8-circled-envelope-48.png"),
+                        image: AssetImage("lib\\Assets\\icons8-circled-envelope-48.png"),
                         height: 32,
                         width: 32,
                         fit: BoxFit.cover,
@@ -191,37 +187,49 @@ class MyApp extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
-                  child: Text(
-                    "Have an account already?",
-                    textAlign: TextAlign.start,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 14,
-                      color: Color(0xffffffff),
-                    ),
+                Padding(
+  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Have an account already?",
+                        textAlign: TextAlign.start,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xffffffff),
+                        ),
+                      ),
+                      SizedBox(width:2), 
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        },
+                        style: ButtonStyle(
+                          side: MaterialStateProperty.all(
+                            const BorderSide(color: Colors.transparent),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Color(0xff141d26)),
+                          minimumSize: 
+                          MaterialStateProperty.all(Size(20, 20)),    
+                        ),
+                        child: Text(
+                          "Login Here",
+                          style: TextStyle(color: Color(0xff4137bd)),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
-                    },
-                    style: ButtonStyle(
-                        side: MaterialStateProperty.all(const BorderSide(
-                          color: Colors.transparent,
-                        )),
-                        backgroundColor:
-                            MaterialStateProperty.all(Color(0xff141d26))),
-                    child: const Text(
-                      "Login Here",
-                      style: TextStyle(color: Color(0xff4137bd)),
-                    ))
+                )
+
+
               ],
             ),
           ),
