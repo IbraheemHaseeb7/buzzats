@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
 
 void main() {
-  runApp(LoginScreen());
+  runApp(ForgotPassScreen());
 }
 
-
-
-class LoginScreen extends StatelessWidget {
+class ForgotPassScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,83 +31,22 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 300, 0, 10),
+                    padding: EdgeInsets.fromLTRB(0, 320, 0, 10),
                     child: Text(
-                      "Login",
+                      "Enter your new password",
                       textAlign: TextAlign.start,
                       overflow: TextOverflow.clip,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,
-                        fontSize: 50,
+                        fontSize: 36,
                         color: Color(0xffffffff),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Text(
-                      "Welcome back, let's get buzzin...",
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color(0xffa099fc),
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
                     child: TextField(
-                      obscureText: false,
-                      textAlign: TextAlign.left,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 12,
-                        color: Color(0xffffffff),
-                      ),
-                      decoration: InputDecoration(
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
-                        ),
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 15,
-                          color: Color(0xffa099fc),
-                        ),
-                        hintText: "student@cuilahore.edu.pk",
-                        hintStyle: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14,
-                          color: Color.fromARGB(129, 255, 255, 255),
-                        ),
-                        filled: true,
-                        fillColor: Color(0x00ffffff),
-                        isDense: false,
-                        contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                      ),
-                    ),
-                  ),
-                  TextField(
                     obscureText: true,
                     textAlign: TextAlign.start,
                     maxLines: 1,
@@ -156,45 +92,67 @@ class LoginScreen extends StatelessWidget {
                       contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(60, 30, 0, 30),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotOTP()),
-                          );
-                        },
-                        style: ButtonStyle(
-                          side: MaterialStateProperty.all(
-                            const BorderSide(color: Colors.transparent),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all(Color(0xff141d26)),
-                          minimumSize: MaterialStateProperty.all(Size(20, 20)),
-                        ),
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Color(0xff4137bd)),
-                        ),
+                  ),
+                  TextField(
+                    obscureText: true,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 14,
+                      color: Color(0xffffffff),
+                    ),
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide:
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide:
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide:
+                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                      ),
+                      labelText: "Confirm Password",
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 15,
+                        color: Color(0xffa099fc),
+                      ),
+                      hintText: "••••••••",
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14,
+                        color: Color.fromARGB(129, 255, 255, 255),
+                      ),
+                      filled: true,
+                      fillColor: Color(0x00ffffff),
+                      isDense: false,
+                      contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
                     ),
                   ),
-                  MaterialButton(
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    child: MaterialButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    color: Color(0xff4137bd),
+                    color: Color.fromRGBO(102, 26, 255, 0.612),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24.0),
                     ),
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(25),
                     child: Text(
-                      "LOGIN",
+                      "Next",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -202,8 +160,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     textColor: Color(0xffffffff),
-                    height: 53,
+                    height: 20,
                     minWidth: MediaQuery.of(context).size.width,
+                  ),
                   ),
                 ],
               ),

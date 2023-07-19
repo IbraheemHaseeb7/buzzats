@@ -43,8 +43,8 @@ class MyApp extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Image(
                     image: AssetImage("lib\\Assets\\Buzz-removebg-preview.jpg"),
-                    height: 50,
-                    width: 130,
+                    height: 65,
+                    width: 246,
                     fit: BoxFit.contain,
                   ),
                 ),

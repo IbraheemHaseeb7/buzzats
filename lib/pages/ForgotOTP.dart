@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/ForgotPass.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
-class OTP extends StatelessWidget {
-  Function nextPage, previousPage;
-  OTP({super.key, required this.nextPage, required this.previousPage});
-
+class ForgotOTP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -108,8 +106,12 @@ class OTP extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      nextPage();
-                    },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPassScreen()),
+                          );
+                        },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(102, 26, 255, 0.612)),

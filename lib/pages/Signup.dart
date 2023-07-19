@@ -96,7 +96,7 @@ class _Signup extends State<Signup> {
                   onPressed: () {
                     widget.nextPage();
                   },
-                  child: Text("Sign In"),
+                  child: Text("Sign Up"),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                         Color.fromRGBO(102, 26, 255, 0.612)),
