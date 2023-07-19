@@ -172,10 +172,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OTP()),
-                      );
+                      Navigator.pop(context);
                     },
                     color: Color(0xff4137bd),
                     elevation: 0,

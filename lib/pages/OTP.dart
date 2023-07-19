@@ -6,6 +6,9 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
 class OTP extends StatelessWidget {
+  Function nextPage, previousPage;
+  OTP({super.key, required this.nextPage, required this.previousPage});
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -106,7 +109,9 @@ class OTP extends StatelessWidget {
               child: Container(
                   padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      nextPage();
+                    },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(102, 26, 255, 0.612)),

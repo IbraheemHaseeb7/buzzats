@@ -2,9 +2,15 @@
 
 import 'package:flutter/material.dart';
 
-class Signup extends StatelessWidget {
-  Signup({super.key});
+class Signup extends StatefulWidget {
+  Function nextPage, previousPage;
+  Signup({super.key, required this.nextPage, required this.previousPage});
 
+  @override
+  _Signup createState() => _Signup();
+}
+
+class _Signup extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +94,7 @@ class Signup extends StatelessWidget {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    widget.nextPage();
                   },
                   child: Text("Sign In"),
                   style: ButtonStyle(

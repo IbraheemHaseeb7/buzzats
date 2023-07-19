@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
 import 'package:flutter_app_1/pages/PhoneNum.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
@@ -151,7 +152,8 @@ class MyApp extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Signup()),
+                          MaterialPageRoute(
+                              builder: (context) => GettingStarted()),
                         );
                       },
                       color: Color(0xff4137bd),

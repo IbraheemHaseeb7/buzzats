@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../CustomWidgets/CustomDropDownMenu.dart';
 
 class PhoneNumber extends StatelessWidget {
+  Function nextPage, previousPage;
+  PhoneNumber({super.key, required this.nextPage, required this.previousPage});
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
