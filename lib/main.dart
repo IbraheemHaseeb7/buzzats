@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/GettingStarted.dart';
+import 'package:flutter_app_1/pages/OTP.dart';
+import 'package:flutter_app_1/pages/PhoneNum.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 
@@ -14,7 +17,8 @@ class Home extends StatelessWidget {
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
               .colorScheme
-              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612))),
+              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612)),
+          hintColor: Colors.white),
     );
   }
 }
@@ -37,9 +41,7 @@ class MyApp extends StatelessWidget {
               children: [
                 const Align(
                   alignment: Alignment.center,
-                  child:
-
-                      Image(
+                  child: Image(
                     image: AssetImage("lib\\Assets\\Buzz-removebg-preview.jpg"),
                     height: 50,
                     width: 130,
@@ -117,9 +119,7 @@ class MyApp extends StatelessWidget {
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
-                      child:
-
-                          Image(
+                      child: Image(
                         image: AssetImage("lib\\Assets\\icons8-google-48.png"),
                         height: 32,
                         width: 32,
@@ -152,7 +152,8 @@ class MyApp extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Signup()),
+                          MaterialPageRoute(
+                              builder: (context) => GettingStarted()),
                         );
                       },
                       color: Color(0xff4137bd),
@@ -176,10 +177,9 @@ class MyApp extends StatelessWidget {
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                      child:
-
-                          Image(
-                        image: AssetImage("lib\\Assets\\icons8-circled-envelope-48.png"),
+                      child: Image(
+                        image: AssetImage(
+                            "lib\\Assets\\icons8-circled-envelope-48.png"),
                         height: 32,
                         width: 32,
                         fit: BoxFit.cover,
@@ -188,7 +188,7 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
                 Padding(
-  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
                   child: Row(
                     children: [
                       Text(
@@ -202,7 +202,7 @@ class MyApp extends StatelessWidget {
                           color: Color(0xffffffff),
                         ),
                       ),
-                      SizedBox(width:2), 
+                      SizedBox(width: 2),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -217,8 +217,7 @@ class MyApp extends StatelessWidget {
                           ),
                           backgroundColor:
                               MaterialStateProperty.all(Color(0xff141d26)),
-                          minimumSize: 
-                          MaterialStateProperty.all(Size(20, 20)),    
+                          minimumSize: MaterialStateProperty.all(Size(20, 20)),
                         ),
                         child: Text(
                           "Login Here",
@@ -228,8 +227,6 @@ class MyApp extends StatelessWidget {
                     ],
                   ),
                 )
-
-
               ],
             ),
           ),
