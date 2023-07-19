@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
+import 'package:flutter_app_1/pages/PhoneNum.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 
@@ -15,7 +16,8 @@ class Home extends StatelessWidget {
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
               .colorScheme
-              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612))),
+              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612)),
+          hintColor: Colors.white),
     );
   }
 }

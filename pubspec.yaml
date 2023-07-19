@@ -63,6 +63,7 @@ flutter:
     - lib\Assets\Buzz-removebg-preview.jpg
     - lib\Assets\icons8-circled-envelope-48.png
     - lib\Assets\icons8-google-48.png
+    - lib\Assets\musaImage.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
