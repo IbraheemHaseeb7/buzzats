@@ -1,11 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
 
-void main() {
-  runApp(LoginScreen());
+class LoginScreen extends StatefulWidget {
+  LoginScreen({super.key});
+
+  @override
+  _LoginScreen createState() => _LoginScreen();
 }
 
-class LoginScreen extends StatelessWidget {
+class _LoginScreen extends State<LoginScreen> {
+  // CONTROLLERS FOR THE INPUT FIELDS
+  bool isCorrectEmail = false;
+  bool isCorrectPassword = false;
+  bool passObscure = true;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Color emailColor = Colors.white;
+  Color passwordColor = Colors.white;
+
+  // REGEX TO VERIFY EMAIL
+  final _regex = RegExp(
+      r'^[s,f]{1}[a,p]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore.edu.pk$');
+
+  // ON CHANGE HANDLER FOR EMAIL
+  void handleEmail(String value) {
+    if (emailController.text.length == 29) {
+      if (_regex.hasMatch(emailController.text)) {
+        setState(() {
+          isCorrectEmail = true;
+          emailColor = Colors.green;
+        });
+      } else {
+        setState(() {
+          isCorrectEmail = false;
+          emailColor = Colors.red;
+        });
+      }
+    } else if (emailController.text.length < 29) {
+      setState(() {
+        isCorrectEmail = false;
+        emailColor = Colors.white;
+      });
+    } else {
+      setState(() {
+        isCorrectEmail = false;
+        emailColor = Colors.red;
+      });
+    }
+  }
+
+  // ON CHANGE HANDLER FOR THE PASSWORD
+  void handlePassword(String value) {
+    if (passwordController.text.length < 9) {
+      setState(() {
+        isCorrectPassword = false;
+        passwordColor = Colors.red;
+      });
+    } else {
+      setState(() {
+        isCorrectPassword = true;
+        passwordColor = Colors.green;
+      });
+    }
+  }
+
+  String? handleEmailValidation(String? e) {}
+  String? handlePasswordValidation(String? e) {}
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,31 +122,31 @@ class LoginScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                    child: TextField(
+                    child: TextFormField(
+                      controller: emailController,
+                      validator: handleEmailValidation,
+                      onChanged: handleEmail,
                       obscureText: false,
                       textAlign: TextAlign.left,
                       maxLines: 1,
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
-                        fontSize: 12,
+                        fontSize: 18,
                         color: Color(0xffffffff),
                       ),
                       decoration: InputDecoration(
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                          borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                          borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
-                          borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                          borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         labelText: "Email",
                         labelStyle: TextStyle(
@@ -93,7 +155,7 @@ class LoginScreen extends StatelessWidget {
                           fontSize: 15,
                           color: Color(0xffa099fc),
                         ),
-                        hintText: "student@cuilahore.edu.pk",
+                        hintText: "xxxx-xxx-xxx@cuilahore.edu.pk",
                         hintStyle: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
@@ -107,41 +169,55 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  TextField(
-                    obscureText: true,
+                  TextFormField(
+                    controller: passwordController,
+                    validator: handlePasswordValidation,
+                    onChanged: handlePassword,
+                    obscureText: passObscure,
                     textAlign: TextAlign.start,
                     maxLines: 1,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
-                      fontSize: 14,
+                      fontSize: 20,
                       color: Color(0xffffffff),
                     ),
                     decoration: InputDecoration(
+                      suffix: SizedBox(
+                          height: 15,
+                          child: IconButton(
+                              padding: EdgeInsets.zero,
+                              color: Colors.white,
+                              icon: const Icon(
+                                Icons.remove_red_eye,
+                                size: 15,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  passObscure = !passObscure;
+                                });
+                              })),
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        borderSide: BorderSide(color: passwordColor, width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        borderSide: BorderSide(color: passwordColor, width: 2),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        borderSide: BorderSide(color: passwordColor, width: 2),
                       ),
                       labelText: "Password",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
                         fontSize: 15,
                         color: Color(0xffa099fc),
                       ),
                       hintText: "••••••••",
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
@@ -150,10 +226,10 @@ class LoginScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Color(0x00ffffff),
                       isDense: false,
-                      contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.fromLTRB(60, 30, 0, 30),
                     child: Align(
                       alignment: Alignment.centerRight,
@@ -179,8 +255,11 @@ class LoginScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24.0),
                     ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(
+                    padding: const EdgeInsets.all(16),
+                    textColor: Color(0xffffffff),
+                    height: 45,
+                    minWidth: MediaQuery.of(context).size.width,
+                    child: const Text(
                       "LOGIN",
                       style: TextStyle(
                         fontSize: 16,
@@ -188,9 +267,6 @@ class LoginScreen extends StatelessWidget {
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    textColor: Color(0xffffffff),
-                    height: 45,
-                    minWidth: MediaQuery.of(context).size.width,
                   ),
                 ],
               ),
