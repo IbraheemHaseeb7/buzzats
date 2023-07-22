@@ -90,6 +90,7 @@ class _Signup extends State<Signup> {
                       borderSide: BorderSide(color: Colors.white, width: 1),
                     ),
                   ),
+                  obscureText: true,
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
