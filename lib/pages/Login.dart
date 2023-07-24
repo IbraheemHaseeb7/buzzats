@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
 
+import 'Home.dart';
+
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
 
@@ -9,9 +11,6 @@ class LoginScreen extends StatefulWidget {
   _LoginScreen createState() => _LoginScreen();
 }
 
-
-
-class LoginScreen extends StatelessWidget {
 class _LoginScreen extends State<LoginScreen> {
   // CONTROLLERS FOR THE INPUT FIELDS
   bool isCorrectEmail = false;
@@ -233,7 +232,7 @@ class _LoginScreen extends State<LoginScreen> {
                       contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.fromLTRB(60, 30, 0, 30),
                     child: Align(
                       alignment: Alignment.centerRight,
@@ -262,7 +261,10 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Home()),
+                      );
                     },
                     color: Color(0xff4137bd),
                     elevation: 0,
@@ -271,8 +273,8 @@ class _LoginScreen extends State<LoginScreen> {
                     ),
                     padding: const EdgeInsets.all(16),
                     textColor: Color(0xffffffff),
-                    height: 45,
                     minWidth: MediaQuery.of(context).size.width,
+                    height: 55,
                     child: const Text(
                       "LOGIN",
                       style: TextStyle(
@@ -281,9 +283,6 @@ class _LoginScreen extends State<LoginScreen> {
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    textColor: Color(0xffffffff),
-                    height: 45,
-                    minWidth: MediaQuery.of(context).size.width,
                   ),
                 ],
               ),

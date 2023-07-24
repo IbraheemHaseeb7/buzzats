@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../CustomWidgets/CustomDropDownMenu.dart';
+import 'Home.dart';
 
 class PhoneNumber extends StatelessWidget {
   Function nextPage, previousPage;
@@ -160,7 +161,10 @@ class PhoneNumber extends StatelessWidget {
                     width: screenWidth - 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
                       },
                       child: Text("Let's Buzzz!!"),
                       style: ButtonStyle(

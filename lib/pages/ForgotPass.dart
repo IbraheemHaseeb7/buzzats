@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
 
+import 'Home.dart';
+
 void main() {
   runApp(ForgotPassScreen());
 }
@@ -47,51 +49,51 @@ class ForgotPassScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
                     child: TextField(
-                    obscureText: true,
-                    textAlign: TextAlign.start,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 14,
-                      color: Color(0xffffffff),
-                    ),
-                    decoration: InputDecoration(
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
-                      ),
-                      labelText: "Password",
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 15,
-                        color: Color(0xffa099fc),
-                      ),
-                      hintText: "••••••••",
-                      hintStyle: TextStyle(
+                      obscureText: true,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
-                        color: Color.fromARGB(129, 255, 255, 255),
+                        color: Color(0xffffffff),
                       ),
-                      filled: true,
-                      fillColor: Color(0x00ffffff),
-                      isDense: false,
-                      contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:
+                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:
+                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide:
+                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                        ),
+                        labelText: "Password",
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 15,
+                          color: Color(0xffa099fc),
+                        ),
+                        hintText: "••••••••",
+                        hintStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color.fromARGB(129, 255, 255, 255),
+                        ),
+                        filled: true,
+                        fillColor: Color(0x00ffffff),
+                        isDense: false,
+                        contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      ),
                     ),
-                  ),
                   ),
                   TextField(
                     obscureText: true,
@@ -142,27 +144,30 @@ class ForgotPassScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
                     child: MaterialButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: Color.fromRGBO(102, 26, 255, 0.612),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                    ),
-                    padding: EdgeInsets.all(25),
-                    child: Text(
-                      "Next",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                      },
+                      color: Color.fromRGBO(102, 26, 255, 0.612),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
                       ),
+                      padding: EdgeInsets.all(25),
+                      child: Text(
+                        "Next",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                        ),
+                      ),
+                      textColor: Color(0xffffffff),
+                      height: 20,
+                      minWidth: MediaQuery.of(context).size.width,
                     ),
-                    textColor: Color(0xffffffff),
-                    height: 20,
-                    minWidth: MediaQuery.of(context).size.width,
-                  ),
                   ),
                 ],
               ),

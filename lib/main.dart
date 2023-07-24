@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter_app_1/pages/GettingStarted.dart';
-=======
 import 'package:flutter_app_1/pages/Home.dart';
->>>>>>> abdullah
 import 'package:flutter_app_1/pages/OTP.dart';
 import 'package:flutter_app_1/pages/PhoneNum.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 
 void main() {
-  
   runApp(Main());
 }
 

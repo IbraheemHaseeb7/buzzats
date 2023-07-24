@@ -88,9 +88,7 @@ class OTP extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: (){
-                  
-                    },
+                    onPressed: () {},
                     style: ButtonStyle(
                         padding: MaterialStateProperty.all(EdgeInsets.zero),
                         side: MaterialStateProperty.all(const BorderSide(
@@ -112,14 +110,7 @@ class OTP extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                     onPressed: () {
-<<<<<<< HEAD
                       nextPage();
-=======
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                        );
->>>>>>> abdullah
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
