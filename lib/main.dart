@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/Home.dart';
@@ -5,8 +6,16 @@ import 'package:flutter_app_1/pages/OTP.dart';
 import 'package:flutter_app_1/pages/PhoneNum.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(Main());
 }
 
@@ -14,7 +23,7 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: MyApp(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
@@ -26,6 +35,30 @@ class Main extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  final _regex = RegExp(
+      r'^[s,f]{1}[a,p]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore.edu.pk$');
+  bool isLoggedIn = false;
+  static FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<UserCredential> signInWithGoogle() async {
+    GoogleSignInAccount? googleUser = await GoogleSignIn(
+            clientId:
+                "335001544449-tcr0aukdr27rbpcadv12t6engqnokv81.apps.googleusercontent.com")
+        .signIn();
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -99,7 +132,17 @@ class MyApp extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   children: [
                     MaterialButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await signInWithGoogle().then((value) {
+                          if (_regex.hasMatch(value.user!.email!)) {
+                            isLoggedIn = true;
+                          } else {
+                            // auth.signOut();
+                          }
+                        });
+
+                        print(auth.currentUser);
+                      },
                       color: Color(0xffffffff),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
