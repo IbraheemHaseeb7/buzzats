@@ -125,6 +125,7 @@ class OTP extends StatelessWidget {
                         nextPage();
                       } else {
                         print("OTP Entered Is Not Correct");
+                        nextPage(); // Temporary for fast testing
                       }
                     },
                     style: ButtonStyle(
