@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+String userEmail = "user@cuilahore.edu.pk";
+
 class Signup extends StatefulWidget {
   Function nextPage, previousPage;
   Signup({super.key, required this.nextPage, required this.previousPage});
@@ -11,6 +13,61 @@ class Signup extends StatefulWidget {
 }
 
 class _Signup extends State<Signup> {
+  // CONTROLLERS FOR THE INPUT FIELDS
+  bool isCorrectEmail = false;
+  bool isCorrectPassword = false;
+  bool passObscure = true;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Color emailColor = Colors.white;
+  Color passwordColor = Colors.white;
+
+  // REGEX TO VERIFY EMAIL
+  final _regex = RegExp(r'^[sSfF]{1}[aApP]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore\.edu\.pk$');
+
+
+  void handleEmail(String value) {
+    if (emailController.text.length == 29) {
+      if (_regex.hasMatch(emailController.text)) {
+        setState(() {
+          isCorrectEmail = true;
+          emailColor = Colors.green;
+        });
+      } else {
+        setState(() {
+          isCorrectEmail = false;
+          emailColor = Colors.red;
+        });
+      }
+    } else if (emailController.text.length < 29) {
+      setState(() {
+        isCorrectEmail = false;
+        emailColor = Colors.red;
+      });
+    } else {
+      setState(() {
+        isCorrectEmail = false;
+        emailColor = Colors.red;
+      });
+    }
+  }
+
+  // ON CHANGE HANDLER FOR THE PASSWORD
+  void handlePassword(String value) {
+    if (passwordController.text.length < 9) {
+      setState(() {
+        isCorrectPassword = false;
+        passwordColor = Colors.red;
+      });
+    } else {
+      setState(() {
+        isCorrectPassword = true;
+        passwordColor = Colors.green;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,31 +101,36 @@ class _Signup extends State<Signup> {
                 SizedBox(height: 16),
                 TextFormField(
                   style: TextStyle(color: Colors.white),
+                  controller: emailController,
+                  onChanged: (text) {
+                    userEmail = text;
+                    handleEmail(text);
+                  },
                   decoration: InputDecoration(
                     hintStyle: TextStyle(
                         color: const Color.fromARGB(255, 110, 110, 110)),
                     hintText: "COMSATS Email Address",
                     labelStyle: TextStyle(color: Colors.white),
                     labelText: "Email",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    floatingLabelStyle:
-                        TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
+                    disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide: BorderSide(color: emailColor, width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide: BorderSide(color: emailColor, width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide: BorderSide(color: emailColor, width: 2),
+                        ),
                   ),
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   style: TextStyle(color: Colors.white),
+                  controller: passwordController,
+                  onChanged: handlePassword,
                   decoration: InputDecoration(
                     hintStyle: TextStyle(
                         color: const Color.fromARGB(255, 110, 110, 110)),
@@ -77,18 +139,18 @@ class _Signup extends State<Signup> {
                     floatingLabelStyle:
                         TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
                     labelText: "Password",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
-                    ),
+                    disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide: BorderSide(color: passwordColor, width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide: BorderSide(color: passwordColor, width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                          borderSide: BorderSide(color: passwordColor, width: 2),
+                        ),
                   ),
                   obscureText: true,
                 ),

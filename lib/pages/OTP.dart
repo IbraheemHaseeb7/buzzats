@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/Home.dart';
+import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:http/http.dart' as http;
+
+int pinSent = 0;
+int pinEntered = 0;
 
 class OTP extends StatelessWidget {
   Function nextPage, previousPage;
@@ -11,6 +18,7 @@ class OTP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    sendOTP();
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -72,6 +80,7 @@ class OTP extends StatelessWidget {
                 fieldStyle: FieldStyle.box,
                 onCompleted: (pin) {
                   print("Completed: " + pin);
+                  pinEntered = int.parse(pin);
                 },
               ),
             ),
@@ -88,7 +97,9 @@ class OTP extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      sendOTP();
+                    },
                     style: ButtonStyle(
                         padding: MaterialStateProperty.all(EdgeInsets.zero),
                         side: MaterialStateProperty.all(const BorderSide(
@@ -110,7 +121,11 @@ class OTP extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      nextPage();
+                      if (pinEntered == pinSent) {
+                        nextPage();
+                      } else {
+                        print("OTP Entered Is Not Correct");
+                      }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
@@ -128,5 +143,33 @@ class OTP extends StatelessWidget {
             )
           ],
         ))));
+  }
+}
+
+int generateRandomNumber() {
+  Random random = Random();
+  return random.nextInt(9000) + 1000;
+}
+
+void sendOTP() async {
+  pinSent = generateRandomNumber();
+
+  const url =
+      'https://taupe-daifuku-9eda4e.netlify.app/.netlify/functions/api/mail'; // Replace with your API endpoint URL
+
+  final headers = {'Content-Type': 'application/json'};
+  final body = {'email': userEmail, 'code': pinSent};
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: headers,
+    body: jsonEncode(body),
+  );
+
+  if (response.statusCode == 200) {
+    // successfully sent email
+    print(true);
+  } else {
+    print('Error: ${response.statusCode}');
   }
 }

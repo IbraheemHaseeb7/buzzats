@@ -23,8 +23,7 @@ class _LoginScreen extends State<LoginScreen> {
   Color passwordColor = Colors.white;
 
   // REGEX TO VERIFY EMAIL
-  final _regex = RegExp(
-      r'^[s,f]{1}[a,p]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore.edu.pk$');
+  final _regex = RegExp(r'^[sSfF]{1}[aApP]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore\.edu\.pk$');
 
   // ON CHANGE HANDLER FOR EMAIL
   void handleEmail(String value) {
@@ -43,7 +42,7 @@ class _LoginScreen extends State<LoginScreen> {
     } else if (emailController.text.length < 29) {
       setState(() {
         isCorrectEmail = false;
-        emailColor = Colors.white;
+        emailColor = Colors.red;
       });
     } else {
       setState(() {
