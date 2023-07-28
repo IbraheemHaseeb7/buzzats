@@ -4,6 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:flutter_app_1/pages/CUonline.dart';
+
+void main() {
+  runApp(Home());
+}
 
 class Home extends StatelessWidget {
   @override
@@ -147,8 +152,13 @@ class Home extends StatelessWidget {
                         ),
                       ),
 
-                      onTap:
-                          null, //this is the on pressed property of the list tile
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CUonline()),
+                          );
+                      }, //this is the on pressed property of the list tile
                     ),
                   ),
                   SizedBox(height: 16),
