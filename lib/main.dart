@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
-import 'package:flutter_app_1/pages/Home.dart';
-import 'package:flutter_app_1/pages/OTP.dart';
-import 'package:flutter_app_1/pages/PhoneNum.dart';
-import 'package:flutter_app_1/pages/Signup.dart';
+
 import 'package:flutter_app_1/pages/Login.dart';
+import 'package:flutter_app_1/pages/UserProfile.dart';
 
 void main() {
   runApp(Main());
@@ -14,7 +13,8 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: MyApp(),
+     // home: EditProfile(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()

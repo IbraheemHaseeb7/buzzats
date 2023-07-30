@@ -2,8 +2,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/CustomWidgets/HomeDrawer.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
+import 'package:flutter_app_1/pages/CreateTweet.dart';
+import 'package:flutter_app_1/pages/Logout.dart';
+import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class Home extends StatelessWidget {
   @override
@@ -74,6 +80,12 @@ class Home extends StatelessWidget {
                 icon: CupertinoIcons.profile_circled,
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserProfile()),
+                      );
+        },
               ),
             ],
           ),
@@ -97,132 +109,58 @@ class Home extends StatelessWidget {
           )),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateTweet()),
+                      );
+        },
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF4137BD),
       ),
 
+
+
       //drawer for extra functions like cui portal
-      drawer: FractionallySizedBox(
-        widthFactor: 0.8,
-        child: Drawer(
-          child: Container(
-            alignment: Alignment.center,
-            color: Color(0xFF141D26),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(17),
-              child: ListView(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  DrawerHeader(
-                      decoration: BoxDecoration(color: Colors.deepPurple),
-                      padding: EdgeInsets.zero,
-                      child: UserAccountsDrawerHeader(
-                        margin: EdgeInsets.zero,
-                        accountName: Text("abdullah"),
-                        accountEmail: Text("fa21-bcs-082@gmail.com"),
-                        currentAccountPicture: CircleAvatar(
-                          backgroundImage: AssetImage("lib\\Assets\\abdu.jpg"),
-                        ),
-                      )),
-                  SizedBox(height: 16),
-                  Center(
-                    child: ListTile(
-                      leading: FractionalTranslation(
-                        translation: Offset(0.6, 0.5),
-                        child: Icon(
-                          CupertinoIcons.person_2,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: FractionalTranslation(
-                        translation: Offset(0.11, 0.5),
-                        child: Text(
-                          "CU Online",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-
-                      onTap:
-                          null, //this is the on pressed property of the list tile
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  Center(
-                    child: ListTile(
-                      leading: FractionalTranslation(
-                        translation: Offset(0.6, 0.5),
-                        child: Icon(
-                          Icons.star,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: FractionalTranslation(
-                        translation: Offset(0.1, 0.5),
-                        child: Text(
-                          "Events",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-
-                      onTap:
-                          null, //this is the on pressed property of the list tile
-                    ),
-                  ),
-                  SizedBox(height: 550),
-                  Center(
-                    child: Container(
-                      width: 250,
-                      padding: EdgeInsets.all(
-                          1.0), // Optional: Set padding around the text
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color.fromARGB(255, 159, 0, 0), // Border color
-                          width: 0.2, // Border width
-                        ),
-                        color: Color.fromARGB(255, 159, 0, 0),
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Optional: Border radius
-                      ),
-                      child: ListTile(
-                        leading: FractionalTranslation(
-                          translation: Offset(0.6, 0.0),
-                          child: Icon(
-                            Icons.logout,
-                            color: Color.fromARGB(255, 255, 255, 255),
-                          ),
-                        ),
-                        title: FractionalTranslation(
-                          translation: Offset(0.1, 0.0),
-                          child: Text(
-                            "Logout",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-
-                        onTap:
-                            null, //this is the on pressed property of the list tile
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      drawer: HomeDrawer().drawerr(),
     );
   }
+
+
+
+  void popUp(BuildContext context) {
+
+    showDialog(
+      context: context,
+
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Are you sure you want to logout?'),
+
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+              child: Text('Cancel', style: TextStyle(color: const Color.fromARGB(255, 120, 255, 125)),),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                performLogout(context);
+              },
+              child: Text('Logout', style: TextStyle(color: const Color.fromARGB(255, 143, 11, 2)),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void performLogout(BuildContext context) {
+    Navigator.pop(context);
+    Fluttertoast.showToast(msg: 'Logged out successfully!');
+  }
+
 }
