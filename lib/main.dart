@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
-import 'package:flutter_app_1/pages/Home.dart';
-import 'package:flutter_app_1/pages/OTP.dart';
-import 'package:flutter_app_1/pages/PhoneNum.dart';
-import 'package:flutter_app_1/pages/Signup.dart';
+
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
