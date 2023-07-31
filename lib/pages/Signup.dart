@@ -1,6 +1,11 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Classes/ToasterType.dart';
+import 'package:flutter_app_1/CustomWidgets/Toaster.dart';
+import 'package:flutter_app_1/CustomWidgets/ToasterController.dart';
 
 String userEmail = "user@cuilahore.edu.pk";
 
@@ -22,10 +27,11 @@ class _Signup extends State<Signup> {
 
   Color emailColor = Colors.white;
   Color passwordColor = Colors.white;
+  ToasterController toasterController = ToasterController();
 
   // REGEX TO VERIFY EMAIL
-  final _regex = RegExp(r'^[sSfF]{1}[aApP]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore\.edu\.pk$');
-
+  final _regex = RegExp(
+      r'^[sSfF]{1}[aApP]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore\.edu\.pk$');
 
   void handleEmail(String value) {
     if (emailController.text.length == 29) {
@@ -71,7 +77,8 @@ class _Signup extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+        body: Stack(children: [
+      Container(
         decoration: BoxDecoration(color: Color(0xFF141D26)),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Stack(
@@ -113,17 +120,17 @@ class _Signup extends State<Signup> {
                     labelStyle: TextStyle(color: Colors.white),
                     labelText: "Email",
                     disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: emailColor, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: emailColor, width: 2),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: emailColor, width: 2),
+                    ),
                   ),
                 ),
                 SizedBox(height: 16),
@@ -140,24 +147,28 @@ class _Signup extends State<Signup> {
                         TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
                     labelText: "Password",
                     disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide(color: passwordColor, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide(color: passwordColor, width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide(color: passwordColor, width: 2),
-                        ),
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: passwordColor, width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: passwordColor, width: 2),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: BorderSide(color: passwordColor, width: 2),
+                    ),
                   ),
                   obscureText: true,
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    widget.nextPage();
+                    toasterController.start();
+                    Timer(Duration(seconds: 2), () {
+                      toasterController.end();
+                      widget.nextPage();
+                    });
                   },
                   child: Text("Sign Up"),
                   style: ButtonStyle(
@@ -183,6 +194,11 @@ class _Signup extends State<Signup> {
           ],
         ),
       ),
-    );
+      Toaster(
+        data: "Sending OTP Code...",
+        controller: toasterController,
+        type: ToasterType.Loading,
+      )
+    ]));
   }
 }
