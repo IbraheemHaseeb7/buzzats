@@ -4,7 +4,7 @@ import 'package:flutter_app_1/CustomWidgets/SocietySuggest.dart';
 import 'package:flutter_app_1/CustomWidgets/UserSuggest.dart';
 
 void main() {
-  runApp(SuggestionPage ());
+  runApp(SuggestionPage());
 }
 
 class SuggestionPage  extends StatefulWidget {
