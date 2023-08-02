@@ -1,11 +1,9 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Classes/ToasterType.dart';
-import 'package:flutter_app_1/CustomWidgets/Toaster.dart';
-import 'package:flutter_app_1/CustomWidgets/ToasterController.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 String userEmail = "user@cuilahore.edu.pk";
 
@@ -27,7 +25,6 @@ class _Signup extends State<Signup> {
 
   Color emailColor = Colors.white;
   Color passwordColor = Colors.white;
-  ToasterController toasterController = ToasterController();
 
   // REGEX TO VERIFY EMAIL
   final _regex = RegExp(
@@ -77,8 +74,7 @@ class _Signup extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(children: [
-      Container(
+      body: Container(
         decoration: BoxDecoration(color: Color(0xFF141D26)),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Stack(
@@ -164,9 +160,12 @@ class _Signup extends State<Signup> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    toasterController.start();
+                    ToastMe(
+                            text: "Sending OTP Code",
+                            type: ToasterType.Loading,
+                            duration: 2000)
+                        .showToast(context);
                     Timer(Duration(seconds: 2), () {
-                      toasterController.end();
                       widget.nextPage();
                     });
                   },
@@ -194,11 +193,6 @@ class _Signup extends State<Signup> {
           ],
         ),
       ),
-      Toaster(
-        data: "Sending OTP Code...",
-        controller: toasterController,
-        type: ToasterType.Loading,
-      )
-    ]));
+    );
   }
 }

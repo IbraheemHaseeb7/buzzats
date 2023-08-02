@@ -565,6 +565,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+  toast_notification:
+    dependency: "direct main"
+    description:
+      name: toast_notification
+      sha256: "50cfd4503726fb7228492c58956430039e2c62f13bd3f024866febb5c83455ce"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   typed_data:
     dependency: transitive
     description:
