@@ -89,6 +89,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+<<<<<<< HEAD
   file_selector_linux:
     dependency: transitive
     description:
@@ -121,6 +122,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3"
+=======
+>>>>>>> origin/musa
   firebase_auth:
     dependency: "direct main"
     description:
