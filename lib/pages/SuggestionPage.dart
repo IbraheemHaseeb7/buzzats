@@ -45,68 +45,66 @@ class _SuggestionPage  extends State<SuggestionPage > {
         backgroundColor: Color(0xff141d26),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 15, left: 10, right: 5),
+                          child: TextField(
+                            controller: TextEditingController(),
+                            obscureText: false,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 14,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            decoration: InputDecoration(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: BorderSide(color: Color(0x006080a7), width: 1),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: BorderSide(color: Color(0x006080a7), width: 1),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: BorderSide(color: Color(0x006080a7), width: 1),
+                              ),
+                              hintText: "Search",
+                              hintStyle: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 17,
+                                color: Color.fromARGB(255, 173, 173, 173),
+                              ),
+                              filled: true,
+                              fillColor: Color(0x20ffffff),
+                              isDense: true,
+                              contentPadding: EdgeInsets.fromLTRB(40, 4, 12, 4), // Adjust left padding here
+                              prefixIcon: Icon(Icons.search,
+                                  color:  Color.fromARGB(255, 173, 173, 173), size: 23),
+                            ),
+                          ),
+                        ),
+                      ),
+
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 12, 1, 0), // Add padding to separate the Icon from TextField
+                  padding: EdgeInsets.only(top:15,left: 4,right: 4), // Add padding to separate the Icon from TextField
                   child: Icon(
-                    Icons.person, // Replace with the desired icon
+                    Icons.filter_list, // Replace with the desired icon
                     color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(35, 15, 10, 0),
-                    child: TextField(
-                      controller: TextEditingController(),
-                      obscureText: false,
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      decoration: InputDecoration(
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide:
-                              BorderSide(color: Color(0x006080a7), width: 1),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide:
-                              BorderSide(color: Color(0x006080a7), width: 1),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                          borderSide:
-                              BorderSide(color: Color(0x006080a7), width: 1),
-                        ),
-                        hintText: "Search Users",
-                        hintStyle: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 17,
-                          color: Color(0xffffffff),
-                        ),
-                        filled: true,
-                        fillColor: Color(0x20ffffff),
-                        isDense: false,
-                        contentPadding: EdgeInsets.fromLTRB(12, 4, 12, 4),
-                        prefixIcon: Icon(Icons.search,
-                            color: Color(0xffffffff), size: 28),
-                      ),
-                    ),
+                    size: 34,
                   ),
                 ),
               ],
@@ -117,7 +115,7 @@ class _SuggestionPage  extends State<SuggestionPage > {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 70, 0, 10),
+                  padding: EdgeInsets.only(top: 35,bottom: 10,right: 10,left: 10),
                   child: Align(
                     alignment: Alignment(-0.9, 0.0),
                     child: Text(
@@ -125,7 +123,7 @@ class _SuggestionPage  extends State<SuggestionPage > {
                       textAlign: TextAlign.start,
                       overflow: TextOverflow.clip,
                       style: TextStyle(
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w900,
                         fontStyle: FontStyle.normal,
                         fontSize: 30,
                         color: Color(0xffffffff),
@@ -243,11 +241,14 @@ class _SuggestionPage  extends State<SuggestionPage > {
             Visibility(
               visible: showSocietyWidgets,
               child: Expanded(
+                
                 child: RefreshIndicator(
                   key: _refreshSocietyKey,
                   onRefresh: _handleSocietyRefresh,
                   child: SingleChildScrollView(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SocietySuggest(),
                         SocietySuggest(),

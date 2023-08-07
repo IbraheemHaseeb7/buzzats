@@ -190,7 +190,7 @@ class SocietyState extends State<Society> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 15),
+                    margin: const EdgeInsets.only(top: 15, bottom: 10),
                     width: screenWidth,
                     decoration: const BoxDecoration(
                         shape: BoxShape.rectangle,
@@ -199,10 +199,13 @@ class SocietyState extends State<Society> {
                   ),
                   Container(
                     width: screenWidth,
-                    child: Row(children: [
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
                       Container(
-                        height: 40,
-                        width: screenWidth * 0.5,
+                        height: 30,
+                        width: screenWidth * 0.3,
                         child: OutlinedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
@@ -215,8 +218,8 @@ class SocietyState extends State<Society> {
                         ),
                       ),
                       Container(
-                        height: 40,
-                        width: screenWidth * 0.5,
+                        height: 30,
+                        width: screenWidth * 0.3,
                         child: OutlinedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(

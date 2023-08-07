@@ -1,13 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/CustomWidgets/Notifcations.dart';
+import 'package:flutter_app_1/CustomWidgets/Reply.dart';
+import 'package:flutter_app_1/CustomWidgets/Replying.dart';
+import 'package:flutter_app_1/pages/CommentSection.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/Home.dart';
 
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app_1/pages/SearchedUser.dart';
 import 'package:flutter_app_1/pages/Society.dart';
+import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
+import 'CustomWidgets/Notif.dart';
 import 'firebase_options.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -24,8 +31,8 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: MyApp(),
-      home: UserProfile(), // add your page for quick testing
+      //home: MyApp(),
+      home: Notifications(), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
@@ -146,18 +153,20 @@ class MyApp extends StatelessWidget {
                         print(auth.currentUser);
                       },
                       color: Color(0xffffffff),
-                      elevation: 0,
+                      elevation: 1,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         side: BorderSide(color: Color(0xff4137bd), width: 1),
                       ),
                       padding: EdgeInsets.all(16),
                       textColor: Color.fromARGB(255, 0, 0, 0),
-                      height: 50,
+                      height: 55,
                       minWidth: MediaQuery.of(context).size.width,
                       child: const Text(
                         "          Sign up with Google",
+                        textAlign: TextAlign.start,
                         style: TextStyle(
+                          
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                           fontStyle: FontStyle.normal,
@@ -168,7 +177,8 @@ class MyApp extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
                       child: Image(
                         image: AssetImage("lib\\Assets\\icons8-google-48.png"),
-                        height: 32,
+                        alignment: Alignment.center,
+                        height: 33,
                         width: 32,
                         fit: BoxFit.cover,
                       ),
@@ -204,14 +214,14 @@ class MyApp extends StatelessWidget {
                         );
                       },
                       color: Color(0xff4137bd),
-                      elevation: 0,
+                      elevation: 1,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         side: BorderSide(color: Color(0xff4137bd), width: 1),
                       ),
                       padding: EdgeInsets.all(16),
                       textColor: Color(0xffffffff),
-                      height: 50,
+                      height: 55,
                       minWidth: MediaQuery.of(context).size.width,
                       child: const Text(
                         "          Sign up with Email",
@@ -227,7 +237,8 @@ class MyApp extends StatelessWidget {
                       child: Image(
                         image: AssetImage(
                             "lib\\Assets\\icons8-circled-envelope-48.png"),
-                        height: 32,
+                            alignment: Alignment.center,
+                        height: 33,
                         width: 32,
                         fit: BoxFit.cover,
                       ),

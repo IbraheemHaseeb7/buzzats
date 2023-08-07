@@ -1,6 +1,7 @@
 
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app_1/CustomWidgets/Imagepicker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 
 
@@ -66,7 +69,8 @@ class CreateTweetState extends State<CreateTweet> {
   Widget build(BuildContext context) {
       
 
-      double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
        final enabledStyle = ButtonStyle(
           padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
@@ -125,7 +129,8 @@ class CreateTweetState extends State<CreateTweet> {
 
 
 body:Container(
-
+      width: screenWidth,
+      height: screenHeight,
       child: Column(
         children: [
           
@@ -231,7 +236,7 @@ body:Container(
                 iconSize: 40,
                 ),
 
-        SizedBox(width: 260),
+        SizedBox(width: screenWidth-160),
               
       Padding(
         padding: const EdgeInsets.only(top:10,bottom: 10,right: 8, left: 8), // Adjust horizontal padding
@@ -241,7 +246,25 @@ body:Container(
         onPressed: isButtonDisabled ? null  : (){
 
             String twt = tweetController.text;
-            Navigator.pop(context);
+
+             ToastMe(
+                              text: "Posting",
+                              type: ToasterType.Loading,
+                              duration: 2000)
+                          .showToast(context);
+                          
+                          Timer(Duration(seconds: 2), () {
+                            ToastMe(
+                                  text: "Posted",
+                                  type: ToasterType.Check,
+                                  duration: 2000)
+                              .showToast(context);
+                              Timer(Duration(seconds: 1), () {
+                          
+                            Navigator.pop(context);
+                          });
+                       
+                      });
 
         },
         style: isButtonDisabled ? disabledStyle : enabledStyle,

@@ -16,6 +16,7 @@ class HomeDrawer{
               borderRadius: BorderRadius.circular(17),
               child: ListView(
                 // ignore: prefer_const_literals_to_create_immutables
+                
                 children: [
                   DrawerHeader(
                       decoration: BoxDecoration(color: Colors.deepPurple),
@@ -29,56 +30,68 @@ class HomeDrawer{
                         ),
                       )),
                   SizedBox(height: 16),
-                  Center(
-                    child: ListTile(
-                      leading: FractionalTranslation(
-                        translation: Offset(0.6, 0.5),
-                        child: Icon(
-                          CupertinoIcons.person_2,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: FractionalTranslation(
-                        translation: Offset(0.11, 0.5),
-                        child: Text(
-                          "CU Online",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: ListTile(
+                          leading: FractionalTranslation(
+                            translation: Offset(0.6, 0.5),
+                            child: Icon(
+                              CupertinoIcons.person_2,
+                              color: Colors.white,
+                            ),
                           ),
+                          title: FractionalTranslation(
+                            translation: Offset(0.1, 0.5),
+                            child: Text(
+                              "CU Online",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+
+                          onTap:
+                              null, //this is the on pressed property of the list tile
                         ),
                       ),
-
-                      onTap:
-                          null, //this is the on pressed property of the list tile
-                    ),
+                    ],
                   ),
                   SizedBox(height: 16),
-                  Center(
-                    child: ListTile(
-                      leading: FractionalTranslation(
-                        translation: Offset(0.6, 0.5),
-                        child: Icon(
-                          Icons.star,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: FractionalTranslation(
-                        translation: Offset(0.1, 0.5),
-                        child: Text(
-                          "Events",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: ListTile(
+                          leading: FractionalTranslation(
+                            translation: Offset(0.6, 0.5),
+                            child: Icon(
+                              Icons.star,
+                              color: Colors.white,
+                            ),
                           ),
+                          title: FractionalTranslation(
+                            translation: Offset(0.1, 0.5),
+                            child: Text(
+                              "Events",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+
+                          onTap:
+                              null, //this is the on pressed property of the list tile
                         ),
                       ),
-
-                      onTap:
-                          null, //this is the on pressed property of the list tile
-                    ),
+                    ],
                   ),
                   SizedBox(height: 550),
                   Center(

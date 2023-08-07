@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 import 'Home.dart';
 
@@ -260,10 +264,27 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   MaterialButton(
                     onPressed: () {
+                                        ToastMe(
+                      text: "Logging In",
+                      type: ToasterType.Loading,
+                      duration: 2000,
+                    ).showToast(context);
+
+                    Timer(Duration(seconds: 2), () {
+                                              ToastMe(
+                            text: "Welcome, Abdullah Sajjad!",
+                            type: ToasterType.Check,
+                            duration: 2000,
+                          ).showToast(context);
+
+                          Timer(Duration(seconds: 1), () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Home()),
                       );
+                           
+                          });
+                    });
                     },
                     color: Color(0xff4137bd),
                     elevation: 0,

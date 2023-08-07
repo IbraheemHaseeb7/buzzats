@@ -78,110 +78,113 @@ class _Signup extends State<Signup> {
         decoration: BoxDecoration(color: Color(0xFF141D26)),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Stack(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.bottomCenter,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Sign Up",
-                  style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto',
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "To get started, enter your COMSATS E-mail Id",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: 'Roboto',
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  controller: emailController,
-                  onChanged: (text) {
-                    userEmail = text;
-                    handleEmail(text);
-                  },
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(
-                        color: const Color.fromARGB(255, 110, 110, 110)),
-                    hintText: "COMSATS Email Address",
-                    labelStyle: TextStyle(color: Colors.white),
-                    labelText: "Email",
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: emailColor, width: 2),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: emailColor, width: 2),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: emailColor, width: 2),
+            Padding(
+              padding: EdgeInsets.only(bottom: 140),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto',
+                        color: Color.fromARGB(255, 255, 255, 255)),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "To get started, enter your COMSATS E-mail Id",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Roboto',
+                        color: Color.fromARGB(255, 255, 255, 255)),
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    controller: emailController,
+                    onChanged: (text) {
+                      userEmail = text;
+                      handleEmail(text);
+                    },
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(
+                          color: const Color.fromARGB(255, 110, 110, 110)),
+                      hintText: "COMSATS Email Address",
+                      labelStyle: TextStyle(color: Colors.white),
+                      labelText: "Email",
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(color: emailColor, width: 2),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(color: emailColor, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(color: emailColor, width: 2),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  controller: passwordController,
-                  onChanged: handlePassword,
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(
-                        color: const Color.fromARGB(255, 110, 110, 110)),
-                    hintText: "Password",
-                    labelStyle: TextStyle(color: Colors.white),
-                    floatingLabelStyle:
-                        TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
-                    labelText: "Password",
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: passwordColor, width: 2),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    controller: passwordController,
+                    onChanged: handlePassword,
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(
+                          color: const Color.fromARGB(255, 110, 110, 110)),
+                      hintText: "Password",
+                      labelStyle: TextStyle(color: Colors.white),
+                      floatingLabelStyle:
+                          TextStyle(color: Color.fromRGBO(148, 95, 255, 0.612)),
+                      labelText: "Password",
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(color: passwordColor, width: 2),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(color: passwordColor, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(color: passwordColor, width: 2),
+                      ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: passwordColor, width: 2),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: BorderSide(color: passwordColor, width: 2),
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      ToastMe(
+                              text: "Sending OTP Code",
+                              type: ToasterType.Loading,
+                              duration: 2000)
+                          .showToast(context);
+                      Timer(Duration(seconds: 2), () {
+                        widget.nextPage();
+                      });
+                    },
+                    child: Text("Sign Up"),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromRGBO(102, 26, 255, 0.612)),
+                      foregroundColor: MaterialStateProperty.all(
+                          Color.fromRGBO(255, 255, 255, 1)),
+                      fixedSize: MaterialStateProperty.all(Size(400, 55)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                      )),
                     ),
                   ),
-                  obscureText: true,
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    ToastMe(
-                            text: "Sending OTP Code",
-                            type: ToasterType.Loading,
-                            duration: 2000)
-                        .showToast(context);
-                    Timer(Duration(seconds: 2), () {
-                      widget.nextPage();
-                    });
-                  },
-                  child: Text("Sign Up"),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(102, 26, 255, 0.612)),
-                    foregroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(255, 255, 255, 1)),
-                    fixedSize: MaterialStateProperty.all(Size(400, 55)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                    )),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             Positioned(
               top: 0,
