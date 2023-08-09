@@ -33,6 +33,45 @@ class UserProfileState extends State<UserProfile> {
     });
   }
 
+
+
+  Column generateButtons() {
+
+    return Column(
+      children: [
+        ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context as BuildContext,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProfile(), // Replace with the screen you want to navigate to
+                                  ),
+                                );
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Color(0xFF5F80A6)),
+                                foregroundColor:
+                                    MaterialStatePropertyAll(Colors.transparent),
+                                fixedSize: MaterialStatePropertyAll(Size(80, 10)),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                )),
+                              ),
+                              child: Text(
+                                "Edit",
+                                style: TextStyle(color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+        ),
+      ],
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     //screenheight and width
@@ -189,33 +228,9 @@ class UserProfileState extends State<UserProfile> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditProfile(), // Replace with the screen you want to navigate to
-                              ),
-                            );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(Colors.blue),
-                            foregroundColor:
-                                MaterialStatePropertyAll(Colors.transparent),
-                            fixedSize: MaterialStatePropertyAll(Size(80, 10)),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            )),
-                          ),
-                          child: Text(
-                            "Edit",
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        generateButtons()
+                        
+                        
                       ],
                     ),
                   ],
@@ -226,7 +241,7 @@ class UserProfileState extends State<UserProfile> {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Card(
-                      color: Colors.blue,
+                      color: Color(0xFF5F80A6),
                       shape: RoundedRectangleBorder(
                         // Set the shape property to a RoundedRectangleBorder
                         borderRadius: BorderRadius.circular(
@@ -282,32 +297,41 @@ class UserProfileState extends State<UserProfile> {
               Container(
                 margin: const EdgeInsets.only(top: 15),
                 width: screenWidth,
-                child: Row(children: [
-                  Container(
-                    height: 40,
-                    width: screenWidth * 0.5,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              tweetButtonColor)),
-                      onPressed: handleTweet,
-                      child: const Text(
-                        "Tweets",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 5,bottom: 5),
+                    child: Container(
+                      height: 30,
+                      width: screenWidth * 0.3,
+                      child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                tweetButtonColor)),
+                        onPressed: handleTweet,
+                        child: const Text(
+                          "Tweets",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
                       ),
                     ),
                   ),
-                  Container(
-                    height: 40,
-                    width: screenWidth * 0.5,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              replierButtonColor)),
-                      onPressed: handleReplies,
-                      child: const Text(
-                        "Replies",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5, bottom: 5),
+                    child: Container(
+                      height: 30,
+                      width: screenWidth * 0.3,
+                      child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                replierButtonColor)),
+                        onPressed: handleReplies,
+                        child: const Text(
+                          "Replies",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
                       ),
                     ),
                   )

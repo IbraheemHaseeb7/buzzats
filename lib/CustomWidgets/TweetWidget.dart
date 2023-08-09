@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/CustomWidgets/Replying.dart';
+import 'package:flutter_app_1/pages/CommentSection.dart';
 
 class TweetWidget extends StatefulWidget {
   TweetWidget({super.key});
@@ -24,10 +26,21 @@ class _TweetWidget extends State<TweetWidget> {
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       //used this so that if a user tap the tweet, it opens a new window showing only this tweet and the comments below
-      onTap: () {},
+      onTap: () {
+          Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CommentSection()),
+                      );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Color(0xFF141D26),
+          // borderRadius: BorderRadius.only(
+          //       bottomLeft: Radius.circular(30),
+          //       bottomRight: Radius.circular(30),
+          //       topLeft: Radius.zero, // Set the top left radius to zero
+          //       topRight: Radius.zero, // Set the top right radius to zero
+          //     ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -103,7 +116,13 @@ class _TweetWidget extends State<TweetWidget> {
                               color: Colors.white,
                             ),
                             IconButton(
-                              onPressed: null,
+                              onPressed: (){
+                                showModalBottomSheet(
+                                  backgroundColor:  Colors.transparent,
+                                  context: context,
+                                   builder: (context)=> Replying()
+                                   );
+                                   },
                               icon: Icon(
                                 CupertinoIcons.arrow_counterclockwise,
                                 color: Colors.white,

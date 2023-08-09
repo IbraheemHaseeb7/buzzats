@@ -1,21 +1,32 @@
 // ignore_for_file: unnecessary_string_escapes, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/HomeDrawer.dart';
+import 'package:flutter_app_1/CustomWidgets/Reply.dart';
+import 'package:flutter_app_1/CustomWidgets/SocietyTweet.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/pages/CreateTweet.dart';
 import 'package:flutter_app_1/pages/Logout.dart';
+import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
+      
+      backgroundColor:Color(0xFF141D26) ,
       appBar: AppBar(
         backgroundColor: Color(0xFF141D26),
         toolbarHeight: 70,
@@ -71,6 +82,12 @@ class Home extends StatelessWidget {
                 icon: Icons.search_outlined,
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SuggestionPage()),
+                      );
+        },
               ),
               GButton(
                 icon: CupertinoIcons.chat_bubble_fill,
@@ -100,8 +117,8 @@ class Home extends StatelessWidget {
               children: [
                 TweetWidget(),
                 TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
+                SocietyTweet(),
+                SocietyTweet(),
                 TweetWidget(),
                 TweetWidget(),
                 TweetWidget(),
