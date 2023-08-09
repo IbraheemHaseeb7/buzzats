@@ -6,6 +6,7 @@ import 'package:flutter_app_1/pages/Home.dart';
 
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'firebase_options.dart';
@@ -25,7 +26,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // home: MyApp(),
-      home: UserProfile(), // add your page for quick testing
+      home: LoginScreen(), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
@@ -41,25 +42,6 @@ class MyApp extends StatelessWidget {
       r'^[s,f]{1}[a,p]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore.edu.pk$');
   bool isLoggedIn = false;
   static FirebaseAuth auth = FirebaseAuth.instance;
-
-  Future<UserCredential> signInWithGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn(
-            clientId:
-                "335001544449-tcr0aukdr27rbpcadv12t6engqnokv81.apps.googleusercontent.com")
-        .signIn();
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,17 +116,7 @@ class MyApp extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   children: [
                     MaterialButton(
-                      onPressed: () async {
-                        await signInWithGoogle().then((value) {
-                          if (_regex.hasMatch(value.user!.email!)) {
-                            isLoggedIn = true;
-                          } else {
-                            // auth.signOut();
-                          }
-                        });
-
-                        print(auth.currentUser);
-                      },
+                      onPressed: () async {},
                       color: Color(0xffffffff),
                       elevation: 0,
                       shape: RoundedRectangleBorder(

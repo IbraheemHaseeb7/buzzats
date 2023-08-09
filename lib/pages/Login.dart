@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:flutter_app_1/pages/OTP.dart';
+import 'package:toast_notification/ToasterController.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 import 'Home.dart';
 
@@ -23,7 +27,8 @@ class _LoginScreen extends State<LoginScreen> {
   Color passwordColor = Colors.white;
 
   // REGEX TO VERIFY EMAIL
-  final _regex = RegExp(r'^[sSfF]{1}[aApP]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore\.edu\.pk$');
+  final _regex = RegExp(
+      r'^[sSfF]{1}[aApP]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore\.edu\.pk$');
 
   // ON CHANGE HANDLER FOR EMAIL
   void handleEmail(String value) {
@@ -66,9 +71,6 @@ class _LoginScreen extends State<LoginScreen> {
       });
     }
   }
-
-  String? handleEmailValidation(String? e) {}
-  String? handlePasswordValidation(String? e) {}
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +128,6 @@ class _LoginScreen extends State<LoginScreen> {
                     padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
                     child: TextFormField(
                       controller: emailController,
-                      validator: handleEmailValidation,
                       onChanged: handleEmail,
                       obscureText: false,
                       textAlign: TextAlign.left,
@@ -173,7 +174,6 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   TextFormField(
                     controller: passwordController,
-                    validator: handlePasswordValidation,
                     onChanged: handlePassword,
                     obscureText: passObscure,
                     textAlign: TextAlign.start,
@@ -251,7 +251,7 @@ class _LoginScreen extends State<LoginScreen> {
                               MaterialStateProperty.all(Color(0xff141d26)),
                           minimumSize: MaterialStateProperty.all(Size(20, 20)),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Forgot Password?",
                           style: TextStyle(color: Color(0xff4137bd)),
                         ),
@@ -260,10 +260,31 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Home()),
-                      );
+                      final tempController = ToasterController();
+                      ToastMe(
+                              text: "Validating...",
+                              type: ToasterType.Loading,
+                              controller: tempController)
+                          .showToast(context);
+                      MyApp.auth
+                          .signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text)
+                          .then((value) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                        tempController.end();
+                      }).catchError((error) {
+                        tempController.end();
+
+                        ToastMe(
+                                text: "Wrong emai/password",
+                                type: ToasterType.Error,
+                                duration: 2000)
+                            .showToast(context);
+                      });
                     },
                     color: Color(0xff4137bd),
                     elevation: 0,

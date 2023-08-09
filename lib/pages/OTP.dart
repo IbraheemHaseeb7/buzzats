@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
@@ -9,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
-int pinSent = 0;
 int pinEntered = 0;
 
 class OTP extends StatefulWidget {
@@ -138,8 +139,24 @@ class OTPState extends State<OTP> {
                               duration: 2000)
                           .showToast(context);
                     } else {
-                      if (pinEntered == pinSent) {
-                        widget.nextPage();
+                      if (pinEntered == Signup.pinSent) {
+                        ToastMe(
+                                text: "Registering you in Buzzats...",
+                                type: ToasterType.Loading)
+                            .showToast(context);
+                        MyApp.auth
+                            .createUserWithEmailAndPassword(
+                                email: SignupState.emailController.text,
+                                password: SignupState.passwordController.text)
+                            .then((UserCredential value) {
+                          widget.nextPage();
+                        }).catchError((error) {
+                          ToastMe(
+                                  text: "Some error occurred...",
+                                  type: ToasterType.Error,
+                                  duration: 2000)
+                              .showToast(context);
+                        });
                       } else {
                         ToastMe(
                                 text: "Invalid OTP Code, Try Again",
@@ -175,14 +192,14 @@ int generateRandomNumber() {
   return random.nextInt(9000) + 1000;
 }
 
-void sendOTP() async {
-  pinSent = generateRandomNumber();
+Future<bool> sendOTP() async {
+  Signup.pinSent = generateRandomNumber();
 
   const url =
       'https://taupe-daifuku-9eda4e.netlify.app/.netlify/functions/api/mail'; // Replace with your API endpoint URL
 
   final headers = {'Content-Type': 'application/json'};
-  final body = {'email': userEmail, 'code': pinSent};
+  final body = {'email': userEmail, 'code': Signup.pinSent};
 
   final response = await http.post(
     Uri.parse(url),
@@ -192,8 +209,8 @@ void sendOTP() async {
 
   if (response.statusCode == 200) {
     // successfully sent email
-    print(response.body);
+    return true;
   } else {
-    print('Error: ${response.statusCode}');
+    return false;
   }
 }
