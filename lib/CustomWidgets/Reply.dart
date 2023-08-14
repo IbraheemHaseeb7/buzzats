@@ -29,8 +29,10 @@ class ReplyState extends State<Reply>
   Widget build(BuildContext context) {
     
      double screenWidth = MediaQuery.of(context).size.width;
+     double screenHeight = MediaQuery.of(context).size.height;
     return 
       Container(
+        width: screenWidth,
         decoration: BoxDecoration(
           color:Color.fromARGB(255, 33, 47, 61),
         ),
@@ -95,7 +97,7 @@ class ReplyState extends State<Reply>
                           ),
                         ),
                      
-                      SizedBox(width: 130),
+                      SizedBox(width: screenWidth - 275),
                        IconButton(
                                 onPressed: handleLike,
                                 icon: Icon(

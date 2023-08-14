@@ -4,6 +4,7 @@ import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -16,19 +17,26 @@ void main() async {
 }
 
 class Main extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
+final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
+
       // home: MyApp(),
       home: Signup(
         nextPage: () {},
         previousPage: () {},
       ), // add your page for quick testing
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
+        textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),
           colorScheme: ThemeData()
               .colorScheme
-              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612)),
+              .copyWith(primary: Color(0xff141d26)),
           hintColor: Colors.white),
     );
   }

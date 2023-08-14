@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app_1/CustomWidgets/Imagepicker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
@@ -106,7 +107,7 @@ class CreateTweetState extends State<CreateTweet> {
        appBar: AppBar(
 
           backgroundColor: Color(0xFF141D26),
-          elevation: 5.0,
+          
           iconTheme: IconThemeData(
             color: Color.fromRGBO(150, 183, 223, 1),
           ),
@@ -159,6 +160,8 @@ body:Container(
                              
                            
                              child:  TextFormField(
+                              cursorColor: Colors.blue,
+                              
                               style: const TextStyle(color: Color.fromARGB(255, 255, 251, 251)),
                               onChanged: (value){
                                 setState(() {
@@ -230,7 +233,7 @@ body:Container(
           children: [
               IconButton(
                 onPressed: onPickImages, 
-                icon: Icon(Icons.image,color: Color(0xFF4137BD),), 
+                icon: Icon(IconlyLight.image,color: Colors.white,), 
                 alignment: Alignment.centerLeft,
                 
                 iconSize: 40,
