@@ -3,6 +3,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_app_1/Cache/Query.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_app_1/CustomWidgets/Imagepicker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconly/iconly.dart';
+import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
@@ -23,35 +26,17 @@ class CreateTweetState extends State<CreateTweet> {
   TextEditingController tweetController = TextEditingController();
   bool isButtonDisabled = true;
   var twtLimit = "500";
-
-  void writeTweets() async {
-    const url =
-        'https://great-resonant-year.glitch.me/query'; // Replace with your API endpoint URL
-
-    final headers = {'Content-Type': 'application/json'};
-    final body = {'query': "select * from tb_UserProfile"};
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: headers,
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      List<dynamic> users = data["data"];
-
-      for (int i = 0; i < users.length; i++) {
-        print(users[i]["Name"]);
-      }
-    }
-  }
+  var img;
 
   @override
   void initState() {
     super.initState();
-
-    // writeTweets();
+    UserData();
+    UserData.getImage().then((value) {
+      setState(() {
+        img = value;
+      });
+    });
 
     tweetController.addListener(updateButtonState);
   }
@@ -136,10 +121,12 @@ class CreateTweetState extends State<CreateTweet> {
                   padding: EdgeInsets.only(top: 12, left: 12, right: 8),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(200)),
-                    child: Image.asset(
-                      "lib\\Assets\\abdu.jpg",
-                      width: 50,
-                    ),
+                    child: img == null
+                        ? Container()
+                        : Image.memory(
+                            img,
+                            width: 50,
+                          ),
                   ),
                 ),
 
@@ -222,24 +209,23 @@ class CreateTweetState extends State<CreateTweet> {
               child: ElevatedButton(
                 onPressed: isButtonDisabled
                     ? null
-                    : () {
-                        String twt = tweetController.text;
-
+                    : () async {
+                        ToasterController toasterController =
+                            ToasterController();
                         ToastMe(
                                 text: "Posting",
                                 type: ToasterType.Loading,
-                                duration: 2000)
+                                controller: toasterController)
                             .showToast(context);
-
-                        Timer(Duration(seconds: 2), () {
+                        String twt = tweetController.text;
+                        query("begin tran declare @temp varchar(10); set @temp = (select concat('T', count(TweetID) + 1) from tb_Tweets); insert into tb_Tweets (TweetID, UserID, Tweet, [Date/Time]) values (@temp, '${UserData.id}', '$twt', GETDATE()) commit")
+                            .then((v) {
+                          toasterController.end();
                           ToastMe(
                                   text: "Posted",
                                   type: ToasterType.Check,
                                   duration: 2000)
                               .showToast(context);
-                          Timer(Duration(seconds: 1), () {
-                            Navigator.pop(context);
-                          });
                         });
                       },
                 style: isButtonDisabled ? disabledStyle : enabledStyle,

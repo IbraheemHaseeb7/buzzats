@@ -27,14 +27,13 @@ class HomeShow extends StatefulWidget {
 class HomeShowState extends State<HomeShow> {
   List<dynamic> tweets = [];
   bool isFetched = false;
-  // late Uint8List image;
   String q =
-      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time] from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID";
+      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time] from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
     Feed.isEmpty().then((value) {
-      if (!value) {
+      if (value) {
         query(q).then((value) {
           setState(() {
             Feed.storeTweets(value);

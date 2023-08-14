@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Query.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:toast_notification/ToasterController.dart';
@@ -85,6 +87,15 @@ class _LoginScreen extends State<LoginScreen> {
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((value) {
+      ToastMe(
+              text: "Welcome, lets get buzzin!!",
+              type: ToasterType.Error,
+              duration: 3000)
+          .showToast(context);
+      query("select * from tb_UserProfile u where u.Email='${emailController.text}'")
+          .then((value) {
+        UserData.storeUser(value);
+      });
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Home()),
@@ -101,32 +112,16 @@ class _LoginScreen extends State<LoginScreen> {
     });
   }
 
-  void fetchUser() async {
-    const url = 'https://great-resonant-year.glitch.me/query';
-
-    final headers = {'Content-Type': 'application/json'};
-    final body = {
-      'query':
-          "select * from [tb_Userprofile] u WHERE u.Email='fa21-bcs-140@cuilahore.edu.pk';"
-    };
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: headers,
-      body: jsonEncode(body),
-    );
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-    } else {}
-
-    // print(data);
-  }
-
   @override
   void initState() {
     super.initState();
-    fetchUser();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override

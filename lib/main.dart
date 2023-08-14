@@ -31,9 +31,9 @@ class Main extends StatelessWidget {
       // home: Society(
       //   society: SocietyData.societies[0],
       // ),
-      // home: auth.currentUser == null ? MyApp() : Home(),
+      home: auth.currentUser == null ? MyApp() : Home(),
 
-      home: Home(), // add your page for quick testing
+      // home: Home(), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),
