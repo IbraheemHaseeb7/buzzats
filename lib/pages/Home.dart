@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Feed.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/HomeDrawer.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyTweet.dart';
@@ -31,6 +33,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int currentPageIndex = 0;
+
   static List<Widget> pages = <Widget>[
     HomeShow(),
     SuggestionPage(),

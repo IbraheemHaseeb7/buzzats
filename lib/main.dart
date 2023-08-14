@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Society.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
@@ -22,6 +23,7 @@ void main() async {
 
 class Main extends StatelessWidget {
   static FirebaseAuth auth = FirebaseAuth.instance;
+  static final localStorage = new FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

@@ -25,18 +25,16 @@ class CommentSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                 
-                  
+              alignment: Alignment.topCenter,
+              child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFF141D26),
                   ),
                   alignment: Alignment.topCenter,
-                  child: TweetWidget(),
-                ),
-              ),
-            
+                  child: Container()
+                  // TweetWidget(),
+                  ),
+            ),
             Expanded(
               child: Container(
                 //height: screenHeight - 300,
@@ -77,7 +75,7 @@ class CommentSection extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                           CommentSkeleton(),
+                            CommentSkeleton(),
                             Reply(),
                             Reply(),
                             Reply(),

@@ -1,106 +1,156 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Feed.dart';
+import 'package:flutter_app_1/Cache/Query.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/Notif.dart';
 import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
 import 'package:flutter_app_1/pages/Notifcations.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import '../CustomWidgets/HomeDrawer.dart';
 import '../CustomWidgets/SocietyTweet.dart';
 import '../CustomWidgets/TweetWidget.dart';
 import 'CreateTweet.dart';
 
-
-class HomeShow extends StatefulWidget{
+class HomeShow extends StatefulWidget {
   @override
   HomeShowState createState() => HomeShowState();
 }
 
-class HomeShowState extends State<HomeShow>{
+class HomeShowState extends State<HomeShow> {
+  List<dynamic> tweets = [];
+  bool isFetched = false;
+  // late Uint8List image;
+  String q =
+      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time] from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID";
 
+  @override
+  void initState() {
+    Feed.isEmpty().then((value) {
+      if (!value) {
+        query(q).then((value) {
+          setState(() {
+            Feed.storeTweets(value);
+            tweets = value;
+            isFetched = true;
+          });
+        });
+      } else {
+        Feed.fetchTweets().then((value) {
+          setState(() {
+            tweets = value;
+            isFetched = true;
+          });
+        });
+      }
+    });
 
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
- double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     bool isSelected = false;
 
-    
     return Scaffold(
-            backgroundColor:Color(0xFF141D26) ,
+      backgroundColor: Color(0xFF141D26),
 
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: Color(0xFF141D26),
         toolbarHeight: 60,
-        
-       
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Color.fromRGBO(150, 183, 223, 1),
         ),
         centerTitle: true,
         title: Text(
           "Buzzats",
-          style: GoogleFonts.dmSans(fontWeight: FontWeight.bold,color: Color.fromRGBO(150, 183, 223, 1) ),
+          style: GoogleFonts.dmSans(
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(150, 183, 223, 1)),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 6),
             child: IconButton(
-                onPressed: (){ 
-                  isSelected = true; 
+                onPressed: () {
+                  isSelected = true;
                   Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Notifications()),
-                      );},
+                    context,
+                    MaterialPageRoute(builder: (context) => Notifications()),
+                  );
+                },
                 icon: Icon(
-                  isSelected==true ? IconlyBold.notification :  IconlyLight.notification,
+                  isSelected == true
+                      ? IconlyBold.notification
+                      : IconlyLight.notification,
                   size: 30,
                   color: Color.fromRGBO(150, 183, 223, 1),
-                  
                 )),
           )
         ],
       ),
 
       body: RefreshIndicator(
-            onRefresh: () async {},
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                
-                  TweetWidget(),
-                  TweetWidget(),
-                 
-                  SocietyTweet(),
-                  SocietyTweet(),
-                  TweetWidget(),
-                  TweetWidget(),
-                  TweetWidget(),
-                ],
-              ),
-            )),
+          onRefresh: () async {
+            return query(q).then((value) {
+              setState(() {
+                Feed.storeTweets(value);
+                tweets = value;
+                isFetched = true;
+              });
+            });
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: isFetched
+                  ? tweets
+                      .map((e) => TweetWidget(
+                          id: e["UserID"],
+                          name: e["Name"],
+                          image: e["image"]["data"],
+                          time: DateTime.parse(e["time"]).day ==
+                                  DateTime.now().day
+                              ? DateTime.parse(e["time"]).hour.toString() +
+                                  ":" +
+                                  DateTime.parse(e["time"]).minute.toString()
+                              : DateTime.parse(e["time"]).day.toString() +
+                                  DateFormat.MMM()
+                                      .format(DateTime.parse(e["time"])),
+                          content: e["Tweet"],
+                          repliesCount: 2,
+                          likesCount: 6))
+                      .toList()
+                  : [
+                      const TweetSkeleton(),
+                      const TweetSkeleton(),
+                      const TweetSkeleton(),
+                    ],
+            ),
+          )),
 
-              //drawer for extra functions like cui portal
+      //drawer for extra functions like cui portal
 
       drawer: HomeDrawer(),
 
-       floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreateTweet()),
-                      );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTweet()),
+          );
         },
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF4137BD),
       ),
-
     );
-
-
   }
-  
 }

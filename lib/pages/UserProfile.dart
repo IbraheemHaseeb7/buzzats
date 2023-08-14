@@ -35,7 +35,6 @@ class UserProfileState extends State<UserProfile> {
     setState(() {});
   }
 
-
   void handleTweet() {
     setState(() {
       tweetButtonColor = const Color.fromARGB(66, 96, 128, 167);
@@ -52,44 +51,36 @@ class UserProfileState extends State<UserProfile> {
     });
   }
 
-
-
   Column generateButtons() {
-
     return Column(
       children: [
         ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context as BuildContext,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditProfile(), // Replace with the screen you want to navigate to
-                                  ),
-                                );
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Color(0xFF5F80A6)),
-                                foregroundColor:
-                                    MaterialStatePropertyAll(Colors.transparent),
-                                fixedSize: MaterialStatePropertyAll(Size(80, 10)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                )),
-                              ),
-                              child: Text(
-                                "Edit",
-                                style: TextStyle(color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
+          onPressed: () {
+            Navigator.push(
+              context as BuildContext,
+              MaterialPageRoute(
+                builder: (context) =>
+                    EditProfile(), // Replace with the screen you want to navigate to
+              ),
+            );
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Color(0xFF5F80A6)),
+            foregroundColor: MaterialStatePropertyAll(Colors.transparent),
+            fixedSize: MaterialStatePropertyAll(Size(80, 10)),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            )),
+          ),
+          child: Text(
+            "Edit",
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +89,10 @@ class UserProfileState extends State<UserProfile> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Abdullah Sajjad"), backgroundColor:Color(0xFF141D26) ,),
+      appBar: AppBar(
+        title: Text("Abdullah Sajjad"),
+        backgroundColor: Color(0xFF141D26),
+      ),
       body: Container(
         width: screenWidth,
         height: screenHeight,
@@ -139,10 +133,9 @@ class UserProfileState extends State<UserProfile> {
                           ],
                         ),
                         SizedBox(height: 8),
-                         Row(
+                        Row(
                           children: [
                             Container(
-                             
                               child: Padding(
                                 padding: EdgeInsets.all(
                                     8.0), // Add padding to create space around the texts
@@ -178,7 +171,6 @@ class UserProfileState extends State<UserProfile> {
                             ),
                             SizedBox(width: 15),
                             Container(
-                           
                               child: Padding(
                                 padding: EdgeInsets.all(
                                     8.0), // Add padding to create space around the texts
@@ -213,8 +205,7 @@ class UserProfileState extends State<UserProfile> {
                             ),
                           ],
                         ),
-                                                SizedBox(height: 8),
-
+                        SizedBox(height: 8),
                         Container(
                           width: screenWidth - 200,
                           child: Text(
@@ -229,7 +220,6 @@ class UserProfileState extends State<UserProfile> {
                         SizedBox(
                           height: 20,
                         ),
-                       
                       ],
                     ),
                     SizedBox(
@@ -246,125 +236,119 @@ class UserProfileState extends State<UserProfile> {
                         ),
                         SizedBox(height: 20),
                         generateButtons()
-                        
-                        
                       ],
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 6),
-              
-                              Padding(
-                                padding: const EdgeInsets.only(bottom:16.0, top: 2,left: 16,right: 16),
-                                child: Container(
-                                  
-                                  padding: EdgeInsets.only(left: 11,top: 4),
-                                  width: screenWidth,
-                                  height: screenHeight-730,
-                                  decoration: BoxDecoration(border: Border(top:BorderSide(color: Colors.grey), bottom:BorderSide(color: Colors.grey))
-                                  
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "About",
-                                        textAlign: TextAlign.left,
-                                        
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
 
-                                      Text(
-                                        "Registration Number: FA21-BCS-082",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                  Text(
-                                    "Batch: Fall 2021",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Semester: 5th",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Department: Computer Science",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                          
-              
+              Padding(
+                padding: const EdgeInsets.only(
+                    bottom: 16.0, top: 2, left: 16, right: 16),
+                child: Container(
+                  padding: EdgeInsets.only(left: 11, top: 4),
+                  width: screenWidth,
+                  height: screenHeight - 730,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          top: BorderSide(color: Colors.grey),
+                          bottom: BorderSide(color: Colors.grey))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "About",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "Registration Number: FA21-BCS-082",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "Batch: Fall 2021",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        "Semester: 5th",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        "Department: Computer Science",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
 
               Container(
                 padding: const EdgeInsets.only(top: 10),
                 width: screenWidth,
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 5,bottom: 20,),
-                    child: Container(
-                      height: 30,
-                      width: screenWidth * 0.3,
-                      child: OutlinedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                tweetButtonColor)),
-                        onPressed: handleTweet,
-                        child: const Text(
-                          "Tweets",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 5,
+                          bottom: 20,
+                        ),
+                        child: Container(
+                          height: 30,
+                          width: screenWidth * 0.3,
+                          child: OutlinedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        tweetButtonColor)),
+                            onPressed: handleTweet,
+                            child: const Text(
+                              "Tweets",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5, bottom: 20),
-                    child: Container(
-                      height: 30,
-                      width: screenWidth * 0.3,
-                      child: OutlinedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                replierButtonColor)),
-                        onPressed: handleReplies,
-                        child: const Text(
-                          "Replies",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
+                      Padding(
+                        padding: EdgeInsets.only(right: 5, bottom: 20),
+                        child: Container(
+                          height: 30,
+                          width: screenWidth * 0.3,
+                          child: OutlinedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        replierButtonColor)),
+                            onPressed: handleReplies,
+                            child: const Text(
+                              "Replies",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  )
-                ]),
+                      )
+                    ]),
               ),
 
               //TWEETS SECTION/ REPLIES SECTION
               Column(
-                children: [
-                  TweetWidget(),
-                  TweetWidget(),
-                  TweetWidget(),
-                  TweetWidget(),
-                  TweetWidget(),
-                  TweetWidget(),
-                  TweetWidget(),
-                ],
+                children: [],
               )
             ],
           ),
