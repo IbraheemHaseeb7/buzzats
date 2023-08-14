@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
+import 'package:http/http.dart' as http;
 
 import 'Home.dart';
 
@@ -71,242 +74,191 @@ class _LoginScreen extends State<LoginScreen> {
     }
   }
 
+  void handleLogin() {
+    final tempController = ToasterController();
+    ToastMe(
+            text: "Validating...",
+            type: ToasterType.Loading,
+            controller: tempController)
+        .showToast(context);
+    Main.auth
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+      tempController.end();
+    }).catchError((error) {
+      tempController.end();
+
+      ToastMe(
+              text: "Wrong emai/password",
+              type: ToasterType.Error,
+              duration: 2000)
+          .showToast(context);
+    });
+  }
+
+  void fetchUser() async {
+    const url = 'https://great-resonant-year.glitch.me/query';
+
+    final headers = {'Content-Type': 'application/json'};
+    final body = {
+      'query':
+          "select * from [tb_Userprofile] u WHERE u.Email='fa21-bcs-140@cuilahore.edu.pk';"
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+    } else {}
+
+    // print(data);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color(0xff141d26),
-        body: Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Align(
-                    alignment: Alignment.center,
-                    child: Image(
-                      image: AssetImage("lib/Assets/Buzz-removebg-preview.jpg"),
-                      height: 65,
-                      width: 246,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 300, 0, 10),
-                    child: Text(
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(color: Color(0xFF141D26)),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Padding(
+                padding: EdgeInsets.only(bottom: 140),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
                       "Login",
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.clip,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 50,
-                        color: Color(0xffffffff),
-                      ),
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto',
+                          color: Color.fromARGB(255, 255, 255, 255)),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Text(
-                      "Welcome back, let's get buzzin...",
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.clip,
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Welcome Back, Let's get Buzzin!!",
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color(0xffa099fc),
-                      ),
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Roboto',
+                          color: Color.fromARGB(255, 255, 255, 255)),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
-                    child: TextFormField(
+                    SizedBox(height: 16),
+                    TextFormField(
+                      style: TextStyle(color: Colors.white),
                       controller: emailController,
-                      onChanged: handleEmail,
-                      obscureText: false,
-                      textAlign: TextAlign.left,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 18,
-                        color: Color(0xffffffff),
-                      ),
+                      onChanged: (text) {
+                        handleEmail(text);
+                      },
                       decoration: InputDecoration(
+                        hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 110, 110, 110)),
+                        hintText: "COMSATS Email Address",
+                        labelStyle: TextStyle(color: Colors.white),
+                        labelText: "Email",
                         disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide: BorderSide(color: emailColor, width: 2),
                         ),
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 15,
-                          color: Color(0xffa099fc),
-                        ),
-                        hintText: "xxxx-xxx-xxx@cuilahore.edu.pk",
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: passwordController,
+                      onChanged: handlePassword,
+                      decoration: InputDecoration(
+                        suffix: SizedBox(
+                            height: 15,
+                            child: IconButton(
+                                padding: EdgeInsets.zero,
+                                color: Colors.white,
+                                icon: const Icon(
+                                  Icons.remove_red_eye_outlined,
+                                  size: 15,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    passObscure = !passObscure;
+                                  });
+                                })),
                         hintStyle: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14,
-                          color: Color.fromARGB(129, 255, 255, 255),
+                            color: const Color.fromARGB(255, 110, 110, 110)),
+                        hintText: "Password",
+                        labelStyle: TextStyle(color: Colors.white),
+                        floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(148, 95, 255, 0.612)),
+                        labelText: "Password",
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide:
+                              BorderSide(color: passwordColor, width: 2),
                         ),
-                        filled: true,
-                        fillColor: Color(0x00ffffff),
-                        isDense: false,
-                        contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                      ),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: passwordController,
-                    onChanged: handlePassword,
-                    obscureText: passObscure,
-                    textAlign: TextAlign.start,
-                    maxLines: 1,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20,
-                      color: Color(0xffffffff),
-                    ),
-                    decoration: InputDecoration(
-                      suffix: SizedBox(
-                          height: 15,
-                          child: IconButton(
-                              padding: EdgeInsets.zero,
-                              color: Colors.white,
-                              icon: const Icon(
-                                Icons.remove_red_eye,
-                                size: 15,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  passObscure = !passObscure;
-                                });
-                              })),
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide: BorderSide(color: passwordColor, width: 2),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide: BorderSide(color: passwordColor, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide: BorderSide(color: passwordColor, width: 2),
-                      ),
-                      labelText: "Password",
-                      labelStyle: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 15,
-                        color: Color(0xffa099fc),
-                      ),
-                      hintText: "••••••••",
-                      hintStyle: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color.fromARGB(129, 255, 255, 255),
-                      ),
-                      filled: true,
-                      fillColor: Color(0x00ffffff),
-                      isDense: false,
-                      contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(60, 30, 0, 30),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotOTP()),
-                          );
-                        },
-                        style: ButtonStyle(
-                          side: MaterialStateProperty.all(
-                            const BorderSide(color: Colors.transparent),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all(Color(0xff141d26)),
-                          minimumSize: MaterialStateProperty.all(Size(20, 20)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide:
+                              BorderSide(color: passwordColor, width: 2),
                         ),
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Color(0xff4137bd)),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide:
+                              BorderSide(color: passwordColor, width: 2),
                         ),
                       ),
+                      obscureText: passObscure,
                     ),
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      final tempController = ToasterController();
-                      ToastMe(
-                              text: "Validating...",
-                              type: ToasterType.Loading,
-                              controller: tempController)
-                          .showToast(context);
-                      MyApp.auth
-                          .signInWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text)
-                          .then((value) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                        );
-                        tempController.end();
-                      }).catchError((error) {
-                        tempController.end();
-
-                        ToastMe(
-                                text: "Wrong emai/password",
-                                type: ToasterType.Error,
-                                duration: 2000)
-                            .showToast(context);
-                      });
-                    },
-                    color: Color(0xff4137bd),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    textColor: Color(0xffffffff),
-                    minWidth: MediaQuery.of(context).size.width,
-                    height: 55,
-                    child: const Text(
-                      "LOGIN",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
+                    const SizedBox(height: 16),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: handleLogin,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(102, 26, 255, 0.612)),
+                        foregroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(255, 255, 255, 1)),
+                        fixedSize: MaterialStateProperty.all(Size(400, 55)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        )),
                       ),
+                      child: const Text("Login"),
                     ),
-                  ),
-                ],
+                  ],
+                )),
+            Positioned(
+              top: 0,
+              child: Image.asset(
+                "lib\\Assets\\Screenshot_2023-07-12_170657-removebg-preview.png",
+                alignment: Alignment.topCenter,
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

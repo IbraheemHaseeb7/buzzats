@@ -144,7 +144,7 @@ class OTPState extends State<OTP> {
                                 text: "Registering you in Buzzats...",
                                 type: ToasterType.Loading)
                             .showToast(context);
-                        MyApp.auth
+                        Main.auth
                             .createUserWithEmailAndPassword(
                                 email: SignupState.emailController.text,
                                 password: SignupState.passwordController.text)

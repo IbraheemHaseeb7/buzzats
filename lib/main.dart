@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Society.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
+import 'package:flutter_app_1/pages/Home.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
+import 'package:flutter_app_1/pages/Society.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -16,19 +20,19 @@ void main() async {
 }
 
 class Main extends StatelessWidget {
+  static FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: MyApp(),
-      home: Signup(
-        nextPage: () {},
-        previousPage: () {},
-      ), // add your page for quick testing
+      home: Society(
+        society: SocietyData.societies[0],
+      ),
+      // home: auth.currentUser == null ? MyApp() : Home(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           colorScheme: ThemeData()
               .colorScheme
-              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612)),
+              .copyWith(primary: const Color.fromRGBO(102, 26, 255, 0.612)),
           hintColor: Colors.white),
     );
   }
@@ -38,7 +42,6 @@ class MyApp extends StatelessWidget {
   final _regex = RegExp(
       r'^[s,f]{1}[a,p]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore.edu.pk$');
   bool isLoggedIn = false;
-  static FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class MyApp extends StatelessWidget {
       body: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+          padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -82,9 +85,9 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 100, 0, 20),
+                  padding: EdgeInsets.fromLTRB(0, 150, 0, 0),
                   child: Text(
-                    "Sign Up",
+                    "Welcome",
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
@@ -109,60 +112,60 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                 ),
-                Stack(
-                  alignment: Alignment.topLeft,
-                  children: [
-                    MaterialButton(
-                      onPressed: () async {},
-                      color: Color(0xffffffff),
-                      elevation: 1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        side: BorderSide(color: Color(0xff4137bd), width: 1),
-                      ),
-                      padding: EdgeInsets.all(16),
-                      textColor: Color.fromARGB(255, 0, 0, 0),
-                      height: 55,
-                      minWidth: MediaQuery.of(context).size.width,
-                      child: const Text(
-                        "          Sign up with Google",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
-                      child: Image(
-                        image: AssetImage("lib\\Assets\\icons8-google-48.png"),
-                        alignment: Alignment.center,
-                        height: 33,
-                        width: 32,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "                      OR                     ",
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color(0xffffffff),
-                      ),
-                    ),
-                  ),
-                ),
+                // Stack(
+                //   alignment: Alignment.topLeft,
+                //   children: [
+                //     MaterialButton(
+                //       onPressed: () async {},
+                //       color: Color(0xffffffff),
+                //       elevation: 1,
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(24.0),
+                //         side: BorderSide(color: Color(0xff4137bd), width: 1),
+                //       ),
+                //       padding: EdgeInsets.all(16),
+                //       textColor: Color.fromARGB(255, 0, 0, 0),
+                //       height: 55,
+                //       minWidth: MediaQuery.of(context).size.width,
+                //       child: const Text(
+                //         "          Sign up with Google",
+                //         textAlign: TextAlign.start,
+                //         style: TextStyle(
+                //           fontSize: 15,
+                //           fontWeight: FontWeight.w500,
+                //           fontStyle: FontStyle.normal,
+                //         ),
+                //       ),
+                //     ),
+                //     const Padding(
+                //       padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
+                //       child: Image(
+                //         image: AssetImage("lib\\Assets\\icons8-google-48.png"),
+                //         alignment: Alignment.center,
+                //         height: 33,
+                //         width: 32,
+                //         fit: BoxFit.cover,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // const Padding(
+                //   padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                //   child: Align(
+                //     alignment: Alignment.center,
+                //     child: Text(
+                //       "                      OR                     ",
+                //       textAlign: TextAlign.start,
+                //       overflow: TextOverflow.clip,
+                //       style: TextStyle(
+                //         fontWeight: FontWeight.w400,
+                //         fontStyle: FontStyle.normal,
+                //         fontSize: 14,
+                //         color: Color(0xffffffff),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Stack(
                   alignment: Alignment.topLeft,
                   children: [

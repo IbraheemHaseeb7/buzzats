@@ -13,7 +13,7 @@ class SocietyTweetImageState extends State<SocietyTweetImage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        ImagePopup(image: Image.asset("lib/assets/bg_tweet.jpeg"))
+        ImagePopup(image: Image.asset("lib/Assets/bg_tweet.jpeg"))
             .openImage(context);
       },
       child: Container(
@@ -24,7 +24,7 @@ class SocietyTweetImageState extends State<SocietyTweetImage> {
           height: 150,
           // margin: const EdgeInsets.only(right: 15),
           child: Image.asset(
-            "lib/assets/bg_tweet.jpeg",
+            "lib/Assets/bg_tweet.jpeg",
             fit: BoxFit.cover,
           )),
     );

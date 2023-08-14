@@ -18,15 +18,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
-
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
-      
-      backgroundColor:Color(0xFF141D26) ,
+      backgroundColor: Color(0xFF141D26),
       appBar: AppBar(
         backgroundColor: Color(0xFF141D26),
         toolbarHeight: 70,
@@ -54,6 +50,7 @@ class Home extends StatelessWidget {
       ),
 
       bottomNavigationBar: Container(
+        height: 70,
         decoration: BoxDecoration(
           color: Color(0xFF141D26),
           border: Border(
@@ -64,7 +61,7 @@ class Home extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 0),
           child: GNav(
             backgroundColor: Color(0xFF141D26),
             color: Color.fromRGBO(150, 183, 223, 1),
@@ -83,11 +80,11 @@ class Home extends StatelessWidget {
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
                 onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SuggestionPage()),
-                      );
-        },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SuggestionPage()),
+                  );
+                },
               ),
               GButton(
                 icon: CupertinoIcons.chat_bubble_fill,
@@ -99,11 +96,11 @@ class Home extends StatelessWidget {
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
                 onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserProfile()),
-                      );
-        },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserProfile()),
+                  );
+                },
               ),
             ],
           ),
@@ -128,16 +125,14 @@ class Home extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreateTweet()),
-                      );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateTweet()),
+          );
         },
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF4137BD),
       ),
-
-
 
       //drawer for extra functions like cui portal
 
@@ -145,31 +140,33 @@ class Home extends StatelessWidget {
     );
   }
 
-
-
   void popUp(BuildContext context) {
-
     showDialog(
       context: context,
-
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Logout'),
           content: Text('Are you sure you want to logout?'),
-
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
-              child: Text('Cancel', style: TextStyle(color: const Color.fromARGB(255, 120, 255, 125)),),
+              child: Text(
+                'Cancel',
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 120, 255, 125)),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 performLogout(context);
               },
-              child: Text('Logout', style: TextStyle(color: const Color.fromARGB(255, 143, 11, 2)),),
+              child: Text(
+                'Logout',
+                style: TextStyle(color: const Color.fromARGB(255, 143, 11, 2)),
+              ),
             ),
           ],
         );
@@ -181,5 +178,4 @@ class Home extends StatelessWidget {
     Navigator.pop(context);
     Fluttertoast.showToast(msg: 'Logged out successfully!');
   }
-
 }

@@ -171,15 +171,15 @@ class SignupState extends State<Signup> {
                         labelStyle: TextStyle(color: Colors.white),
                         labelText: "Email",
                         disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                       ),
@@ -190,6 +190,20 @@ class SignupState extends State<Signup> {
                       controller: passwordController,
                       onChanged: handlePassword,
                       decoration: InputDecoration(
+                        suffix: SizedBox(
+                            height: 15,
+                            child: IconButton(
+                                padding: EdgeInsets.zero,
+                                color: Colors.white,
+                                icon: const Icon(
+                                  Icons.remove_red_eye_outlined,
+                                  size: 15,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    passObscure = !passObscure;
+                                  });
+                                })),
                         hintStyle: TextStyle(
                             color: const Color.fromARGB(255, 110, 110, 110)),
                         hintText: "Password",
@@ -198,22 +212,22 @@ class SignupState extends State<Signup> {
                             color: Color.fromRGBO(148, 95, 255, 0.612)),
                         labelText: "Password",
                         disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide:
                               BorderSide(color: passwordColor, width: 2),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide:
                               BorderSide(color: passwordColor, width: 2),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(50),
                           borderSide:
                               BorderSide(color: passwordColor, width: 2),
                         ),
                       ),
-                      obscureText: true,
+                      obscureText: passObscure,
                     ),
                     SizedBox(height: 16),
                     SizedBox(height: 16),
