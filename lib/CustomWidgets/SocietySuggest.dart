@@ -11,20 +11,21 @@ class _SocietySuggest extends State<SocietySuggest> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
 
     return Row(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        // mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(35, 8, 0, 12), 
             child: Container(
-              margin: EdgeInsets.zero,
               alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               width: screenWidth - 120,
-              height: 123,
+              height: 135,
               decoration: BoxDecoration(
                 color: Color(0xff6080a7).withOpacity(0.3),
                 shape: BoxShape.rectangle,

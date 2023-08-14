@@ -14,16 +14,33 @@ class TweetWidget extends StatefulWidget {
 
 class _TweetWidget extends State<TweetWidget> {
   bool isLiked = false;
+  int likesI=0,repliesI=0;
+  String likesS = "20", repliesS = "7";
 
   void handleLike() {
     setState(() {
       isLiked = !isLiked;
+      if(isLiked==true)
+      {
+      likesI = int.parse(likesS);
+      likesI++;
+      likesS = likesI.toString();
+
+      }
+      else{
+        likesI = int.parse(likesS);
+        likesI--;
+        likesS = likesI.toString();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+
     return GestureDetector(
       //used this so that if a user tap the tweet, it opens a new window showing only this tweet and the comments below
       onTap: () {
@@ -33,14 +50,13 @@ class _TweetWidget extends State<TweetWidget> {
                       );
       },
       child: Container(
+        width: screenWidth,
         decoration: BoxDecoration(
           color: Color(0xFF141D26),
-          // borderRadius: BorderRadius.only(
-          //       bottomLeft: Radius.circular(30),
-          //       bottomRight: Radius.circular(30),
-          //       topLeft: Radius.zero, // Set the top left radius to zero
-          //       topRight: Radius.zero, // Set the top right radius to zero
-          //     ),
+          border: Border(
+                top: BorderSide(color: Colors.grey, width: 0.2),
+                //bottom: BorderSide(color: Colors.grey,width: 0.2)
+              ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -73,7 +89,7 @@ class _TweetWidget extends State<TweetWidget> {
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 17,
-                          fontFamily: 'Roboto',
+                          
                           fontWeight: FontWeight.w900,
                         ),
                       ),
@@ -85,49 +101,75 @@ class _TweetWidget extends State<TweetWidget> {
                           size: 17,
                         ),
                       ),
+
+                      SizedBox(width: screenWidth-310,),
+                                    Text("7:44 pm", style: TextStyle(color: const Color.fromARGB(255, 114, 114, 114), fontSize: 13, fontWeight: FontWeight.w600),),
+                                    
                     ],
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 8.0, right: 8),
                     width: screenWidth - 100,
+                   
                     child: Text(
-                      "haskdhfkjashdkfhashlkahflkashflkashflkhasdfhkasdhflkhsdlkfhaskhflkshflkashfweoerf;afvldhnf;iasdklfcbkfdiufhdslfashdfkhl",
+                      "I believe this app will work and we will be the bestest",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontSize: 15,
-                        fontFamily: 'Roboto',
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 14.0, bottom: 8),
+                    padding: const EdgeInsets.only(top: 14.0, bottom: 6),
                     child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+
                       children: [
                         Row(
+                          
                           children: [
-                            IconButton(
-                              onPressed: handleLike,
-                              icon: Icon(
-                                !isLiked
-                                    ? CupertinoIcons.heart
-                                    : CupertinoIcons.heart_fill,
-                                color: !isLiked ? Colors.white : Colors.red,
-                              ),
-                              color: Colors.white,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  onPressed: handleLike,
+                                  icon: Icon(
+                                    !isLiked
+                                        ? CupertinoIcons.heart
+                                        : CupertinoIcons.heart_fill,
+                                    color: !isLiked ? Colors.white : Colors.red,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                 Text(
+                              likesS,    //likessss
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
                             ),
-                            IconButton(
-                              onPressed: (){
-                                showModalBottomSheet(
-                                  backgroundColor:  Colors.transparent,
-                                  context: context,
-                                   builder: (context)=> Replying()
-                                   );
-                                   },
-                              icon: Icon(
-                                CupertinoIcons.arrow_counterclockwise,
-                                color: Colors.white,
-                              ),
-                              color: Colors.white,
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: (){
+                                    showModalBottomSheet(
+                                      backgroundColor:  Colors.transparent,
+                                      context: context,
+                                       builder: (context)=> Replying()
+                                       );
+                                       },
+                                  icon: Icon(
+                                    CupertinoIcons.arrow_counterclockwise,
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                Text(
+                              repliesS,      //repliessssss
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                              ],
                             ),
                             IconButton(
                               onPressed: null,
@@ -139,26 +181,8 @@ class _TweetWidget extends State<TweetWidget> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "20 likes",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "4 replies",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                          ],
-                        ),
+                       
+                       
                       ],
                     ),
                   )

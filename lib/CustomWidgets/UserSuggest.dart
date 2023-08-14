@@ -11,14 +11,15 @@ class _UserSuggest extends State<UserSuggest> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Stack(
       children: [ 
         Container(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        
+        padding: EdgeInsets.only(bottom: 3,top: 3),
         width: screenWidth,
-        height: 120,
+        height: 140,
         decoration: BoxDecoration(
           color: Color(0x00474747),
           shape: BoxShape.rectangle,
@@ -33,6 +34,7 @@ class _UserSuggest extends State<UserSuggest> {
             Padding(
               padding: EdgeInsets.fromLTRB(20, 3, 20, 0),
               child: Container(
+                padding: EdgeInsets.only(bottom: 4,top: 4),
                 height: 90,
                 width: 70,
                 clipBehavior: Clip.antiAlias,
@@ -54,12 +56,13 @@ class _UserSuggest extends State<UserSuggest> {
                     padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
                     child: Text(
                       "Musa Raza",
+
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.clip,
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: Color(0xffffffff),
                       ),
                     ),

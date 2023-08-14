@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/CustomWidgets/Notifcations.dart';
+import 'package:flutter_app_1/pages/Notifcations.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
+import 'package:flutter_app_1/pages/ChatIn.dart';
+import 'package:flutter_app_1/pages/ChatsHome.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
@@ -14,6 +16,8 @@ import 'package:flutter_app_1/pages/SearchedUser.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'CustomWidgets/UserChat.dart';
 import 'CustomWidgets/Notif.dart';
 import 'firebase_options.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -28,16 +32,21 @@ void main() async {
 }
 
 class Main extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
+final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       //home: MyApp(),
-      home: Notifications(), // add your page for quick testing
+      home: Home(), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
+        textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),
           colorScheme: ThemeData()
               .colorScheme
-              .copyWith(primary: Color.fromRGBO(102, 26, 255, 0.612)),
+              .copyWith(primary: Color(0xff141d26)),
           hintColor: Colors.white),
     );
   }
