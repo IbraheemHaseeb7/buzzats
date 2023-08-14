@@ -1,99 +1,258 @@
 
 
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/CUonline.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iconly/iconly.dart';
+import 'package:line_icons/line_icon.dart';
+import 'package:line_icons/line_icons.dart';
 
-class HomeDrawer{
+class HomeDrawer extends StatelessWidget{
 
-  FractionallySizedBox drawerr(){
-     return  FractionallySizedBox(
+ 
+  
+  
+  @override
+  Widget build(BuildContext context) {
+      double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+
+
+
+      return  FractionallySizedBox(
         widthFactor: 0.8,
         child: Drawer(
+          
           child: Container(
+            height: screenHeight-400,
             alignment: Alignment.center,
             color: Color(0xFF141D26),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(17),
+              borderRadius: BorderRadius.circular(30),
               child: ListView(
                 // ignore: prefer_const_literals_to_create_immutables
                 
                 children: [
                   DrawerHeader(
-                      decoration: BoxDecoration(color: Colors.deepPurple),
-                      padding: EdgeInsets.zero,
-                      child: UserAccountsDrawerHeader(
-                        margin: EdgeInsets.zero,
-                        accountName: Text("abdullah"),
-                        accountEmail: Text("fa21-bcs-082@gmail.com"),
-                        currentAccountPicture: CircleAvatar(
-                          backgroundImage: AssetImage("lib\\Assets\\abdu.jpg"),
-                        ),
-                      )),
-                  SizedBox(height: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: ListTile(
-                          leading: FractionalTranslation(
-                            translation: Offset(0.6, 0.5),
-                            child: Icon(
-                              CupertinoIcons.person_2,
-                              color: Colors.white,
+                    
+                        
+                        
+                      padding: EdgeInsets.only(left: 6),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15,left: 15),
+                        child: Container(
+                          
+                        decoration: BoxDecoration(
+                          
+                          border: Border(
+                           
+                            bottom: BorderSide(color: Colors.white)
+                          )
+                          ),
+                          child: UserAccountsDrawerHeader(
+                            margin: EdgeInsets.zero,
+                            accountName: Text("abdullah"),
+                            accountEmail: Text("fa21-bcs-082@gmail.com"),
+                            currentAccountPicture: CircleAvatar(
+                              backgroundImage: AssetImage("lib\\Assets\\abdu.jpg"),
+                              
                             ),
                           ),
-                          title: FractionalTranslation(
-                            translation: Offset(0.1, 0.5),
-                            child: Text(
-                              "CU Online",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-
-                          onTap:
-                              null, //this is the on pressed property of the list tile
                         ),
                       ),
-                    ],
-                  ),
+                      
+                      ),
+                      
                   SizedBox(height: 16),
-                  Column(
+                
+                  Padding(
+                    padding: const EdgeInsets.only(right: 9,left: 9),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: ListTile(
-                          leading: FractionalTranslation(
-                            translation: Offset(0.6, 0.5),
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.white,
-                            ),
-                          ),
-                          title: FractionalTranslation(
-                            translation: Offset(0.1, 0.5),
-                            child: Text(
-                              "Events",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
+                      mainAxisAlignment: MainAxisAlignment.center
+                      ,
+                      children: [
+                        ListTile(
+                            leading: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Icon(
+                                LineIcons.alternateUser,
                                 color: Colors.white,
-                                fontSize: 18,
                               ),
                             ),
+                            title: FractionalTranslation(
+                              translation: Offset(0.1, 0.51),
+                              child: Text(
+                                "CU Online",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                  
+                            onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CUonline()),
+                      );
+                    },
+                              //this is the on pressed property of the list tile
                           ),
-
-                          onTap:
-                              null, //this is the on pressed property of the list tile
-                        ),
-                      ),
-                    ],
+                      
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 550),
+                   SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 9,left: 9),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: ListTile(
+                            leading: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Icon(
+                                IconlyLight.time_circle,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Text(
+                                "Timetable",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                  
+                            onTap:
+                                null, //this is the on pressed property of the list tile
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                   SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 9,left: 9),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: ListTile(
+                            leading: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Icon(
+                                Icons.door_back_door_outlined,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Text(
+                                "Empty Rooms",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                  
+                            onTap:
+                                null, //this is the on pressed property of the list tile
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 9,left: 9),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: ListTile(
+                            leading: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Icon(
+                                LineIcons.peopleCarry,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Text(
+                                "Society",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                  
+                            onTap:
+                                null, //this is the on pressed property of the list tile
+                          ),
+                        ),
+                       
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 9,left: 9),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: ListTile(
+                            leading: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Icon(
+                                IconlyLight.category,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Text(
+                                "About Us",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                  
+                            onTap:
+                                null, //this is the on pressed property of the list tile
+                          ),
+                        ),
+                       
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: screenHeight-400),
                   Center(
                     child: Container(
                       width: 250,
@@ -112,7 +271,7 @@ class HomeDrawer{
                         leading: FractionalTranslation(
                           translation: Offset(0.6, 0.0),
                           child: Icon(
-                            Icons.logout,
+                            IconlyLight.logout,
                             color: Color.fromARGB(255, 255, 255, 255),
                           ),
                         ),
@@ -134,12 +293,14 @@ class HomeDrawer{
                       ),
                     ),
                   ),
+                
                 ],
               ),
             ),
           ),
         ),
      );
+  
   }
 
 }

@@ -8,13 +8,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 // Import for iOS features.
 // import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-void main() {
-  runApp(CUonline());
-}
+
 
 class CUonline extends StatefulWidget {
-  const CUonline({Key? key}) : super(key: key);
-
+   
   @override
   State<CUonline> createState() => _CUonlineState();
 }

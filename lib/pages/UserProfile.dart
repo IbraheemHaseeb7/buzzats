@@ -2,7 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
+import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
 class UserProfile extends StatefulWidget {
@@ -16,6 +18,23 @@ class UserProfileState extends State<UserProfile> {
   Color tweetButtonColor = const Color.fromARGB(66, 96, 128, 167);
   Color replierButtonColor = const Color(0xff141D26);
   bool isTweetsDisplayed = true;
+
+  // Add a GlobalKey to the RefreshIndicator
+  final GlobalKey<RefreshIndicatorState> _refreshPeopleKey =
+      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshSocietyKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  Future<void> _handlePeopleRefresh() async {
+    // After refreshing the data, call setState to rebuild the UI if needed.
+    setState(() {});
+  }
+
+  Future<void> _handleSocietyRefresh() async {
+    // After refreshing the data, call setState to rebuild the UI if needed.
+    setState(() {});
+  }
+
 
   void handleTweet() {
     setState(() {
@@ -79,6 +98,7 @@ class UserProfileState extends State<UserProfile> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(title: Text("Abdullah Sajjad"), backgroundColor:Color(0xFF141D26) ,),
       body: Container(
         width: screenWidth,
         height: screenHeight,
@@ -119,27 +139,10 @@ class UserProfileState extends State<UserProfile> {
                           ],
                         ),
                         SizedBox(height: 8),
-                        Container(
-                          width: screenWidth - 200,
-                          child: Text(
-                            "I told you long ago, wanna roll, i will kill you for god sake I told you long ago, wanna roll, i will kill you for god sake",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white.withOpacity(0.6),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
+                         Row(
                           children: [
                             Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                border: Border.all(color: Colors.white),
-                              ),
+                             
                               child: Padding(
                                 padding: EdgeInsets.all(
                                     8.0), // Add padding to create space around the texts
@@ -175,10 +178,7 @@ class UserProfileState extends State<UserProfile> {
                             ),
                             SizedBox(width: 15),
                             Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0),
-                                border: Border.all(color: Colors.white),
-                              ),
+                           
                               child: Padding(
                                 padding: EdgeInsets.all(
                                     8.0), // Add padding to create space around the texts
@@ -212,7 +212,24 @@ class UserProfileState extends State<UserProfile> {
                               ),
                             ),
                           ],
-                        )
+                        ),
+                                                SizedBox(height: 8),
+
+                        Container(
+                          width: screenWidth - 200,
+                          child: Text(
+                            "I told you long ago, wanna roll, i will kill you for god sake I told you long ago, wanna roll, i will kill you for god sake",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white.withOpacity(0.6),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                       
                       ],
                     ),
                     SizedBox(
@@ -236,73 +253,72 @@ class UserProfileState extends State<UserProfile> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Card(
-                      color: Color(0xFF5F80A6),
-                      shape: RoundedRectangleBorder(
-                        // Set the shape property to a RoundedRectangleBorder
-                        borderRadius: BorderRadius.circular(
-                            16), // Set your desired corner radius
-                      ),
-                      child: ExpansionTile(
-                        title: Text(
-                          "More details",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        leading: Icon(
-                          CupertinoIcons.app,
-                          color: Colors.white,
-                        ),
-                        backgroundColor: Color(0xFF4137BD),
-                        children: [
-                          Column(
-                            // Wrap the children with a Column
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment
-                                .start, // Align children to the left
-                            children: [
-                              Text(
-                                "Registration Number: FA21-BCS-082",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Colors.white,
+              SizedBox(height: 6),
+              
+                              Padding(
+                                padding: const EdgeInsets.only(bottom:16.0, top: 2,left: 16,right: 16),
+                                child: Container(
+                                  
+                                  padding: EdgeInsets.only(left: 11,top: 4),
+                                  width: screenWidth,
+                                  height: screenHeight-730,
+                                  decoration: BoxDecoration(border: Border(top:BorderSide(color: Colors.grey), bottom:BorderSide(color: Colors.grey))
+                                  
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "About",
+                                        textAlign: TextAlign.left,
+                                        
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+
+                                      Text(
+                                        "Registration Number: FA21-BCS-082",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                  Text(
+                                    "Batch: Fall 2021",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Semester: 5th",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Department: Computer Science",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Text(
-                                "Batch: Fall 2021",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                "Semester: 5th",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                "Department: Computer Science",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(color: Colors.white),
-                              ),
                               SizedBox(height: 10),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )),
-              ),
+                          
+              
 
               Container(
-                margin: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 10),
                 width: screenWidth,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 5,bottom: 5),
+                    padding: EdgeInsets.only(left: 5,bottom: 20,),
                     child: Container(
                       height: 30,
                       width: screenWidth * 0.3,
@@ -319,7 +335,7 @@ class UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 5, bottom: 5),
+                    padding: EdgeInsets.only(right: 5, bottom: 20),
                     child: Container(
                       height: 30,
                       width: screenWidth * 0.3,
@@ -349,7 +365,7 @@ class UserProfileState extends State<UserProfile> {
                   TweetWidget(),
                   TweetWidget(),
                 ],
-              ),
+              )
             ],
           ),
         ),

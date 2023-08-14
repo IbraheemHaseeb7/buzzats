@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Society.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -23,16 +24,19 @@ class Main extends StatelessWidget {
   static FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      home: Society(
-        society: SocietyData.societies[0],
-      ),
+      // home: Society(
+      //   society: SocietyData.societies[0],
+      // ),
       // home: auth.currentUser == null ? MyApp() : Home(),
+
+      home: Home(), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
-          colorScheme: ThemeData()
-              .colorScheme
-              .copyWith(primary: const Color.fromRGBO(102, 26, 255, 0.612)),
+          textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),
+          colorScheme:
+              ThemeData().colorScheme.copyWith(primary: Color(0xff141d26)),
           hintColor: Colors.white),
     );
   }

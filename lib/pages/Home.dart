@@ -8,135 +8,115 @@ import 'package:flutter_app_1/CustomWidgets/HomeDrawer.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyTweet.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
+import 'package:flutter_app_1/pages/ChatsHome.dart';
 import 'package:flutter_app_1/pages/CreateTweet.dart';
+import 'package:flutter_app_1/pages/HomeShow.dart';
 import 'package:flutter_app_1/pages/Logout.dart';
+import 'package:flutter_app_1/pages/Society.dart';
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
-class Home extends StatelessWidget {
+import '../Skeletons/UserSkeleton.dart';
+
+class Home extends StatefulWidget {
+  @override
+  HomeState createState() => HomeState();
+}
+
+class HomeState extends State<Home> {
+  int currentPageIndex = 0;
+  static List<Widget> pages = <Widget>[
+    HomeShow(),
+    SuggestionPage(),
+    ChatsHome(),
+    UserProfile()
+  ];
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF141D26),
-        toolbarHeight: 70,
-        elevation: 5.0,
-        iconTheme: IconThemeData(
-          color: Color.fromRGBO(150, 183, 223, 1),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Buzzats",
-          style: TextStyle(
-            color: Color.fromRGBO(150, 183, 223, 1),
-            fontSize: 24,
-          ),
-        ),
-        actions: [
-          IconButton(
-              onPressed: null,
-              icon: Icon(
-                CupertinoIcons.bell,
-                size: 30,
-                color: Color.fromRGBO(150, 183, 223, 1),
-              ))
-        ],
-      ),
-
       bottomNavigationBar: Container(
-        height: 70,
+        height: 80,
+        width: screenWidth,
         decoration: BoxDecoration(
           color: Color(0xFF141D26),
           border: Border(
             top: BorderSide(
-              color: Color.fromRGBO(150, 183, 223, 1),
-              width: 1.0,
+              color: Color.fromRGBO(72, 72, 72, 1),
+              width: 0.5,
             ),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 0),
+          padding: const EdgeInsets.only(bottom: 3),
           child: GNav(
             backgroundColor: Color(0xFF141D26),
             color: Color.fromRGBO(150, 183, 223, 1),
             activeColor: Color(0xFF4137BD),
             tabBackgroundColor: Color(0xFF4137BD),
             rippleColor: Color(0xFF4137BD),
-            gap: 8,
+            gap: 6,
             tabs: [
               GButton(
-                icon: Icons.home,
+                icon:
+                    currentPageIndex == 0 ? IconlyBold.home : IconlyLight.home,
                 iconSize: 35.0,
                 backgroundColor: Color(0xFF141D26),
-              ),
-              GButton(
-                icon: Icons.search_outlined,
-                backgroundColor: Color(0xFF141D26),
-                iconSize: 35.0,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SuggestionPage()),
-                  );
+                  setState(() {
+                    currentPageIndex = 0;
+                  });
                 },
               ),
               GButton(
-                icon: CupertinoIcons.chat_bubble_fill,
+                icon: IconlyLight.search,
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
               ),
               GButton(
-                icon: CupertinoIcons.profile_circled,
+                icon:
+                    currentPageIndex == 2 ? IconlyBold.chat : IconlyLight.chat,
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserProfile()),
-                  );
+                  setState(() {
+                    currentPageIndex = 2;
+                  });
+                },
+              ),
+              GButton(
+                icon: currentPageIndex == 3
+                    ? IconlyBold.profile
+                    : IconlyLight.profile,
+                backgroundColor: Color(0xFF141D26),
+                iconSize: 35.0,
+                onPressed: () {
+                  setState(() {
+                    currentPageIndex = 3;
+                  });
                 },
               ),
             ],
+            selectedIndex: currentPageIndex,
+            onTabChange: (index) {
+              setState(() {
+                currentPageIndex = index;
+              });
+            },
           ),
         ),
       ),
-
-      body: RefreshIndicator(
-          onRefresh: () async {},
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TweetWidget(),
-                TweetWidget(),
-                SocietyTweet(),
-                SocietyTweet(),
-                TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
-              ],
-            ),
-          )),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateTweet()),
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF4137BD),
-      ),
-
-      //drawer for extra functions like cui portal
-
-      drawer: HomeDrawer().drawerr(),
+      body: pages.elementAt(currentPageIndex),
     );
   }
 

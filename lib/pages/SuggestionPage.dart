@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietySuggest.dart';
 import 'package:flutter_app_1/CustomWidgets/UserSuggest.dart';
+import 'package:flutter_app_1/Skeletons/SuggestSocSkel.dart';
+import 'package:flutter_app_1/Skeletons/SuggestUserSkel.dart';
+import 'package:iconly/iconly.dart';
 
 void main() {
   runApp(SuggestionPage());
@@ -41,7 +44,9 @@ class _SuggestionPage  extends State<SuggestionPage > {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
+        
         backgroundColor: Color(0xff141d26),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -86,25 +91,25 @@ class _SuggestionPage  extends State<SuggestionPage > {
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
                                 fontSize: 17,
-                                color: Color.fromARGB(255, 173, 173, 173),
+                                color:   Color(0x2C4054),
                               ),
                               filled: true,
                               fillColor: Color(0x20ffffff),
                               isDense: true,
                               contentPadding: EdgeInsets.fromLTRB(40, 4, 12, 4), // Adjust left padding here
-                              prefixIcon: Icon(Icons.search,
-                                  color:  Color.fromARGB(255, 173, 173, 173), size: 23),
+                              prefixIcon: Icon(IconlyLight.search,
+                                  color:  Color.fromARGB(255, 129, 126, 126), size: 23),
                             ),
                           ),
                         ),
                       ),
 
                 Padding(
-                  padding: EdgeInsets.only(top:15,left: 4,right: 4), // Add padding to separate the Icon from TextField
+                  padding: EdgeInsets.only(top:17,left: 4,right: 5), // Add padding to separate the Icon from TextField
                   child: Icon(
-                    Icons.filter_list, // Replace with the desired icon
+                    IconlyLight.filter, // Replace with the desired icon
                     color: Colors.white,
-                    size: 34,
+                    size: 27,
                   ),
                 ),
               ],
@@ -115,7 +120,7 @@ class _SuggestionPage  extends State<SuggestionPage > {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 35,bottom: 10,right: 10,left: 10),
+                  padding: EdgeInsets.only(top: 35,bottom: 10,right: 10,left: 14),
                   child: Align(
                     alignment: Alignment(-0.9, 0.0),
                     child: Text(
@@ -215,16 +220,10 @@ class _SuggestionPage  extends State<SuggestionPage > {
                   onRefresh: _handlePeopleRefresh,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
-                        UserSuggest(),
+                        
                         UserSuggest(),
                         UserSuggest(),
                         UserSuggest(),
@@ -251,6 +250,7 @@ class _SuggestionPage  extends State<SuggestionPage > {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SocietySuggest(),
+                        SuggestSocSkel(),
                         SocietySuggest(),
                         SocietySuggest(),
                         SocietySuggest(),

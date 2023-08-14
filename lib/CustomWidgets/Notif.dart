@@ -2,11 +2,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+
+
+enum Types{
+  Connect,
+  Like,
+  Comment,
+  View,
+  
+}
+
+
+
 class Notif extends StatelessWidget {
 
   Notif({required this.type});
 
-  String type;
+  Types type;
   
 
   @override
@@ -18,7 +31,7 @@ class Notif extends StatelessWidget {
   
      padding: EdgeInsets.only(top: 15,bottom: 15, left: 10, right: 10 ),
         decoration: BoxDecoration(
-          color:Color.fromARGB(255, 33, 47, 61),
+          color:Color(0xFF141D26),
         ),
         
       child: Row(
@@ -47,11 +60,11 @@ class Notif extends StatelessWidget {
       padding: EdgeInsets.only(right: 13),  
       child: Text(
         
-        type == 'like'
+        type == Types.Like
             ? "Username liked this post"
-            : type == 'comment'
+            : type == Types.Comment
                 ? "Username commented: so sus brother. IEEE is the best in town."
-               : type == 'connect'? "Username requested the connection"
+               : type == Types.Connect? "Username requested the connection"
                : "Username viewed your profile",
                  // Add more cases if needed
         style: TextStyle(color: Colors.white, fontSize: 14),
@@ -67,19 +80,19 @@ class Notif extends StatelessWidget {
              child: Stack(
               alignment: Alignment.bottomLeft,
                children: [
-                type != 'follow' &&  type!='view' ?
+                type != Types.Connect &&  type!=Types.View ?
                  ClipRRect(
                                   borderRadius: BorderRadius.all(Radius.circular(5)),
                                   child: Image.asset(
                                     "lib\\Assets\\ieee.jpg",
                                     width: 37,
                                   ),
-                                ): type == 'follow' ? ElevatedButton(
+                                ): type == Types.Connect ? ElevatedButton(
         onPressed: null,
-        child: Text("Connect" , style: TextStyle(color: Colors.white),),
+        child: Text("Accept" , style: TextStyle(color: Colors.white),),
         style: ElevatedButton.styleFrom(backgroundColor: Colors.blue,foregroundColor: Colors.blue),
         
-      ): type == 'view' ? chooseIcon(type):
+      ): type == Types.View ? chooseIcon(type):
       Container(),
                               
                               Container(
@@ -110,21 +123,21 @@ class Notif extends StatelessWidget {
 
 
 
-  Widget chooseIcon(String type) {
+  Widget chooseIcon(Types type) {
   switch (type) {
-    case 'like':
+    case Types.Like:
       return Icon(
         Icons.favorite,
         color: Colors.red,
         size: 20,
       );
-    case 'comment':
+    case Types.Comment:
       return Icon(
         Icons.comment,
         color: Colors.blue,
         size: 20,
       );
-    case 'view':
+    case Types.View:
       return Icon(
         CupertinoIcons.eye,
         color: Colors.white,

@@ -118,7 +118,7 @@ class _AssignRolesState extends State<AssignRoles> {
                                     icon: const Icon(Icons.delete),
                                     iconSize: 18,
                                     onPressed: () {
-                                      handleDeleteRole(widget.society["id"]);
+                                      // handleDeleteRole(aliases["id"]);
                                     },
                                   ),
                                 ]),

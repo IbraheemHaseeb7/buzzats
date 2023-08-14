@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyTweetImage.dart';
 
+import 'Replying.dart';
+
 class SocietyTweet extends StatefulWidget {
   SocietyTweet({super.key});
 
@@ -53,38 +55,51 @@ class _SocietyTweet extends State<SocietyTweet> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Abdullah Sajjad",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          fontSize: 17,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w900,
+                  Container(
+                    width: screenWidth - 120,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Abdullah Sajjad",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontSize: 17,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.white,
+                                size: 17,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8),
-                        child: Icon(
-                          Icons.verified,
-                          color: Colors.white,
-                          size: 17,
+                        Text(
+                          "7:44 pm",
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 114, 114, 114),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 8.0, right: 8),
                     width: screenWidth - 100,
                     child: Text(
-                      "haskdhfkjashdkahsdjfhlkajshdfklhakdhfklahsdcbahebclkhagsdufasdbfiuahewfbalshgfduiawelfkhasiudfhisadfiwgeflbasfhiwenfaueiwgfljsadhflashdfkljasdkhfjfhash",
+                      "Do you believe i captured this one?",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontSize: 15,
-                        fontFamily: 'Roboto',
                       ),
                     ),
                   ),
@@ -107,23 +122,47 @@ class _SocietyTweet extends State<SocietyTweet> {
                       children: [
                         Row(
                           children: [
-                            IconButton(
-                              onPressed: handleLike,
-                              icon: Icon(
-                                !isLiked
-                                    ? CupertinoIcons.heart
-                                    : CupertinoIcons.heart_fill,
-                                color: !isLiked ? Colors.white : Colors.red,
-                              ),
-                              color: Colors.white,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  onPressed: handleLike,
+                                  icon: Icon(
+                                    !isLiked
+                                        ? CupertinoIcons.heart
+                                        : CupertinoIcons.heart_fill,
+                                    color: !isLiked ? Colors.white : Colors.red,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "20",
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12),
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              onPressed: null,
-                              icon: Icon(
-                                CupertinoIcons.arrow_counterclockwise,
-                                color: Colors.white,
-                              ),
-                              color: Colors.white,
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) => Replying());
+                                  },
+                                  icon: Icon(
+                                    CupertinoIcons.arrow_counterclockwise,
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "4 ",
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12),
+                                ),
+                              ],
                             ),
                             IconButton(
                               onPressed: null,
@@ -132,23 +171,6 @@ class _SocietyTweet extends State<SocietyTweet> {
                                 color: Colors.white,
                               ),
                               color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "20 likes",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "4 replies",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
                             ),
                           ],
                         ),
