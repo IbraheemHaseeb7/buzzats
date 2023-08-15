@@ -1,78 +1,38 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/CustomWidgets/Replying.dart';
-import 'package:flutter_app_1/pages/CommentSection.dart';
+import 'package:flutter_app_1/CustomWidgets/SocietyTweetImage.dart';
 
+import 'Replying.dart';
 
-class TweetWidget extends StatefulWidget {
-  String name, time, content, id;
-  int likesCount, repliesCount;
-  var image;
+class SocietyTweet extends StatefulWidget {
+  SocietyTweet({super.key});
 
-  TweetWidget(
-      {super.key,
-      required this.name,
-      required this.id,
-      required this.image,
-      required this.time,
-      required this.content,
-      required this.repliesCount,
-      required this.likesCount,
-    }
-    );
-
- 
   @override
-  _TweetWidget createState() => _TweetWidget();
+  _SocietyTweet createState() => _SocietyTweet();
 }
 
-class _TweetWidget extends State<TweetWidget> {
+class _SocietyTweet extends State<SocietyTweet> {
   bool isLiked = false;
-  var imageBytes;
-
-  @override
-  void initState() {
-    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
-    super.initState();
-  }
 
   void handleLike() {
     setState(() {
       isLiked = !isLiked;
-      if (isLiked == true) {
-        ++widget.likesCount;
-      } else {
-        --widget.likesCount;
-      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return GestureDetector(
       //used this so that if a user tap the tweet, it opens a new window showing only this tweet and the comments below
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CommentSection()),
-        );
-      },
+      onTap: () {},
       child: Container(
         width: screenWidth,
         decoration: BoxDecoration(
-          color: Color(0xFF141D26),
-          border: Border(
-            top: BorderSide(color: Colors.grey, width: 0.2),
-            //bottom: BorderSide(color: Colors.grey,width: 0.2)
-          ),
-        ),
+            color: Color(0xFF141D26),
+            border: Border(bottom: BorderSide(color: const Color(0xff6080A7)))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,15 +41,10 @@ class _TweetWidget extends State<TweetWidget> {
               padding: EdgeInsets.only(top: 12, left: 12, right: 8),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(200)),
-                child: widget.image == null
-                    ? Image.asset(
-                        "lib/Assets/profile.jpg",
-                        width: 50,
-                      )
-                    : Image.memory(
-                        imageBytes,
-                        width: 50,
-                      ),
+                child: Image.asset(
+                  "lib\\Assets\\abdu.jpg",
+                  width: 50,
+                ),
               ),
             ),
 
@@ -109,33 +64,26 @@ class _TweetWidget extends State<TweetWidget> {
                         Row(
                           children: [
                             Text(
-                              widget.name,
+                              "Abdullah Sajjad",
                               style: TextStyle(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 fontSize: 17,
+                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
-                            (() {
-                              switch (widget.id) {
-                                case "fa21bcs052":
-                                case "fa21bcs140":
-                                case "fa21bcs082":
-                                  return Padding(
-                                      padding: EdgeInsets.only(left: 8),
-                                      child: Icon(
-                                        Icons.verified,
-                                        color: Colors.white,
-                                        size: 17,
-                                      ));
-                                default:
-                                  return Container();
-                              }
-                            })(),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Icon(
+                                Icons.verified,
+                                color: Colors.white,
+                                size: 17,
+                              ),
+                            ),
                           ],
                         ),
                         Text(
-                          widget.time,
+                          "7:44 pm",
                           style: TextStyle(
                               color: const Color.fromARGB(255, 114, 114, 114),
                               fontSize: 13,
@@ -148,17 +96,29 @@ class _TweetWidget extends State<TweetWidget> {
                     padding: const EdgeInsets.only(top: 8.0, right: 8),
                     width: screenWidth - 100,
                     child: Text(
-                      widget.content,
+                      "Do you believe i captured this one?",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontSize: 15,
                       ),
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    width: screenWidth - 100,
+                    height: 150, // Set the desired height of the container
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        SocietyTweetImage(),
+                        SocietyTweetImage(),
+                        SocietyTweetImage(),
+                      ],
+                    ),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 14.0, bottom: 6),
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(
                           children: [
@@ -166,10 +126,7 @@ class _TweetWidget extends State<TweetWidget> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 IconButton(
-                                  // onPressed: handleLike,
-                                  onPressed: () {
-                                    handleLike();
-                                  },
+                                  onPressed: handleLike,
                                   icon: Icon(
                                     !isLiked
                                         ? CupertinoIcons.heart
@@ -179,7 +136,7 @@ class _TweetWidget extends State<TweetWidget> {
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  widget.likesCount.toString(), //likessss
+                                  "20",
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 12),
                                 ),
@@ -201,7 +158,7 @@ class _TweetWidget extends State<TweetWidget> {
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  widget.repliesCount.toString(), //repliessssss
+                                  "4 ",
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 12),
                                 ),

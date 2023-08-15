@@ -97,15 +97,15 @@ class Home extends StatelessWidget {
           onRefresh: () async {},
           child: SingleChildScrollView(
             child: Column(
-              children: [
-                TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
-                TweetWidget(),
-              ],
+              // children: [
+              //   TweetWidget(),
+              //   TweetWidget(),
+              //   TweetWidget(),
+              //   TweetWidget(),
+              //   TweetWidget(),
+              //   TweetWidget(),
+              //   TweetWidget(),
+              // ],
             ),
           )),
 

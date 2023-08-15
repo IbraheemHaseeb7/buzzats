@@ -41,6 +41,7 @@ class _CUonlineState extends State<CUonline> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {

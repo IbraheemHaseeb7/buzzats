@@ -1,6 +1,25 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
+String name = "abc";
+String batch = "abc";
+int semester = 0;
+String department = "abc";
+String bio = "abc";
+Uint8List? bytes;
+
 class UserSuggest extends StatefulWidget {
+  void getData(String nameRec, int semesterRec, String departmentRec,
+      String batchRec, String bioRec, Uint8List? bytesRec) {
+    name = nameRec;
+    semester = semesterRec;
+    department = departmentRec;
+    batch = batchRec;
+    bio = bioRec;
+    bytes = bytesRec;
+  }
+
   const UserSuggest({super.key});
 
   @override
@@ -12,18 +31,17 @@ class _UserSuggest extends State<UserSuggest> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Stack(
-      children: [ 
-        Container(
+    return Stack(children: [
+      Container(
         margin: EdgeInsets.zero,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         width: screenWidth,
         height: 120,
         decoration: BoxDecoration(
-          color: Color(0x00474747),
+          color: const Color(0x00474747),
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.zero,
-          border: Border.all(color: Color(0xff6080a7), width: 1),
+          border: Border.all(color: const Color(0xff6080a7), width: 1),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -31,32 +49,33 @@ class _UserSuggest extends State<UserSuggest> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 3, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 3, 20, 0),
               child: Container(
                 height: 90,
                 width: 70,
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),
-                child: Image.asset("lib\\Assets\\musaimage.png",
-                    fit: BoxFit.cover),
+                child: bytes != null
+              ? Image.memory(bytes!, width: 200, height: 200)
+              : CircularProgressIndicator(),
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+              padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
                     child: Text(
-                      "Musa Raza",
+                      name,
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
@@ -65,12 +84,12 @@ class _UserSuggest extends State<UserSuggest> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                     child: Text(
-                      "Department: Computer Science",
+                      "Department: $department",
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
@@ -79,18 +98,18 @@ class _UserSuggest extends State<UserSuggest> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 2),
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFF6080A7),
+                        color: const Color(0xFF6080A7),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      padding: EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(4),
                       child: Text(
-                        "Semester: 5",
+                        "Semester: $semester",
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.clip,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
@@ -100,18 +119,18 @@ class _UserSuggest extends State<UserSuggest> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFF6080A7),
+                        color: const Color(0xFF6080A7),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      padding: EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(4),
                       child: Text(
-                        "Batch: Fall 2021",
+                        "Batch: $batch",
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.clip,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
