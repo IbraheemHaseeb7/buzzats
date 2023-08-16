@@ -1,109 +1,71 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
-
 import '../Cache/Query.dart';
 import '../Cache/UserProfile.dart';
 
 class TweetWidget extends StatefulWidget {
-  String name, time, content, id,twtId;
-  int likesCount, repliesCount;
-  var image;
-  TweetWidget(
-      {super.key,
-      required this.name,
-      required this.twtId,
-      required this.id,
-      required this.image,
-      required this.time,
-      required this.content,
-      required this.repliesCount,
-      required this.likesCount});
+ String name, time, content, id, twtId;
+ int likesCount, repliesCount;
+ bool? liked = false;
+   var image;
+
+  TweetWidget({
+    Key? key,
+    this.liked,
+    required this.name,
+    required this.twtId,
+    required this.id,
+    required this.image,
+    required this.time,
+    required this.content,
+    required this.repliesCount,
+    required this.likesCount,
+  }) : super(key: key);
 
   @override
-  _TweetWidget createState() => _TweetWidget();
+  _TweetWidgetState createState() => _TweetWidgetState();
 }
 
-class _TweetWidget extends State<TweetWidget> {
-
+class _TweetWidgetState extends State<TweetWidget> {
   bool isLiked = false;
   var imageBytes;
 
-
   @override
   void initState() {
-    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    //isLiked = widget.liked!;
     super.initState();
+    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+     // Check if the user has already liked the tweet
   }
 
-   @override
-  void dispose() {
-    
-    super.dispose();
-  }
+  
 
-  //void handleLike() {
+  void handleLike() async {
+    int likes = widget.likesCount;
 
- //String l = "INSERT INTO tb_Like  VALUES (${widget.twtId}, ${UserData.id}, GETDATE())";
-// setState(() {
-//   isLiked = !isLiked;
-//   if (isLiked) {
-//     query(l).then((value) {
-//       setState(() {
-//         widget.likesCount++; // Update likesCount after query completes
-//       });
-//     });
-//   } else {
-//     // Handle unliking if needed
-//   }
-// }); }
+    setState(() {
+      isLiked = !isLiked;
+    });
 
- 
-void handleLike() {
-  int likes = widget.likesCount;
-
-
-  setState(() {
-    isLiked = !isLiked;
-     });
-
+    String queryStatement;
     if (isLiked) {
-      query(
-        "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())",
-      ).then((value) {
-       
-         setState(() {
-          ++likes; // Update likesCount after query completes
-           
-         });
-     
-      });
+      queryStatement =
+          "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())";
+      ++likes;
+    } else {
+      queryStatement =
+          "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${widget.id}'";
+      --likes;
     }
-    else{
-      query("delete from tb_Like where TweetID = '${widget.twtId}' and UserID = '${widget.id}'",).
-      then((value){
-       
-         setState(() {
-          --likes; // Update likesCount after query completes
-           
-         });
-     
 
-      });
+    await query(queryStatement);
 
-
-    }
-    // Add handling for unliking if needed
- 
- 
-
-        widget.likesCount = likes;
-
+    setState(() {
+      widget.likesCount = likes;
+    });
   }
 
   @override
@@ -112,11 +74,10 @@ void handleLike() {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
-      //used this so that if a user tap the tweet, it opens a new window showing only this tweet and the comments below
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CommentSection(twtId: widget.twtId,)),
+          MaterialPageRoute(builder: (context) => CommentSection(twtId: widget.twtId)),
         );
       },
       child: Container(
@@ -125,7 +86,6 @@ void handleLike() {
           color: Color(0xFF141D26),
           border: Border(
             top: BorderSide(color: Colors.grey, width: 0.2),
-            //bottom: BorderSide(color: Colors.grey,width: 0.2)
           ),
         ),
         child: Row(
@@ -147,8 +107,6 @@ void handleLike() {
                       ),
               ),
             ),
-
-            //the username is wrapped in a column as we need a tweet just aligned below the username
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -223,17 +181,14 @@ void handleLike() {
                                 IconButton(
                                   onPressed: handleLike,
                                   icon: Icon(
-                                    !isLiked
-                                        ? CupertinoIcons.heart
-                                        : CupertinoIcons.heart_fill,
-                                    color: !isLiked ? Colors.white : Colors.red,
+                                    isLiked ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                                    color: isLiked ? Colors.red : Colors.white,
                                   ),
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  widget.likesCount.toString(), //likessss
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
+                                  widget.likesCount.toString(),
+                                  style: TextStyle(color: Colors.grey, fontSize: 12),
                                 ),
                               ],
                             ),
@@ -244,7 +199,7 @@ void handleLike() {
                                     showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         context: context,
-                                        builder: (context) => Replying(twtId: widget.twtId,)) as PersistentBottomSheetController;
+                                        builder: (context) => Replying(twtId: widget.twtId));
                                   },
                                   icon: Icon(
                                     CupertinoIcons.arrow_counterclockwise,
@@ -253,9 +208,8 @@ void handleLike() {
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  widget.repliesCount.toString(), //repliessssss
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
+                                  widget.repliesCount.toString(),
+                                  style: TextStyle(color: Colors.grey, fontSize: 12),
                                 ),
                               ],
                             ),

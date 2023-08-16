@@ -35,6 +35,7 @@ class HomeShowState extends State<HomeShow> {
 
   @override
   void initState() {
+  //  checkLiked();
     Feed.isEmpty().then((value) {
       if (value) {
         query(q).then((value) {
@@ -55,6 +56,20 @@ class HomeShowState extends State<HomeShow> {
     });
    
     super.initState();
+  }
+
+
+
+
+void checkLiked() async {
+    String check =
+        "SELECT * FROM tb_Like t WHERE t.UserID = '${UserData.id}'";
+
+    List result = await query(check);
+
+    setState(() {
+      liked = result.isNotEmpty;
+    });
   }
 
   @override
@@ -115,6 +130,7 @@ class HomeShowState extends State<HomeShow> {
             child: Column(
               children: isFetched
                   ? tweets.map((e) => TweetWidget(
+                             // liked: liked,
                               twtId: e["TweetID"], // Fetching the TweetID from the API response
                               id: e["UserID"] ?? "",
                               name: e["Name"] ?? "",

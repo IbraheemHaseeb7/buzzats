@@ -4,66 +4,19 @@ import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/CommentSkeleton.dart';
 import 'package:intl/intl.dart';
-
-import '../Cache/Comments.dart';
 import '../Cache/Query.dart';
 
+class CommentSection extends StatelessWidget {
+  final String twtId;
 
-class CommentSection extends StatefulWidget {
-  String twtId;
-
-  CommentSection(
-    {
-      super.key,
-      required this.twtId,
-      });
-
-  @override
-  CommentState createState() => CommentState();
-}
-
-class CommentState extends State<CommentSection> {
-
-  List<dynamic> comments = [];
-  bool isFetched = false;
-
-
-  
-  @override
-  void initState() {
-  String q = "select id.UserID, Image as [image], id.[Name],reply.TweetID,reply.Comment,reply.[Date/Time] as [time] from tb_UserProfile id inner join tb_Comment reply on id.UserID = reply.UserID where TweetID = '${widget.twtId}' order by [time] desc";
-
-    Comments.isEmpty().then((value) {
-      if (value) {
-        query(q).then((value) {
-          setState(() {
-            Comments.storeReplies(value);
-            comments = value;
-            isFetched = true;
-          });
-        });
-      } else {
-        Comments.fetchReplies().then((value) {
-          setState(() {
-            comments = value;
-            isFetched = true;
-          });
-        });
-      }
-    });
-   
-    super.initState();
-  }
-
-
-
+  CommentSection({
+    required this.twtId,
+  });
 
   @override
   Widget build(BuildContext context) {
-
-  String q = "select id.UserID, Image as [image], id.[Name],reply.TweetID,reply.Comment,reply.[Date/Time] as [time] from tb_UserProfile id inner join tb_Comment reply on id.UserID = reply.UserID where TweetID = '${widget.twtId}' order by [time] desc";
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+    String q =
+        "select id.UserID, Image as [image], id.[Name],reply.TweetID,reply.Comment,reply.[Date/Time] as [time] from tb_UserProfile id inner join tb_Comment reply on id.UserID = reply.UserID where TweetID = '$twtId' order by [time] desc";
 
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
@@ -82,18 +35,17 @@ class CommentState extends State<CommentSection> {
             Align(
               alignment: Alignment.topCenter,
               child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF141D26),
-                  ),
-                  alignment: Alignment.topCenter,
-                  child: Container()
-                  // TweetWidget(),
-                  ),
+                decoration: BoxDecoration(
+                  color: Color(0xFF141D26),
+                ),
+                alignment: Alignment.topCenter,
+                child: Container(),
+                // TweetWidget(),
+              ),
             ),
             Expanded(
               child: Container(
-                //height: screenHeight - 300,
-                width: screenWidth,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 33, 47, 61),
                   borderRadius: BorderRadius.only(
@@ -127,52 +79,57 @@ class CommentState extends State<CommentSection> {
                     ),
                     SizedBox(height: 14),
                     Expanded(
-                      child:RefreshIndicator(
-          onRefresh: () async {
-            return query(q).then((value) {
-              setState(() {
-                Comments.storeReplies(value);
-               comments = value;
-                isFetched = true;
-              });
-            });
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              children:comments.map((e) => Reply(
-                              twtId: e["TweetID"], // Fetching the TweetID from the API response
-                              id: e["UserID"] ?? "",
-                              name: e["Name"] ?? "",
-                              image: e["image"] != null ? e["image"]["data"] : "",
-                              time: DateTime.parse(e["time"]).day ==
-                                  DateTime.now().day
-                              ? DateTime.parse(e["time"]).hour.toString() +
-                                  ":" +
-                                  DateTime.parse(e["time"]).minute.toString()
-                              : DateTime.parse(e["time"]).day.toString() +
-                                  DateFormat.MMM()
-                                      .format(DateTime.parse(e["time"])),
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          // Fetch new comments here if needed
+                        },
+                        child: FutureBuilder<List<dynamic>>(
+                          future: query(q),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error fetching data');
+                            } else if (snapshot.hasData) {
+                              List<dynamic> comments = snapshot.data!;
 
-                                content: e["Comment"] ?? "",
-                               
-                              )).toList(),
-
-
-                  // : [
-                  //     CommentSkeleton(),
-                  //     CommentSkeleton(),
-                  //     CommentSkeleton(),
-                  //     CommentSkeleton(),
-                  //     CommentSkeleton(),
-                  //     CommentSkeleton(),
-                  //   ],
-            ),
-          )
-                    ),
-
+                              return SingleChildScrollView(
+                                child: Column(
+                                  children: comments.map((e) => Reply(
+                                        twtId: e["TweetID"],
+                                        id: e["UserID"] ?? "",
+                                        name: e["Name"] ?? "",
+                                        image: e["image"] != null
+                                            ? e["image"]["data"]
+                                            : "",
+                                        time: DateTime.parse(e["time"])
+                                                    .day ==
+                                                DateTime.now().day
+                                            ? DateTime.parse(e["time"])
+                                                    .hour
+                                                    .toString() +
+                                                ":" +
+                                                DateTime.parse(e["time"])
+                                                    .minute
+                                                    .toString()
+                                            : DateTime.parse(e["time"])
+                                                    .day
+                                                    .toString() +
+                                                DateFormat.MMM().format(
+                                                    DateTime.parse(e["time"])),
+                                        content: e["Comment"] ?? "",
+                                      )).toList(),
+                                ),
+                              );
+                            } else {
+                              return Text('No data available');
+                            }
+                          },
+                        ),
+                      ),
                     ),
                   ],
-              
                 ),
               ),
             ),
