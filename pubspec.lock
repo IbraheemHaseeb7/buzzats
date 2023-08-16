@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  azblob:
+    dependency: "direct main"
+    description:
+      name: azblob
+      sha256: "7992d01ed05c0712b6f70a5b177ab309ae4fea398a67a334f88f029f97b68012"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -753,10 +761,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: f2add6fa510d3ae152903412227bda57d0d5a8da61d2c39c1fb022c9429a41c0
+      sha256: "5a751eddf9db89b3e5f9d50c20ab8612296e4e8db69009788d6c8b060a84191c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.6"
+    version: "4.1.4"
   xdg_directories:
     dependency: transitive
     description:

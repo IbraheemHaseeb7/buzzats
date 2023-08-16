@@ -25,7 +25,7 @@ class OTPState extends State<OTP> {
   bool isPinEntered = false;
   @override
   Widget build(BuildContext context) {
-    // sendOTP();
+    //sendOTP();
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
