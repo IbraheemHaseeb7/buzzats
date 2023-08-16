@@ -10,11 +10,11 @@ class Feed {
   }
 
   static Future<List<dynamic>> fetchTweets() async {
-    return jsonDecode(await Main.localStorage.read(key: "tweets") ?? "");
+    return jsonDecode(await Main.localStorage.read(key: "tweets") ?? "[]");
   }
 
   static Future<dynamic> isEmpty() async {
-    var temp = jsonDecode(await Main.localStorage.read(key: "tweets") ?? "");
+    var temp = jsonDecode(await Main.localStorage.read(key: "tweets") ?? "[]");
     return temp == "" || temp!.length == 0;
   }
 }

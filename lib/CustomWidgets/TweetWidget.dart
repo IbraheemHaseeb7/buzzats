@@ -7,13 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
 
+import '../Cache/Query.dart';
+import '../Cache/UserProfile.dart';
+
 class TweetWidget extends StatefulWidget {
-  String name, time, content, id;
+  String name, time, content, id,twtId;
   int likesCount, repliesCount;
   var image;
   TweetWidget(
       {super.key,
       required this.name,
+      required this.twtId,
       required this.id,
       required this.image,
       required this.time,
@@ -26,8 +30,10 @@ class TweetWidget extends StatefulWidget {
 }
 
 class _TweetWidget extends State<TweetWidget> {
+
   bool isLiked = false;
   var imageBytes;
+
 
   @override
   void initState() {
@@ -35,15 +41,69 @@ class _TweetWidget extends State<TweetWidget> {
     super.initState();
   }
 
-  void handleLike() {
-    setState(() {
-      isLiked = !isLiked;
-      if (isLiked == true) {
-        ++widget.likesCount;
-      } else {
-        --widget.likesCount;
-      }
-    });
+   @override
+  void dispose() {
+    
+    super.dispose();
+  }
+
+  //void handleLike() {
+
+ //String l = "INSERT INTO tb_Like  VALUES (${widget.twtId}, ${UserData.id}, GETDATE())";
+// setState(() {
+//   isLiked = !isLiked;
+//   if (isLiked) {
+//     query(l).then((value) {
+//       setState(() {
+//         widget.likesCount++; // Update likesCount after query completes
+//       });
+//     });
+//   } else {
+//     // Handle unliking if needed
+//   }
+// }); }
+
+ 
+void handleLike() {
+  int likes = widget.likesCount;
+
+
+  setState(() {
+    isLiked = !isLiked;
+     });
+
+    if (isLiked) {
+      query(
+        "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())",
+      ).then((value) {
+       
+         setState(() {
+          ++likes; // Update likesCount after query completes
+           
+         });
+     
+      });
+    }
+    else{
+      query("delete from tb_Like where TweetID = '${widget.twtId}' and UserID = '${widget.id}'",).
+      then((value){
+       
+         setState(() {
+          --likes; // Update likesCount after query completes
+           
+         });
+     
+
+      });
+
+
+    }
+    // Add handling for unliking if needed
+ 
+ 
+
+        widget.likesCount = likes;
+
   }
 
   @override
@@ -56,7 +116,7 @@ class _TweetWidget extends State<TweetWidget> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CommentSection()),
+          MaterialPageRoute(builder: (context) => CommentSection(twtId: widget.twtId,)),
         );
       },
       child: Container(
@@ -184,7 +244,7 @@ class _TweetWidget extends State<TweetWidget> {
                                     showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         context: context,
-                                        builder: (context) => Replying());
+                                        builder: (context) => Replying(twtId: widget.twtId,)) as PersistentBottomSheetController;
                                   },
                                   icon: Icon(
                                     CupertinoIcons.arrow_counterclockwise,

@@ -3,17 +3,33 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
+import '../Cache/Query.dart';
+import '../Cache/UserProfile.dart';
+import 'Imagepicker.dart';
+
 class Replying extends StatefulWidget {
-  const Replying({super.key});
+   String twtId;
+   PersistentBottomSheetController? bottomsheet;
+  Replying(
+    {
+      super.key,
+      required this.twtId,
+      this.bottomsheet
+      });
 
   @override
   ReplyingState createState() => ReplyingState();
 }
 
 class ReplyingState extends State<Replying> {
+
+ 
+  TextEditingController cmnt = TextEditingController();
+
 
   final enabledStyle = TextStyle(
               fontSize: 15,
@@ -31,6 +47,26 @@ class ReplyingState extends State<Replying> {
 
 
   
+  @override
+  void initState() {
+    UserData();
+    super.initState();
+    cmnt.addListener(updateButtonState);
+  
+  }
+   void updateButtonState() {
+    setState(() {
+      isEmpty = cmnt.text.isEmpty;
+    });
+  }
+
+  @override
+  void dispose(){
+    cmnt.dispose();
+    cmnt.removeListener(updateButtonState);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -65,7 +101,7 @@ class ReplyingState extends State<Replying> {
         Container(
           padding: const EdgeInsets.only(top: 10),
           child: TextFormField(
-            
+            controller: cmnt,
             style: const TextStyle(color: Colors.white),
             keyboardType: TextInputType.multiline,
             maxLines: null,
@@ -83,27 +119,28 @@ class ReplyingState extends State<Replying> {
 
 
 
-                onTap: isEmpty ? null : (){
-                  
-                  ToastMe(
-                              text: "Posting",
-                              type: ToasterType.Loading,
-                              duration: 2000)
-                          .showToast(context);
-                          
-                          Timer(Duration(seconds: 2), () {
-                            ToastMe(
+                onTap: isEmpty ? null : () async {
+                        ToasterController toasterController =
+                            ToasterController();
+                        ToastMe(
+                                text: "Posting",
+                                type: ToasterType.Loading,
+                                controller: toasterController)
+                            .showToast(context);
+                        String twt = cmnt.text;
+                        print(twt);
+                        print(UserData.id);
+                        print(widget.twtId);
+                        query("insert into tb_Comment values (' ${widget.twtId}' ,'${UserData.id}', '$twt', GETDATE())")
+                            .then((v) {
+                          toasterController.end();
+                          ToastMe(
                                   text: "Posted",
                                   type: ToasterType.Check,
                                   duration: 2000)
                               .showToast(context);
-                              Timer(Duration(seconds: 1), () {
-                          
-                            Navigator.pop(context);
-                          });
-                       
-                      });
-                  },
+                        });
+                      },
               ),
 
               hintStyle: const TextStyle(

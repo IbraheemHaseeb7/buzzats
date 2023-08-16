@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import '../Cache/Likes.dart';
 import '../CustomWidgets/HomeDrawer.dart';
 import '../CustomWidgets/SocietyTweet.dart';
 import '../CustomWidgets/TweetWidget.dart';
@@ -26,9 +27,11 @@ class HomeShow extends StatefulWidget {
 
 class HomeShowState extends State<HomeShow> {
   List<dynamic> tweets = [];
+  List<dynamic> likes = [];
   bool isFetched = false;
+  bool liked = false;
   String q =
-      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time] from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
+      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.UserID) from tb_Like t where t.TweetID = twt.TweetID ) as likes ,(select count(c.UserID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
@@ -50,7 +53,7 @@ class HomeShowState extends State<HomeShow> {
         });
       }
     });
-
+   
     super.initState();
   }
 
@@ -111,12 +114,12 @@ class HomeShowState extends State<HomeShow> {
           child: SingleChildScrollView(
             child: Column(
               children: isFetched
-                  ? tweets
-                      .map((e) => TweetWidget(
-                          id: e["UserID"],
-                          name: e["Name"],
-                          image: e["image"]["data"],
-                          time: DateTime.parse(e["time"]).day ==
+                  ? tweets.map((e) => TweetWidget(
+                              twtId: e["TweetID"], // Fetching the TweetID from the API response
+                              id: e["UserID"] ?? "",
+                              name: e["Name"] ?? "",
+                              image: e["image"] != null ? e["image"]["data"] : "",
+                              time: DateTime.parse(e["time"]).day ==
                                   DateTime.now().day
                               ? DateTime.parse(e["time"]).hour.toString() +
                                   ":" +
@@ -124,10 +127,13 @@ class HomeShowState extends State<HomeShow> {
                               : DateTime.parse(e["time"]).day.toString() +
                                   DateFormat.MMM()
                                       .format(DateTime.parse(e["time"])),
-                          content: e["Tweet"],
-                          repliesCount: 2,
-                          likesCount: 6))
-                      .toList()
+
+                                content: e["Tweet"] ?? "",
+                                repliesCount: e["replies"] ?? 0,
+                                likesCount: e["likes"] ?? 0,
+                              )).toList()
+
+
                   : [
                       const TweetSkeleton(),
                       const TweetSkeleton(),
