@@ -152,7 +152,7 @@ class CreateTweetState extends State<CreateTweet> {
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
-                      counterText: "$twtLimit character left",
+                      counterText: "$twtLimit characters left",
                       hintStyle: const TextStyle(
                           color: Color.fromARGB(255, 110, 110, 110)),
                       hintText: "What's buzzin'?",
