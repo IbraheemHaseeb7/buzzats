@@ -149,7 +149,7 @@ class _SocietyTweet extends State<SocietyTweet> {
                                     showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         context: context,
-                                        builder: (context) => Replying());
+                                        builder: (context) => Replying(twtId: "",));
                                   },
                                   icon: Icon(
                                     CupertinoIcons.arrow_counterclockwise,

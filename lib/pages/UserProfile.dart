@@ -1,14 +1,28 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
+import '../Cache/query.dart';
+import 'package:intl/intl.dart';
+
+String userID = "";
+String email = "";
+Uint8List? bytes;
+String bio = "";
+String name = "Buzzats User";
+String department = "";
+String departmentRec = "";
+int semester = 0;
+String regNo = "";
+String batch = "";
 
 class UserProfile extends StatefulWidget {
-  UserProfile({super.key});
+  bool myself;
+  UserProfile({super.key, required this.myself});
 
   @override
   createState() => UserProfileState();
@@ -19,20 +33,86 @@ class UserProfileState extends State<UserProfile> {
   Color replierButtonColor = const Color(0xff141D26);
   bool isTweetsDisplayed = true;
 
-  // Add a GlobalKey to the RefreshIndicator
   final GlobalKey<RefreshIndicatorState> _refreshPeopleKey =
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<RefreshIndicatorState> _refreshSocietyKey =
       GlobalKey<RefreshIndicatorState>();
 
   Future<void> _handlePeopleRefresh() async {
-    // After refreshing the data, call setState to rebuild the UI if needed.
     setState(() {});
   }
 
   Future<void> _handleSocietyRefresh() async {
-    // After refreshing the data, call setState to rebuild the UI if needed.
     setState(() {});
+  }
+
+  List<dynamic> tweets = [];
+  bool isFetched = false;
+  int connections = 0;
+
+  String q1 =
+      "SELECT id.UserID, id.[Name], id.Image AS [image], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
+
+  String q2 =
+      "select count(FriendUserID) As 'connections' from tb_Friends where UserID='$userID'";
+
+  String q3 = "select * from [tb_Userprofile] u WHERE u.userID='$userID'";
+
+  @override
+  void initState() {
+    if (widget.myself) {
+      UserData();
+      UserData.fetchUser().then((value) {
+        setState(() {
+          name = value[0]["Name"];
+          userID = value[0]["UserID"];
+          bytes = Uint8List.fromList(List<int>.from(value[0]["Image"]["data"]));
+          bio = value[0]["BIO"];
+          regNo =
+              "${value[0]["UserID"].toString().substring(0, 4)}-${value[0]["UserID"].toString().substring(4, 7)}-${value[0]["UserID"].toString().substring(7, 10)}";
+          batch = value[0]["UserID"].toString().substring(0, 4);
+          semester = value[0]["Semester"];
+          department = value[0]["UserID"].toString().substring(4, 7);
+        });
+      });
+    } else {
+      loadData();
+    }
+  }
+
+  Future<void> loadData() async {
+    try {
+      final tweetsValue = await query(q1);
+      final connectionsValue = await query(q2);
+      final users = await query(q3);
+      Map<String, dynamic> userConnections = connectionsValue[0];
+      Map<String, dynamic> userData = users[0];
+      final imageBuffer = userData['Image']['data'];
+      final imageBytes = Uint8List.fromList(
+          List<int>.from(imageBuffer.map((dynamic element) => element as int)));
+
+      setState(() {
+        tweets = tweetsValue;
+        connections = userConnections["connections"];
+        isFetched = true;
+
+        userID = userData["UserID"];
+        email = userData["Email"];
+        name = userData["Name"];
+        department = userData["Department"] ?? "Unknown";
+        semester = userData["Semester"] ?? "Unknown";
+        bio = userData["BIO"] ?? "Unknown";
+        bytes = imageBytes;
+
+        batch = email!.substring(0, 4);
+        batch = batch!.toUpperCase();
+
+        regNo = email!.substring(0, 12);
+        regNo = regNo!.toUpperCase();
+      });
+    } catch (error) {
+      print("Error: $error");
+    }
   }
 
   void handleTweet() {
@@ -57,7 +137,7 @@ class UserProfileState extends State<UserProfile> {
         ElevatedButton(
           onPressed: () {
             Navigator.push(
-              context as BuildContext,
+              context,
               MaterialPageRoute(
                 builder: (context) =>
                     EditProfile(), // Replace with the screen you want to navigate to
@@ -65,14 +145,14 @@ class UserProfileState extends State<UserProfile> {
             );
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Color(0xFF5F80A6)),
-            foregroundColor: MaterialStatePropertyAll(Colors.transparent),
-            fixedSize: MaterialStatePropertyAll(Size(80, 10)),
+            backgroundColor: const MaterialStatePropertyAll(Color(0xFF5F80A6)),
+            foregroundColor: const MaterialStatePropertyAll(Colors.transparent),
+            fixedSize: const MaterialStatePropertyAll(Size(80, 10)),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             )),
           ),
-          child: Text(
+          child: const Text(
             "Edit",
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
@@ -88,270 +168,297 @@ class UserProfileState extends State<UserProfile> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Abdullah Sajjad"),
-      //   backgroundColor: Color(0xFF141D26),
-      // ),
-      body: Container(
-        padding: const EdgeInsets.only(top: 50),
-        width: screenWidth,
-        height: screenHeight,
-        decoration: BoxDecoration(color: Color(0xFF141D26)),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 25, top: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Abdullah Sajjad',
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          // title: Text("$name"),
+          backgroundColor: const Color(0xFF141D26),
+        ),
+        body: Container(
+          width: screenWidth,
+          height: screenHeight,
+          decoration: const BoxDecoration(color: Color(0xFF141D26)),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25, top: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: screenWidth * 0.4,
+                                child: Text(
+                                  "$name",
+                                  textAlign: TextAlign.left,
+                                  maxLines: null,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              const Icon(Icons.verified_rounded,
+                                  color: Colors.blue)
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(
+                                      5.0), // Add padding to create space around the texts
+
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "$connections",
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          height:
+                                              4), // Add some space between the texts
+                                      const Text(
+                                        "Connections",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Container(
+                                child: const Padding(
+                                  padding: EdgeInsets.all(
+                                      8.0), // Add padding to create space around the texts
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "7",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          height:
+                                              4), // Add some space between the texts
+                                      Text(
+                                        "Mutuals",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            width: screenWidth - 200,
+                            child: Text(
+                              "$bio",
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.white.withOpacity(0.6),
                               ),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Icon(Icons.verified_rounded, color: Colors.blue)
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Container(
-                              child: Padding(
-                                padding: EdgeInsets.all(
-                                    8.0), // Add padding to create space around the texts
-
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "200",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        height:
-                                            4), // Add some space between the texts
-                                    Text(
-                                      "Connections",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 15),
-                            Container(
-                              child: Padding(
-                                padding: EdgeInsets.all(
-                                    8.0), // Add padding to create space around the texts
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "7",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        height:
-                                            4), // Add some space between the texts
-                                    Text(
-                                      "Mutuals",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Container(
-                          width: screenWidth - 200,
-                          child: Text(
-                            "I told you long ago, wanna roll, i will kill you for god sake I told you long ago, wanna roll, i will kill you for god sake",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white.withOpacity(0.6),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 60,
-                    ),
-                    Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(200)),
-                          child: Image.asset(
-                            "lib\\Assets\\abdu.jpg",
-                            width: 90,
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        generateButtons()
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 6),
-
-              Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 16.0, top: 2, left: 16, right: 16),
-                child: Container(
-                  padding: EdgeInsets.only(left: 11, top: 4),
-                  width: screenWidth,
-                  height: screenHeight - 730,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          top: BorderSide(color: Colors.grey),
-                          bottom: BorderSide(color: Colors.grey))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "About",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+                        ],
                       ),
-                      Text(
-                        "Registration Number: FA21-BCS-082",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                      const SizedBox(
+                        width: 60,
                       ),
-                      Text(
-                        "Batch: Fall 2021",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        "Semester: 5th",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        "Department: Computer Science",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
+                      Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(200)),
+                            child: bytes != null
+                                ? Image.memory(bytes!, width: 90)
+                                : const CircularProgressIndicator(),
+                          ),
+                          const SizedBox(height: 20),
+                          generateButtons()
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-
-              Container(
-                padding: const EdgeInsets.only(top: 10),
-                width: screenWidth,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 5,
-                          bottom: 20,
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 16.0, top: 2, left: 16, right: 16),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 11, top: 4),
+                    width: screenWidth,
+                    height: screenHeight - 730,
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            top: BorderSide(color: Colors.grey),
+                            bottom: BorderSide(color: Colors.grey))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "About",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
-                        child: Container(
-                          height: 30,
-                          width: screenWidth * 0.3,
-                          child: OutlinedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        tweetButtonColor)),
-                            onPressed: handleTweet,
-                            child: const Text(
-                              "Tweets",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
+                        Text(
+                          "Registration Number: $regNo",
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "Batch: $batch",
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          "Semester: $semester",
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          "Department: $department",
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: screenWidth,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 5,
+                            bottom: 20,
+                          ),
+                          child: SizedBox(
+                            height: 30,
+                            width: screenWidth * 0.3,
+                            child: OutlinedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          tweetButtonColor)),
+                              onPressed: handleTweet,
+                              child: const Text(
+                                "Tweets",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 5, bottom: 20),
-                        child: Container(
-                          height: 30,
-                          width: screenWidth * 0.3,
-                          child: OutlinedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        replierButtonColor)),
-                            onPressed: handleReplies,
-                            child: const Text(
-                              "Replies",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, bottom: 20),
+                          child: SizedBox(
+                            height: 30,
+                            width: screenWidth * 0.3,
+                            child: OutlinedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          replierButtonColor)),
+                              onPressed: handleReplies,
+                              child: const Text(
+                                "Replies",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ]),
-              ),
-
-              //TWEETS SECTION/ REPLIES SECTION
-              Column(
-                children: [],
-              )
-            ],
+                        )
+                      ]),
+                ),
+                Column(
+                  children: isFetched
+                      ? tweets
+                          .map((e) => TweetWidget(
+                              twtId: e["TweetID"],
+                              id: "fa21bcs140",
+                              name: e["Name"],
+                              image: e["image"]["data"],
+                              time: DateTime.parse(e["time"]).day ==
+                                      DateTime.now().day
+                                  ? DateTime.parse(e["time"]).hour.toString() +
+                                      ":" +
+                                      DateTime.parse(e["time"])
+                                          .minute
+                                          .toString()
+                                  : DateTime.parse(e["time"]).day.toString() +
+                                      DateFormat.MMM()
+                                          .format(DateTime.parse(e["time"])),
+                              content: e["Tweet"],
+                              repliesCount: 2,
+                              likesCount: 6))
+                          .toList()
+                      : [
+                          const TweetSkeleton(),
+                          const TweetSkeleton(),
+                          const TweetSkeleton(),
+                        ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

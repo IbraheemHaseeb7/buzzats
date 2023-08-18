@@ -10,6 +10,7 @@ import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:flutter_app_1/pages/Rooms.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Society.dart';
+import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
@@ -35,7 +36,9 @@ class Main extends StatelessWidget {
       // ),
       home: auth.currentUser == null ? MyApp() : Home(),
 
-      // home: Rooms(), // add your page for quick testing
+      // home: UserProfile(
+      //   myself: true,
+      // ), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),

@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import '../Cache/Likes.dart';
 import '../CustomWidgets/HomeDrawer.dart';
 import '../CustomWidgets/SocietyTweet.dart';
 import '../CustomWidgets/TweetWidget.dart';
@@ -26,12 +27,15 @@ class HomeShow extends StatefulWidget {
 
 class HomeShowState extends State<HomeShow> {
   List<dynamic> tweets = [];
+  List<dynamic> likes = [];
   bool isFetched = false;
+  bool liked = false;
   String q =
-      "select id.Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select count(c.CommentID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
+      "select id.Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select count(c.CommentID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, (select count(t.UserID) from tb_Like t where t.TweetID = twt.TweetID ) as likes ,(select count(c.UserID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
+    //  checkLiked();
     Feed.isEmpty().then((value) {
       if (value) {
         print(value);
@@ -53,6 +57,16 @@ class HomeShowState extends State<HomeShow> {
     });
 
     super.initState();
+  }
+
+  void checkLiked() async {
+    String check = "SELECT * FROM tb_Like t WHERE t.UserID = '${UserData.id}'";
+
+    List result = await query(check);
+
+    setState(() {
+      liked = result.isNotEmpty;
+    });
   }
 
   @override
@@ -114,20 +128,25 @@ class HomeShowState extends State<HomeShow> {
               children: isFetched
                   ? tweets
                       .map((e) => TweetWidget(
-                          id: e["UserID"],
-                          name: e["Name"],
-                          image: e["image"]["data"],
-                          time: DateTime.parse(e["time"]).day ==
-                                  DateTime.now().day
-                              ? DateTime.parse(e["time"]).hour.toString() +
-                                  ":" +
-                                  DateTime.parse(e["time"]).minute.toString()
-                              : DateTime.parse(e["time"]).day.toString() +
-                                  DateFormat.MMM()
-                                      .format(DateTime.parse(e["time"])),
-                          content: e["Tweet"],
-                          repliesCount: e["replies"] ?? 0,
-                          likesCount: e["likes"] ?? 0))
+                            // liked: liked,
+                            twtId: e[
+                                "TweetID"], // Fetching the TweetID from the API response
+                            id: e["UserID"] ?? "",
+                            name: e["Name"] ?? "",
+                            image: e["image"] != null ? e["image"]["data"] : "",
+                            time: DateTime.parse(e["time"]).day ==
+                                    DateTime.now().day
+                                ? DateTime.parse(e["time"]).hour.toString() +
+                                    ":" +
+                                    DateTime.parse(e["time"]).minute.toString()
+                                : DateTime.parse(e["time"]).day.toString() +
+                                    DateFormat.MMM()
+                                        .format(DateTime.parse(e["time"])),
+
+                            content: e["Tweet"] ?? "",
+                            repliesCount: e["replies"] ?? 0,
+                            likesCount: e["likes"] ?? 0,
+                          ))
                       .toList()
                   : [
                       const TweetSkeleton(),

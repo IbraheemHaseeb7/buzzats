@@ -38,7 +38,9 @@ class HomeState extends State<Home> {
     HomeShow(),
     SuggestionPage(),
     ChatsHome(),
-    UserProfile()
+    UserProfile(
+      myself: true,
+    )
   ];
 
   @override

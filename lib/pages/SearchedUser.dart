@@ -4,7 +4,7 @@ import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'EditProfile.dart';
 
 class SearchedUser extends UserProfile {
-  SearchedUser({super.key});
+  SearchedUser({super.key, required super.myself});
 
   @override
   createState() => SearchedUserState();
@@ -87,5 +87,11 @@ class SearchedUserState extends UserProfileState {
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }
