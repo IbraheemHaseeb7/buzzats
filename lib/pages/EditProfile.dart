@@ -1,9 +1,16 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Query.dart';
+import 'package:flutter_app_1/Cache/UploadPicture.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/CustomDropDownMenu.dart';
 import 'package:flutter_app_1/pages/FrostedTwt.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 import '../CustomWidgets/Imagepicker.dart';
 
@@ -14,6 +21,14 @@ class EditProfile extends StatefulWidget {
 class EditProfileState extends State<EditProfile> {
   List<File> images = [];
   bool isButtonDisabled = true;
+  final usernameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final semesterController = TextEditingController();
+  final emailController = TextEditingController();
+  final descriptionController = TextEditingController();
+  var image;
+  late int semester = 1;
+  bool isImageChanged = false;
 
   final enabledStyle = ButtonStyle(
     padding: MaterialStateProperty.all(
@@ -40,7 +55,85 @@ class EditProfileState extends State<EditProfile> {
   void onPickImages() async {
     images = await pickImages();
 
+    // COMPRESSING THE IMAGE
+    var result = await FlutterImageCompress.compressWithFile(
+      images[0].absolute.path,
+      minWidth: 500,
+      minHeight: 500,
+      quality: 70,
+    );
+    image = result;
+    isImageChanged = true;
+
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    UserData.fetchUser().then((value) {
+      usernameController.text = value[0]["Name"];
+      descriptionController.text = value[0]["BIO"];
+      emailController.text = value[0]["RecoveryEmail"] ?? "";
+
+      setState(() {
+        semester = value[0]["Semester"];
+        image = value[0]["Image"]["data"];
+      });
+
+      if (usernameController.text != "") {
+        setState(() {
+          isButtonDisabled = false;
+        });
+      }
+    });
+
+    super.initState();
+  }
+
+  void handleCommitChanges() async {
+    UserData();
+    if (isImageChanged) {
+      print("noooooooooooooo");
+      await uploadImageToAzure(image).then((res) {
+        query("UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text}, [Image] = (SELECT TOP 1 BulkColumn FROM OPENROWSET( BULK 'profilepictures/$res', DATA_SOURCE = 'MyAzureBlobStorage2', SINGLE_BLOB) AS Image) WHERE UserID = '${UserData.id}';")
+            .then((value) {
+          ToastMe(
+                  text: "Succesfully Made Changes",
+                  type: ToasterType.Check,
+                  duration: 2000)
+              .showToast(context);
+          query("select * from tb_UserProfile u where u.UserID='${UserData.id}'")
+              .then((value) {
+            UserData.storeUser(value);
+          });
+        });
+      });
+    } else {
+      print("yoooooooooooooo");
+      query("UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text} WHERE UserID = '${UserData.id}';")
+          .then((value) {
+        ToastMe(
+                text: "Succesfully Made Changes",
+                type: ToasterType.Check,
+                duration: 2000)
+            .showToast(context);
+        query("select * from tb_UserProfile u where u.UserID='${UserData.id}'")
+            .then((value) {
+          UserData.storeUser(value);
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    phoneController.dispose();
+    semesterController.dispose();
+    emailController.dispose();
+    descriptionController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -50,70 +143,104 @@ class EditProfileState extends State<EditProfile> {
     List<int> semesters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
     return Scaffold(
-      backgroundColor: Color(0xFF141D26),
-      appBar: AppBar(
         backgroundColor: Color(0xFF141D26),
-        elevation: 0.5,
-        title: Text("Edit Profile"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Add the functionality to navigate back here
-            Navigator.pop(
-                context); // This will pop the current route and go back
-          },
+        appBar: AppBar(
+          backgroundColor: Color(0xFF141D26),
+          elevation: 0.5,
+          title: Text("Edit Profile"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              // Add the functionality to navigate back here
+              Navigator.pop(
+                  context); // This will pop the current route and go back
+            },
+          ),
+          actions: [],
         ),
-        actions: [],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 40),
-                child: const Text("Profile",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 40,
-                      color: Color(0xffffffff),
-                    ))),
-            SizedBox(
-              height: 6,
-            ),
-            FrostedTwt(
-              height: 360,
-              width: 320,
-              child: Container(
-                height: 360,
-                width:
-                    320, // Adjust the width of the container as per your requirement
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, top: 40),
+                    child: const Text("Profile",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 40,
+                          color: Color(0xffffffff),
+                        ))),
+                SizedBox(
+                  height: 6,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                FrostedTwt(
+                  height: screenHeight * 0.5,
+                  width: screenWidth * 0.8,
+                  child: Container(
+                    height: 360,
+                    width:
+                        320, // Adjust the width of the container as per your requirement
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
                         children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: usernameController,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    alignLabelWithHint: true,
+                                    labelText: "Username",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 137, 137, 137)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              GestureDetector(
+                                onTap: onPickImages,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: image == null
+                                      ? Container()
+                                      : Image.memory(
+                                          Uint8List.fromList(
+                                              List<int>.from(image)),
+                                          width: 50,
+                                          fit: BoxFit.fill,
+                                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Expanded(
                             child: TextFormField(
+                              controller: phoneController,
                               style: TextStyle(color: Colors.white),
-                              onChanged: (value) {
-                                setState(() {
-                                  isButtonDisabled = value.isEmpty; 
-                                });
-                              },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 filled: true,
-                                labelText: "Username",
+                                labelText: "Phone Number",
                                 alignLabelWithHint: true,
                                 labelStyle: TextStyle(color: Colors.white),
-                                hintText: "Abdullah Sajjad",
                                 hintStyle: TextStyle(
                                     color: Color.fromARGB(255, 137, 137, 137)),
                                 border: UnderlineInputBorder(
@@ -124,147 +251,113 @@ class EditProfileState extends State<EditProfile> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: onPickImages,
-                            child: CircleAvatar(
-                              radius: 25,
-                              backgroundImage:
-                                  AssetImage("lib/Assets/abdu.jpg"),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          style: TextStyle(color: Colors.white),
-                          onChanged: (value) {
-                            setState(() {
-                              isButtonDisabled = value.isEmpty;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            labelText: "Phone Number",
-                            alignLabelWithHint: true,
-                            labelStyle: TextStyle(color: Colors.white),
-                            hintText: "+9234933922",
-                            hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 137, 137, 137)),
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 137, 137, 137)),
-                            ),
+                          Expanded(
+                              child: DropdownMenu(
+                            controller: semesterController,
+                            initialSelection: semester,
+                            width: screenWidth * 0.7,
+                            enabled: true,
+                            label: const Text("Semester"),
+                            inputDecorationTheme: const InputDecorationTheme(
+                                suffixIconColor: Colors.white,
+                                alignLabelWithHint: true,
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.black)),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                border: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white))),
+                            textStyle: const TextStyle(color: Colors.white),
+                            menuStyle: MenuStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color(0xFF141D26))),
+                            dropdownMenuEntries: semesters
+                                .map((e) => DropdownMenuEntry(
+                                    value: e,
+                                    label: e.toString(),
+                                    style: ButtonStyle(
+                                      foregroundColor:
+                                          MaterialStateProperty.resolveWith(
+                                              (states) => Colors.white),
+                                    )))
+                                .toList(),
+                          )),
+                          const SizedBox(
+                            height: 7,
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Expanded(
-                        child: CustomDropdown(
-                          width: screenWidth - 30,
-                          items: semesters.map((e) => e.toString()).toList(),
-                          value: "1", // Pass the selected value here
-                          onChanged: (value) {
-                            setState(() {
-                              isButtonDisabled = value!.isEmpty; 
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          style: TextStyle(color: Colors.white),
-                          onChanged: (value) {
-                            setState(() {
-                              isButtonDisabled = value.isEmpty; 
-                            });
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            labelText: "Recovery Email",
-                            alignLabelWithHint: true,
-                            labelStyle: TextStyle(color: Colors.white),
-                            hintText: "dhbfhb@gmail.com",
-                            hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 137, 137, 137)),
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 137, 137, 137)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: screenWidth - 50,
-                          child: TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            onChanged: (value) {
-                              setState(() {
-                                isButtonDisabled = value.isEmpty; 
-                              });
-                            },
-                            maxLines: null,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              filled: true,
-                              labelText: "Buzzio",
-                              alignLabelWithHint: true,
-                              labelStyle: TextStyle(color: Colors.white),
-                              hintText:
-                                  "I wanted to be more professional than to be dumb",
-                              hintStyle: TextStyle(
-                                  color: Color.fromARGB(255, 137, 137, 137)),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
+                          Expanded(
+                            child: TextFormField(
+                              controller: emailController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                filled: true,
+                                labelText: "Recovery Email",
+                                alignLabelWithHint: true,
+                                labelStyle: TextStyle(color: Colors.white),
+                                hintStyle: TextStyle(
                                     color: Color.fromARGB(255, 137, 137, 137)),
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: screenWidth - 50,
+                              child: TextFormField(
+                                controller: descriptionController,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                                style: TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  labelText: "Buzzio",
+                                  alignLabelWithHint: true,
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  hintStyle: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 137, 137, 137)),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 137, 137, 137)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: 130,
-              height: 56,
-               child: Padding(
-              padding: EdgeInsets.fromLTRB(8, 20, 0, 0),
-              child: ElevatedButton(
-                onPressed: isButtonDisabled
-                    ? null
-                    : () {
-                        Navigator.pop(context);
-                      },
-                style: isButtonDisabled ? disabledStyle : enabledStyle,
-                child: Text(
-                  "Buzzit!",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold, // Adjust font size
+                Container(
+                  padding: const EdgeInsets.fromLTRB(8, 20, 0, 0),
+                  width: screenWidth * 0.5,
+                  height: 66,
+                  child: ElevatedButton(
+                    onPressed: isButtonDisabled ? null : handleCommitChanges,
+                    style: isButtonDisabled ? disabledStyle : enabledStyle,
+                    child: const Text(
+                      "Confirm Changes",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold, // Adjust font size
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                )
+              ],
             ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

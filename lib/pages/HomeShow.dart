@@ -28,12 +28,13 @@ class HomeShowState extends State<HomeShow> {
   List<dynamic> tweets = [];
   bool isFetched = false;
   String q =
-      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time] from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
+      "select id.Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select count(c.CommentID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
     Feed.isEmpty().then((value) {
       if (value) {
+        print(value);
         query(q).then((value) {
           setState(() {
             Feed.storeTweets(value);
@@ -125,8 +126,8 @@ class HomeShowState extends State<HomeShow> {
                                   DateFormat.MMM()
                                       .format(DateTime.parse(e["time"])),
                           content: e["Tweet"],
-                          repliesCount: 2,
-                          likesCount: 6))
+                          repliesCount: e["replies"] ?? 0,
+                          likesCount: e["likes"] ?? 0))
                       .toList()
                   : [
                       const TweetSkeleton(),

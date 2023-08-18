@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/CUonline.dart';
+import 'package:flutter_app_1/pages/Rooms.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawer extends StatelessWidget {
   @override
@@ -77,11 +79,17 @@ class HomeDrawer extends StatelessWidget {
                           ),
                         ),
 
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CUonline()),
-                          );
+                        onTap: () async {
+                          final Uri url = Uri.parse(
+                              "https://cuonline.cuilahore.edu.pk:8091");
+                          await launchUrl(url,
+                              mode: LaunchMode.inAppWebView,
+                              webViewConfiguration:
+                                  WebViewConfiguration(enableDomStorage: true));
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => CUonline()),
+                          // );
                         },
                         //this is the on pressed property of the list tile
                       ),
@@ -151,8 +159,10 @@ class HomeDrawer extends StatelessWidget {
                             ),
                           ),
 
-                          onTap:
-                              null, //this is the on pressed property of the list tile
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (b) => Rooms()));
+                          }, //this is the on pressed property of the list tile
                         ),
                       ),
                     ],

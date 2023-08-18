@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
@@ -86,7 +87,7 @@ class _LoginScreen extends State<LoginScreen> {
     Main.auth
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
-        .then((value) {
+        .then((value) async {
       ToastMe(
               text: "Welcome, lets get buzzin!!",
               type: ToasterType.Error,

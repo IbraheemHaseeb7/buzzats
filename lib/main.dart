@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
+import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/Home.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app_1/pages/ManageSociety.dart';
+import 'package:flutter_app_1/pages/Rooms.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -33,7 +35,7 @@ class Main extends StatelessWidget {
       // ),
       home: auth.currentUser == null ? MyApp() : Home(),
 
-      // home: Home(), // add your page for quick testing
+      // home: Rooms(), // add your page for quick testing
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),

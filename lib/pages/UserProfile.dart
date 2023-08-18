@@ -8,7 +8,7 @@ import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  UserProfile({super.key});
 
   @override
   createState() => UserProfileState();
@@ -89,11 +89,12 @@ class UserProfileState extends State<UserProfile> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Abdullah Sajjad"),
-        backgroundColor: Color(0xFF141D26),
-      ),
+      // appBar: AppBar(
+      //   title: Text("Abdullah Sajjad"),
+      //   backgroundColor: Color(0xFF141D26),
+      // ),
       body: Container(
+        padding: const EdgeInsets.only(top: 50),
         width: screenWidth,
         height: screenHeight,
         decoration: BoxDecoration(color: Color(0xFF141D26)),
