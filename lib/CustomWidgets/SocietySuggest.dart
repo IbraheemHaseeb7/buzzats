@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/pages/Society.dart';
 
 class SocietySuggest extends StatefulWidget {
-  const SocietySuggest({super.key});
+
+  String name,about;
+  int connections;
+
+   SocietySuggest({
+    
+    required this.name,
+    required this.about,
+    required this.connections
+    });
 
   @override
   State<SocietySuggest> createState() => _SocietySuggest();
@@ -17,14 +27,14 @@ class _SocietySuggest extends State<SocietySuggest> {
     return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
+       // mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(35, 8, 0, 12), 
             child: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              width: screenWidth - 120,
+              width: screenWidth - 60,
               height: 135,
               decoration: BoxDecoration(
                 color: Color(0xff6080a7).withOpacity(0.3),
@@ -47,13 +57,13 @@ class _SocietySuggest extends State<SocietySuggest> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 6, 0, 2),
                           child: Text(
-                            "IEEE RAS | CUI Lahore",
+                            widget.name,
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.clip,
                             style: TextStyle(
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.normal,
-                              fontSize: 14,
+                              fontSize: 18,
                               color: Color(0xffffffff),
                             ),
                           ),
@@ -61,7 +71,7 @@ class _SocietySuggest extends State<SocietySuggest> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 5, 0, 4),
                           child: Text(
-                            "Education",
+                            widget.about,
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.clip,
                             style: TextStyle(
@@ -84,7 +94,7 @@ class _SocietySuggest extends State<SocietySuggest> {
                             ),
                             padding: EdgeInsets.all(4),
                             child: Text(
-                              "2K Connections",
+                              "${widget.connections.toString()} Connections",
                               textAlign: TextAlign.left,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
@@ -126,7 +136,11 @@ class _SocietySuggest extends State<SocietySuggest> {
                             icon: Icon(Icons.arrow_forward_sharp), // Replace with the desired icon
                           color: Color(0xFF4137BD),
                           iconSize: 35,
-                          onPressed: (){} ,
+                          onPressed: (){
+
+                            
+
+                          } ,
                           ),
                         ),
                 ],

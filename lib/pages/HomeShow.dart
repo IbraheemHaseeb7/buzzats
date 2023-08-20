@@ -30,19 +30,24 @@ class HomeShowState extends State<HomeShow> {
   List<dynamic> likes = [];
   bool isFetched = false;
   bool liked = false;
+  
+
   String q =
       "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.UserID) from tb_Like t where t.TweetID = twt.TweetID ) as likes ,(select count(c.UserID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
-  //  checkLiked();
+   
     Feed.isEmpty().then((value) {
       if (value) {
         query(q).then((value) {
           setState(() {
+           
             Feed.storeTweets(value);
             tweets = value;
             isFetched = true;
+
+
           });
         });
       } else {
@@ -54,6 +59,7 @@ class HomeShowState extends State<HomeShow> {
         });
       }
     });
+
    
     super.initState();
   }
@@ -61,23 +67,13 @@ class HomeShowState extends State<HomeShow> {
 
 
 
-void checkLiked() async {
-    String check =
-        "SELECT * FROM tb_Like t WHERE t.UserID = '${UserData.id}'";
-
-    List result = await query(check);
-
-    setState(() {
-      liked = result.isNotEmpty;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     bool isSelected = false;
 
+    
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
 
@@ -130,8 +126,8 @@ void checkLiked() async {
             child: Column(
               children: isFetched
                   ? tweets.map((e) => TweetWidget(
-                             // liked: liked,
-                              twtId: e["TweetID"], // Fetching the TweetID from the API response
+                             liked: liked,
+                              twtId: e["TweetID"] ?? "", // Fetching the TweetID from the API response
                               id: e["UserID"] ?? "",
                               name: e["Name"] ?? "",
                               image: e["image"] != null ? e["image"]["data"] : "",
@@ -173,5 +169,9 @@ void checkLiked() async {
         backgroundColor: Color(0xFF4137BD),
       ),
     );
+  }
+  @override
+  void dispose(){
+    super.dispose();
   }
 }

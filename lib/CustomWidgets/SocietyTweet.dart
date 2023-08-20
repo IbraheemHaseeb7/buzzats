@@ -3,11 +3,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyTweetImage.dart';
+import 'package:iconly/iconly.dart';
 
 import 'Replying.dart';
 
 class SocietyTweet extends StatefulWidget {
-  SocietyTweet({super.key});
+  String name,tweet;
+  SocietyTweet({
+    
+    super.key,
+    required this.name,
+    required this.tweet,
+    
+    });
 
   @override
   _SocietyTweet createState() => _SocietyTweet();
@@ -64,7 +72,7 @@ class _SocietyTweet extends State<SocietyTweet> {
                         Row(
                           children: [
                             Text(
-                              "Abdullah Sajjad",
+                              widget.name,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 fontSize: 17,
@@ -75,20 +83,14 @@ class _SocietyTweet extends State<SocietyTweet> {
                             Padding(
                               padding: EdgeInsets.only(left: 8),
                               child: Icon(
-                                Icons.verified,
+                                IconlyBold.user_2,
                                 color: Colors.white,
                                 size: 17,
                               ),
                             ),
                           ],
                         ),
-                        Text(
-                          "7:44 pm",
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 114, 114, 114),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600),
-                        ),
+                        
                       ],
                     ),
                   ),
@@ -96,7 +98,7 @@ class _SocietyTweet extends State<SocietyTweet> {
                     padding: const EdgeInsets.only(top: 8.0, right: 8),
                     width: screenWidth - 100,
                     child: Text(
-                      "Do you believe i captured this one?",
+                      widget.tweet,
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontSize: 15,

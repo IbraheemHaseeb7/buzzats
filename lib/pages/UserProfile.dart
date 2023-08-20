@@ -1,14 +1,18 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Classes/User.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
+import '../Cache/UserProfile.dart';
 import '../Cache/query.dart';
 import 'package:intl/intl.dart';
 
-String userID = 'fa21bcs082';
+
+
+String? userID;
 String? email;
 Uint8List? bytes;
 String? bio;
@@ -18,11 +22,6 @@ String? departmentRec;
 int? semester;
 String? regNo;
 String? batch;
-
-void main() {
-  runApp(UserProfile());
-}
-
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
 
@@ -52,6 +51,13 @@ class UserProfileState extends State<UserProfile> {
   bool isFetched = false;
   int connections = 0;
 
+
+  @override
+  void initState() {
+    UserData();
+    userID = UserData.id;
+    loadData();
+  }
   String q1 =
       "SELECT id.UserID, id.[Name], id.Image AS [image], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
 
@@ -59,11 +65,6 @@ class UserProfileState extends State<UserProfile> {
       "select count(FriendUserID) As 'connections' from tb_Friends where UserID='$userID'";
 
   String q3 = "select * from [tb_Userprofile] u WHERE u.userID='$userID'";
-
-  @override
-  void initState() {
-    loadData();
-  }
 
   Future<void> loadData() async {
     try {
@@ -148,6 +149,11 @@ class UserProfileState extends State<UserProfile> {
   }
 
   @override
+  void dispose(){
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //screenheight and width
     double screenWidth = MediaQuery.of(context).size.width;
@@ -179,27 +185,31 @@ class UserProfileState extends State<UserProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "$name",
-                                textAlign: TextAlign.left,
-                                maxLines: null,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              const Icon(Icons.verified_rounded,
-                                  color: Colors.blue)
-                            ],
-                          ),
+  mainAxisAlignment: MainAxisAlignment.start,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Container(
+      width: 185,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$name",
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 5), // Adding spacing between text and icon
+        ],
+      ),
+    ),
+    const Icon(Icons.verified_rounded, color: Colors.blue),
+  ],
+),
+
                           const SizedBox(height: 8),
                           Row(
                             children: [
@@ -261,7 +271,7 @@ class UserProfileState extends State<UserProfile> {
                                           height:
                                               4), // Add some space between the texts
                                       Text(
-                                        "Mutuals",
+                                       "Mutuals",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 16,
@@ -293,7 +303,7 @@ class UserProfileState extends State<UserProfile> {
                         ],
                       ),
                       const SizedBox(
-                        width: 60,
+                        width: 30,
                       ),
                       Column(
                         children: [
@@ -311,14 +321,14 @@ class UserProfileState extends State<UserProfile> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.only(
                       bottom: 16.0, top: 2, left: 16, right: 16),
                   child: Container(
                     padding: const EdgeInsets.only(left: 11, top: 4),
                     width: screenWidth,
-                    height: screenHeight - 730,
+                    height: 120,
                     decoration: const BoxDecoration(
                         border: Border(
                             top: BorderSide(color: Colors.grey),
@@ -417,6 +427,7 @@ class UserProfileState extends State<UserProfile> {
                   children: isFetched
                       ? tweets
                           .map((e) => TweetWidget(
+                            twtId: e["TweetID"],
                               id: "fa21bcs140",
                               name: e["Name"],
                               image: e["image"]["data"],
@@ -436,8 +447,7 @@ class UserProfileState extends State<UserProfile> {
                           .toList()
                       : [
                           const TweetSkeleton(),
-                          const TweetSkeleton(),
-                          const TweetSkeleton(),
+                        
                         ],
                 ),
               ],

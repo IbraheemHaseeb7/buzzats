@@ -94,6 +94,7 @@ class _LoginScreen extends State<LoginScreen> {
           .showToast(context);
       query("select * from tb_UserProfile u where u.Email='${emailController.text}'")
           .then((value) {
+            
         UserData.storeUser(value);
       });
       Navigator.push(
@@ -126,134 +127,144 @@ class _LoginScreen extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Color(0xFF141D26)),
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Padding(
-                padding: EdgeInsets.only(bottom: 140),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Login",
-                      style: TextStyle(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Roboto',
-                          color: Color.fromARGB(255, 255, 255, 255)),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Welcome Back, Let's get Buzzin!!",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Roboto',
-                          color: Color.fromARGB(255, 255, 255, 255)),
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: emailController,
-                      onChanged: (text) {
-                        handleEmail(text);
-                      },
-                      decoration: InputDecoration(
-                        hintStyle: const TextStyle(
-                            color: Color.fromARGB(255, 110, 110, 110)),
-                        hintText: "COMSATS Email Address",
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: "Email",
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: emailColor, width: 2),
+      appBar: AppBar(toolbarHeight: 0.0,),
+      body: SingleChildScrollView(
+        child: Container(
+          height: screenHeight,
+          decoration: BoxDecoration(color: Color(0xFF141D26)),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Padding(
+                  padding: EdgeInsets.only(bottom: 140),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Login",
+                        style: TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            
+                            color: Color.fromARGB(255, 255, 255, 255)),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Welcome Back, Let's get Buzzin!!",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                           
+                            color: Color.fromARGB(255, 255, 255, 255)),
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white),
+                        controller: emailController,
+                        onChanged: (text) {
+                          handleEmail(text);
+                        },
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 110, 110, 110)),
+                          hintText: "COMSATS Email Address",
+                          labelStyle: TextStyle(color: Colors.white),
+                          labelText: "Email",
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: emailColor, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: emailColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: emailColor, width: 2),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: passwordController,
-                      onChanged: handlePassword,
-                      decoration: InputDecoration(
-                        suffix: SizedBox(
-                            height: 15,
-                            child: IconButton(
-                                padding: EdgeInsets.zero,
-                                color: Colors.white,
-                                icon: const Icon(
-                                  Icons.remove_red_eye_outlined,
-                                  size: 15,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    passObscure = !passObscure;
-                                  });
-                                })),
-                        hintStyle: TextStyle(
-                            color: const Color.fromARGB(255, 110, 110, 110)),
-                        hintText: "Password",
-                        labelStyle: TextStyle(color: Colors.white),
-                        floatingLabelStyle: TextStyle(
-                            color: Color.fromRGBO(148, 95, 255, 0.612)),
-                        labelText: "Password",
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              BorderSide(color: passwordColor, width: 2),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white),
+                        controller: passwordController,
+                        onChanged: handlePassword,
+                        decoration: InputDecoration(
+                          suffix: SizedBox(
+                              height: 15,
+                              child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  color: Colors.white,
+                                  icon: const Icon(
+                                    Icons.remove_red_eye_outlined,
+                                    size: 18,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      passObscure = !passObscure;
+                                    });
+                                  })),
+                          hintStyle: TextStyle(
+                              color: const Color.fromARGB(255, 110, 110, 110)),
+                          hintText: "Password",
+                          labelStyle: TextStyle(color: Colors.white),
+                          floatingLabelStyle: TextStyle(
+                              color: Color.fromRGBO(148, 95, 255, 0.612)),
+                          labelText: "Password",
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide:
+                                BorderSide(color: passwordColor, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide:
+                                BorderSide(color: passwordColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide:
+                                BorderSide(color: passwordColor, width: 2),
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              BorderSide(color: passwordColor, width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              BorderSide(color: passwordColor, width: 2),
-                        ),
+                        obscureText: passObscure,
                       ),
-                      obscureText: passObscure,
-                    ),
-                    const SizedBox(height: 16),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: handleLogin,
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(102, 26, 255, 0.612)),
-                        foregroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(255, 255, 255, 1)),
-                        fixedSize: MaterialStateProperty.all(Size(400, 55)),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                        )),
+                      const SizedBox(height: 16),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: handleLogin,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromRGBO(102, 26, 255, 0.612)),
+                          foregroundColor: MaterialStateProperty.all(
+                              Color.fromRGBO(255, 255, 255, 1)),
+                          fixedSize: MaterialStateProperty.all(Size(400, 55)),
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24.0),
+                          )),
+                        ),
+                        child: const Text("Login"),
                       ),
-                      child: const Text("Login"),
-                    ),
-                  ],
-                )),
-            Positioned(
-              top: 0,
-              child: Image.asset(
-                "lib\\Assets\\Screenshot_2023-07-12_170657-removebg-preview.png",
-                alignment: Alignment.topCenter,
+                    ],
+                  )),
+              Positioned(
+                top: 0,
+                child: Image.asset(
+                  "lib\\Assets\\Screenshot_2023-07-12_170657-removebg-preview.png",
+                  alignment: Alignment.topCenter,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

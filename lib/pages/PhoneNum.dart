@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Query.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
@@ -13,9 +15,18 @@ class PhoneNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserData();
+    String q = "select us.[Name] from tb_UserProfile us where us.UserID = '${UserData.id}'";
     double screenWidth = MediaQuery.of(context).size.width;
+    String name = "";
     double screenHeight = MediaQuery.of(context).size.height;
     List<int> semesters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
+
+    void Name(){
+      query(q).then((value) => name= value.toString());
+
+    }
 
     return Scaffold(
         backgroundColor: const Color(0xff141d26),
@@ -26,7 +37,7 @@ class PhoneNumber extends StatelessWidget {
             children: [
               Container(
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
-                  child: const Text("Welcome, Musa Raza",
+                  child:  Text("Welcome, $name",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,

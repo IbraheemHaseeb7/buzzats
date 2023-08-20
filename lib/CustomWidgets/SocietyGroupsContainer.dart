@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'Groups.dart';
 
 class SocietyGroupsContainer extends StatelessWidget {
-  List<Map<String, dynamic>> groups;
+  List<dynamic> groups;
   SocietyGroupsContainer({Key? key, required this.groups}) : super(key: key);
 
   @override
@@ -17,6 +17,8 @@ class SocietyGroupsContainer extends StatelessWidget {
             children: groups.map((e) {
           return Groups(
             group: e,
+            // name: e["SGroupName"],
+            // description: e["description"],
           );
         }).toList()));
   }

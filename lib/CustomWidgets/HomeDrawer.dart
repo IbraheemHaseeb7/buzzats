@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/CUonline.dart';
+import 'package:flutter_app_1/pages/Timetable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:line_icons/line_icon.dart';
@@ -13,6 +15,9 @@ import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
 class HomeDrawer extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -96,28 +101,34 @@ class HomeDrawer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(
-                        child: ListTile(
-                          leading: FractionalTranslation(
-                            translation: Offset(0.1, 0.5),
-                            child: Icon(
-                              IconlyLight.time_circle,
-                              color: Colors.white,
-                            ),
-                          ),
-                          title: FractionalTranslation(
-                            translation: Offset(0.1, 0.5),
-                            child: Text(
-                              "Timetable",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
+                        child: GestureDetector(
+                          onTap: (){ Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Timetable()),
+                          );},
+                          child: ListTile(
+                            leading: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Icon(
+                                IconlyLight.time_circle,
                                 color: Colors.white,
-                                fontSize: 18,
                               ),
                             ),
+                            title: FractionalTranslation(
+                              translation: Offset(0.1, 0.5),
+                              child: Text(
+                                "Timetable",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                        
+                            onTap:
+                                null, //this is the on pressed property of the list tile
                           ),
-
-                          onTap:
-                              null, //this is the on pressed property of the list tile
                         ),
                       ),
                     ],
@@ -263,19 +274,25 @@ class HomeDrawer extends StatelessWidget {
                         ),
                       ),
 
-                      onTap: () async {
-                        await Main.auth.signOut().then((value) {
-                          UserData.storeUser([]);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (b) => MyApp()));
-                        }).catchError((onError) {
-                          ToastMe(
-                                  text: "Could sign out",
-                                  type: ToasterType.Error,
-                                  duration: 2000)
-                              .showToast(context);
-                        });
-                      },
+                     onTap: () async {
+  await Main.auth.signOut().then((value) {
+    UserData.storeUser([]);
+
+    // Navigate to the main screen and clear the back stack
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (b) => MyApp()),
+      (route) => false,
+    );
+  }).catchError((onError) {
+    ToastMe(
+      text: "Could not sign out",
+      type: ToasterType.Error,
+      duration: 2000,
+    ).showToast(context);
+  });
+},
+
 
                       //this is the on pressed property of the list tile
                     ),

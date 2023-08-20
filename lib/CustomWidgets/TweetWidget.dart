@@ -23,7 +23,7 @@ class TweetWidget extends StatefulWidget {
     required this.content,
     required this.repliesCount,
     required this.likesCount,
-  }) : super(key: key);
+  });
 
  
   @override
@@ -36,7 +36,7 @@ class _TweetWidgetState extends State<TweetWidget> {
 
   @override
   void initState() {
-    //isLiked = widget.liked!;
+    isLiked = widget.liked!;
     super.initState();
     imageBytes = Uint8List.fromList(List<int>.from(widget.image));
      // Check if the user has already liked the tweet
@@ -45,29 +45,38 @@ class _TweetWidgetState extends State<TweetWidget> {
   
 
   void handleLike() async {
-    int likes = widget.likesCount;
+  int likes = widget.likesCount;
 
-    setState(() {
-      isLiked = !isLiked;
-    });
-
-    String queryStatement;
-    if (isLiked) {
-      queryStatement =
-          "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())";
-      ++likes;
-    } else {
-      queryStatement =
-          "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${widget.id}'";
-      --likes;
-    }
-
-    await query(queryStatement);
-
-    setState(() {
-      widget.likesCount = likes;
-    });
+  // Update the likes count based on the like/unlike action
+  if (!isLiked) {
+    likes++; // Increment likes count if liking the tweet
+  } else {
+    likes--; // Decrement likes count if unliking the tweet
   }
+
+  // Update the UI with the new likes count and liked status
+  setState(() {
+    isLiked = !isLiked; // Toggle liked status
+    widget.likesCount = likes; // Update likes count in the widget
+  });
+
+  String queryStatement;
+  if (isLiked) {
+    queryStatement =
+        "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())";
+  } else {
+    queryStatement =
+        "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${widget.id}'";
+  }
+
+  await query(queryStatement); // Execute the SQL query
+}
+
+
+
+
+
+  
 
   @override
   Widget build(BuildContext context) {

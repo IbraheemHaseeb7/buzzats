@@ -16,6 +16,7 @@ import 'package:flutter_app_1/pages/HomeShow.dart';
 import 'package:flutter_app_1/pages/Logout.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
+import 'package:flutter_app_1/pages/TotalSocieties.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,7 +38,7 @@ class HomeState extends State<Home> {
   static List<Widget> pages = <Widget>[
     HomeShow(),
     SuggestionPage(),
-    ChatsHome(),
+    TotalSocieties(),
     UserProfile()
   ];
 
@@ -45,6 +46,9 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    UserData();
+    print("POINT,${UserData.id.toString()}");
 
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
@@ -77,6 +81,8 @@ class HomeState extends State<Home> {
                 backgroundColor: Color(0xFF141D26),
                 onPressed: () {
                   setState(() {
+                 print(UserData.id);
+
                     currentPageIndex = 0;
                   });
                 },
@@ -88,7 +94,7 @@ class HomeState extends State<Home> {
               ),
               GButton(
                 icon:
-                    currentPageIndex == 2 ? IconlyBold.chat : IconlyLight.chat,
+                    currentPageIndex == 2 ? IconlyBold.user_3 : IconlyLight.user_1,
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
                 onPressed: () {
