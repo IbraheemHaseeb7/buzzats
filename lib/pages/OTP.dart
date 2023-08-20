@@ -86,7 +86,6 @@ class OTPState extends State<OTP> {
               textFieldAlignment: MainAxisAlignment.spaceAround,
               fieldStyle: FieldStyle.box,
               onCompleted: (pin) {
-                print("Completed: " + pin);
                 pinEntered = int.parse(pin);
 
                 setState(() {

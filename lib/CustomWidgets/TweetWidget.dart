@@ -1,31 +1,33 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 import '../Cache/Query.dart';
 import '../Cache/UserProfile.dart';
 
 class TweetWidget extends StatefulWidget {
- String name, time, content, id, twtId;
- int likesCount, repliesCount;
- bool? liked = false;
-   var image;
+  String name, time, content, id, twtId;
+  int likesCount, repliesCount;
+  bool isLiked;
+  var image;
 
-  TweetWidget({
-    Key? key,
-    this.liked,
-    required this.name,
-    required this.twtId,
-    required this.id,
-    required this.image,
-    required this.time,
-    required this.content,
-    required this.repliesCount,
-    required this.likesCount,
-  }) : super(key: key);
+  TweetWidget(
+      {Key? key,
+      required this.name,
+      required this.twtId,
+      required this.id,
+      required this.image,
+      required this.time,
+      required this.content,
+      required this.repliesCount,
+      required this.likesCount,
+      required this.isLiked})
+      : super(key: key);
 
- 
   @override
   _TweetWidgetState createState() => _TweetWidgetState();
 }
@@ -36,36 +38,46 @@ class _TweetWidgetState extends State<TweetWidget> {
 
   @override
   void initState() {
-    //isLiked = widget.liked!;
+    setState(() {
+      isLiked = widget.isLiked;
+    });
     super.initState();
     imageBytes = Uint8List.fromList(List<int>.from(widget.image));
-     // Check if the user has already liked the tweet
+    // Check if the user has already liked the tweet
   }
 
-  
-
   void handleLike() async {
-    int likes = widget.likesCount;
-
-    setState(() {
-      isLiked = !isLiked;
-    });
-
     String queryStatement;
-    if (isLiked) {
+    if (!isLiked) {
       queryStatement =
           "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())";
-      ++likes;
+      setState(() {
+        ++widget.likesCount;
+        isLiked = !isLiked;
+      });
     } else {
       queryStatement =
           "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${widget.id}'";
-      --likes;
+      setState(() {
+        --widget.likesCount;
+        isLiked = !isLiked;
+      });
     }
 
-    await query(queryStatement);
-
-    setState(() {
-      widget.likesCount = likes;
+    await query(queryStatement).then((value) {}).catchError((err) {
+      ToastMe(text: "Error occurred!", type: ToasterType.Error)
+          .showToast(context);
+      if (isLiked) {
+        setState(() {
+          --widget.likesCount;
+          isLiked = false;
+        });
+      } else {
+        setState(() {
+          ++widget.likesCount;
+          isLiked = true;
+        });
+      }
     });
   }
 
@@ -78,7 +90,8 @@ class _TweetWidgetState extends State<TweetWidget> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CommentSection(twtId: widget.twtId)),
+          MaterialPageRoute(
+              builder: (context) => CommentSection(twtId: widget.twtId)),
         );
       },
       child: Container(
@@ -135,7 +148,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 case "fa21bcs052":
                                 case "fa21bcs140":
                                 case "fa21bcs082":
-                                  return Padding(
+                                  return const Padding(
                                       padding: EdgeInsets.only(left: 8),
                                       child: Icon(
                                         Icons.verified,
@@ -182,14 +195,17 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 IconButton(
                                   onPressed: handleLike,
                                   icon: Icon(
-                                    isLiked ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                                    isLiked
+                                        ? CupertinoIcons.heart_fill
+                                        : CupertinoIcons.heart,
                                     color: isLiked ? Colors.red : Colors.white,
                                   ),
                                   color: Colors.white,
                                 ),
                                 Text(
                                   widget.likesCount.toString(),
-                                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12),
                                 ),
                               ],
                             ),
@@ -200,7 +216,8 @@ class _TweetWidgetState extends State<TweetWidget> {
                                     showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         context: context,
-                                        builder: (context) => Replying(twtId: widget.twtId));
+                                        builder: (context) =>
+                                            Replying(twtId: widget.twtId));
                                   },
                                   icon: Icon(
                                     CupertinoIcons.arrow_counterclockwise,
@@ -210,7 +227,8 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 ),
                                 Text(
                                   widget.repliesCount.toString(),
-                                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12),
                                 ),
                               ],
                             ),

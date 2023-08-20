@@ -58,9 +58,9 @@ class EditProfileState extends State<EditProfile> {
     // COMPRESSING THE IMAGE
     var result = await FlutterImageCompress.compressWithFile(
       images[0].absolute.path,
-      minWidth: 500,
-      minHeight: 500,
-      quality: 70,
+      minWidth: 100,
+      minHeight: 100,
+      quality: 60,
     );
     image = result;
     isImageChanged = true;
@@ -102,14 +102,13 @@ class EditProfileState extends State<EditProfile> {
                   type: ToasterType.Check,
                   duration: 2000)
               .showToast(context);
-          query("select * from tb_UserProfile u where u.UserID='${UserData.id}'")
+          query("SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.UserID = '${UserData.id}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
               .then((value) {
             UserData.storeUser(value);
           });
         });
       });
     } else {
-      print("yoooooooooooooo");
       query("UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text} WHERE UserID = '${UserData.id}';")
           .then((value) {
         ToastMe(
@@ -117,7 +116,7 @@ class EditProfileState extends State<EditProfile> {
                 type: ToasterType.Check,
                 duration: 2000)
             .showToast(context);
-        query("select * from tb_UserProfile u where u.UserID='${UserData.id}'")
+        query("SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.UserID = '${UserData.id}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
             .then((value) {
           UserData.storeUser(value);
         });

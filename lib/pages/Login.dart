@@ -93,7 +93,7 @@ class _LoginScreen extends State<LoginScreen> {
               type: ToasterType.Error,
               duration: 3000)
           .showToast(context);
-      query("select * from tb_UserProfile u where u.Email='${emailController.text}'")
+      query("SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Email = '${emailController.text}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
           .then((value) {
         UserData.storeUser(value);
       });

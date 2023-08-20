@@ -106,7 +106,6 @@ class SignupState extends State<Signup> {
 
   void handleSignUp() async {
     sendOTP().then((value) {
-      print(value);
       ToastMe(
               duration: 1000,
               text: "OTP sent, check your CU Email address",

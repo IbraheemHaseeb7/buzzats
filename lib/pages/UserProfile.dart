@@ -51,7 +51,7 @@ class UserProfileState extends State<UserProfile> {
   int connections = 0;
 
   String q1 =
-      "SELECT id.UserID, id.[Name], id.Image AS [image], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
+      "SELECT (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
 
   String q2 =
       "select count(FriendUserID) As 'connections' from tb_Friends where UserID='$userID'";
@@ -62,7 +62,9 @@ class UserProfileState extends State<UserProfile> {
   void initState() {
     if (widget.myself) {
       UserData();
-      UserData.fetchUser().then((value) {
+      UserData.fetchUser().then((value) async {
+        final tweetsValue = await query(
+            "SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${UserData.id}' order by [time] desc");
         setState(() {
           name = value[0]["Name"];
           userID = value[0]["UserID"];
@@ -70,9 +72,13 @@ class UserProfileState extends State<UserProfile> {
           bio = value[0]["BIO"];
           regNo =
               "${value[0]["UserID"].toString().substring(0, 4)}-${value[0]["UserID"].toString().substring(4, 7)}-${value[0]["UserID"].toString().substring(7, 10)}";
-          batch = value[0]["UserID"].toString().substring(0, 4);
+          batch = value[0]["UserID"].toString().substring(0, 4).toUpperCase();
           semester = value[0]["Semester"];
-          department = value[0]["UserID"].toString().substring(4, 7);
+          department =
+              value[0]["UserID"].toString().substring(4, 7).toUpperCase();
+          connections = value[0]["Connections"];
+          tweets = tweetsValue;
+          isFetched = true;
         });
       });
     } else {
@@ -104,11 +110,9 @@ class UserProfileState extends State<UserProfile> {
         bio = userData["BIO"] ?? "Unknown";
         bytes = imageBytes;
 
-        batch = email!.substring(0, 4);
-        batch = batch!.toUpperCase();
+        batch = email.substring(0, 4).toUpperCase();
 
-        regNo = email!.substring(0, 12);
-        regNo = regNo!.toUpperCase();
+        regNo = email!.substring(0, 12).toUpperCase();
       });
     } catch (error) {
       print("Error: $error");
@@ -171,7 +175,7 @@ class UserProfileState extends State<UserProfile> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          // title: Text("$name"),
+          title: Text(regNo.toUpperCase()),
           backgroundColor: const Color(0xFF141D26),
         ),
         body: Container(
@@ -267,7 +271,7 @@ class UserProfileState extends State<UserProfile> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "7",
+                                        "0",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 24,
@@ -433,10 +437,11 @@ class UserProfileState extends State<UserProfile> {
                   children: isFetched
                       ? tweets
                           .map((e) => TweetWidget(
+                              isLiked: e["HasLiked"] == "yes",
                               twtId: e["TweetID"],
-                              id: "fa21bcs140",
+                              id: UserData.id ?? "",
                               name: e["Name"],
-                              image: e["image"]["data"],
+                              image: bytes,
                               time: DateTime.parse(e["time"]).day ==
                                       DateTime.now().day
                                   ? DateTime.parse(e["time"]).hour.toString() +
@@ -448,8 +453,8 @@ class UserProfileState extends State<UserProfile> {
                                       DateFormat.MMM()
                                           .format(DateTime.parse(e["time"])),
                               content: e["Tweet"],
-                              repliesCount: 2,
-                              likesCount: 6))
+                              repliesCount: e["replies"],
+                              likesCount: e["likes"]))
                           .toList()
                       : [
                           const TweetSkeleton(),
