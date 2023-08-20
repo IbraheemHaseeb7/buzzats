@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Classes/User.dart';
+
+import 'package:flutter_app_1/Cache/UserProfile.dart';
+
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
@@ -11,19 +13,21 @@ import '../Cache/query.dart';
 import 'package:intl/intl.dart';
 
 
-
-String? userID;
-String? email;
+String userID = "";
+String email = "";
 Uint8List? bytes;
-String? bio;
-String? name;
-String? department;
-String? departmentRec;
-int? semester;
-String? regNo;
-String? batch;
+String bio = "";
+String name = "Buzzats User";
+String department = "";
+String departmentRec = "";
+int semester = 0;
+String regNo = "";
+String batch = "";
+
+
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  bool myself;
+  UserProfile({super.key, required this.myself});
 
   @override
   createState() => UserProfileState();
@@ -52,12 +56,7 @@ class UserProfileState extends State<UserProfile> {
   int connections = 0;
 
 
-  @override
-  void initState() {
-    UserData();
-    userID = UserData.id;
-    loadData();
-  }
+
   String q1 =
       "SELECT id.UserID, id.[Name], id.Image AS [image], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
 
@@ -65,6 +64,29 @@ class UserProfileState extends State<UserProfile> {
       "select count(FriendUserID) As 'connections' from tb_Friends where UserID='$userID'";
 
   String q3 = "select * from [tb_Userprofile] u WHERE u.userID='$userID'";
+
+
+  @override
+  void initState() {
+    if (widget.myself) {
+      UserData();
+      UserData.fetchUser().then((value) {
+        setState(() {
+          name = value[0]["Name"];
+          userID = value[0]["UserID"];
+          bytes = Uint8List.fromList(List<int>.from(value[0]["Image"]["data"]));
+          bio = value[0]["BIO"];
+          regNo =
+              "${value[0]["UserID"].toString().substring(0, 4)}-${value[0]["UserID"].toString().substring(4, 7)}-${value[0]["UserID"].toString().substring(7, 10)}";
+          batch = value[0]["UserID"].toString().substring(0, 4);
+          semester = value[0]["Semester"];
+          department = value[0]["UserID"].toString().substring(4, 7);
+        });
+      });
+    } else {
+      loadData();
+    }
+  }
 
   Future<void> loadData() async {
     try {
@@ -162,7 +184,7 @@ class UserProfileState extends State<UserProfile> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("$name"),
+          // title: Text("$name"),
           backgroundColor: const Color(0xFF141D26),
         ),
         body: Container(
@@ -185,30 +207,31 @@ class UserProfileState extends State<UserProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Container(
-      width: 185,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "$name",
-            textAlign: TextAlign.left,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 5), // Adding spacing between text and icon
-        ],
-      ),
-    ),
-    const Icon(Icons.verified_rounded, color: Colors.blue),
-  ],
-),
+
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: screenWidth * 0.4,
+                                child: Text(
+                                  "$name",
+                                  textAlign: TextAlign.left,
+                                  maxLines: null,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              const Icon(Icons.verified_rounded,
+                                  color: Colors.blue)
+                            ],
+                          ),
 
                           const SizedBox(height: 8),
                           Row(
@@ -372,9 +395,7 @@ class UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.only(top: 10),
                   width: screenWidth,
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -427,7 +448,9 @@ class UserProfileState extends State<UserProfile> {
                   children: isFetched
                       ? tweets
                           .map((e) => TweetWidget(
-                            twtId: e["TweetID"],
+
+                              twtId: e["TweetID"],
+
                               id: "fa21bcs140",
                               name: e["Name"],
                               image: e["image"]["data"],

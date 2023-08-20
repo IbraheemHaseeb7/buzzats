@@ -19,6 +19,7 @@ String query = 'test';
 double? screenWidth;
 
 
+
 class SearchUser extends StatefulWidget {
   const SearchUser({super.key});
 
@@ -143,6 +144,7 @@ class _SearchUser extends State<SearchUser> {
             future: searchUser(query: query),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
+
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -155,11 +157,11 @@ class _SearchUser extends State<SearchUser> {
                   ),
                 ); 
               } else if (snapshot.hasError) {
-                
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                
+
                 return Text('No users found.',style: TextStyle(color: Colors.white),);
+
               } else {
                 List<Userlist>? data = snapshot.data;
                 return Column(
@@ -374,27 +376,29 @@ class userGet extends StatelessWidget{
       ),
     ),
     MaterialButton(
-      onPressed: () {
-           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>
-            SearchedUser(
-              name: name!, 
-              userID: userID!, 
-              email: email!, 
-              bio: bio!, 
-              department: department!, 
-              semester: semester!, 
-              bytes: bytes
-              ) ),
-          );
-      },
+      onPressed: () {},
+          //  Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) =>
+          //   // SearchedUser(
+          //   //   name: name!, 
+          //   //   userID: userID!, 
+          //   //   email: email!, 
+          //   //   bio: bio!, 
+          //   //   department: department!, 
+          //   //   semester: semester!, 
+          //   //   bytes: bytes
+          //   //   )
+          //   SearchedUser(myself: myself)
       minWidth: screenWidth,
       height: 120,
-    ),
-  ]);
+             ),
+  ],
+          );
+      }
+    
     
   }
 
 
-}
+

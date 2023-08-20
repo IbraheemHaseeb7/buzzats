@@ -33,13 +33,13 @@ class HomeShowState extends State<HomeShow> {
   
 
   String q =
-      "select id.UserID, Image as [image], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.UserID) from tb_Like t where t.TweetID = twt.TweetID ) as likes ,(select count(c.UserID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
+      "select id.Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select count(c.CommentID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, (select count(t.UserID) from tb_Like t where t.TweetID = twt.TweetID ) as likes ,(select count(c.UserID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
-   
     Feed.isEmpty().then((value) {
       if (value) {
+        print(value);
         query(q).then((value) {
           setState(() {
            
@@ -59,12 +59,21 @@ class HomeShowState extends State<HomeShow> {
         });
       }
     });
-
    
     super.initState();
   }
 
 
+
+  void checkLiked() async {
+    String check = "SELECT * FROM tb_Like t WHERE t.UserID = '${UserData.id}'";
+
+    List result = await query(check);
+
+    setState(() {
+      liked = result.isNotEmpty;
+    });
+  }
 
 
   @override
@@ -125,27 +134,30 @@ class HomeShowState extends State<HomeShow> {
           child: SingleChildScrollView(
             child: Column(
               children: isFetched
-                  ? tweets.map((e) => TweetWidget(
-                             liked: liked,
-                              twtId: e["TweetID"] ?? "", // Fetching the TweetID from the API response
-                              id: e["UserID"] ?? "",
-                              name: e["Name"] ?? "",
-                              image: e["image"] != null ? e["image"]["data"] : "",
-                              time: DateTime.parse(e["time"]).day ==
-                                  DateTime.now().day
-                              ? DateTime.parse(e["time"]).hour.toString() +
-                                  ":" +
-                                  DateTime.parse(e["time"]).minute.toString()
-                              : DateTime.parse(e["time"]).day.toString() +
-                                  DateFormat.MMM()
-                                      .format(DateTime.parse(e["time"])),
 
-                                content: e["Tweet"] ?? "",
-                                repliesCount: e["replies"] ?? 0,
-                                likesCount: e["likes"] ?? 0,
-                              )).toList()
+                  ? tweets
+                      .map((e) => TweetWidget(
+                            // liked: liked,
+                            twtId: e[
+                                "TweetID"], // Fetching the TweetID from the API response
+                            id: e["UserID"] ?? "",
+                            name: e["Name"] ?? "",
+                            image: e["image"] != null ? e["image"]["data"] : "",
+                            time: DateTime.parse(e["time"]).day ==
+                                    DateTime.now().day
+                                ? DateTime.parse(e["time"]).hour.toString() +
+                                    ":" +
+                                    DateTime.parse(e["time"]).minute.toString()
+                                : DateTime.parse(e["time"]).day.toString() +
+                                    DateFormat.MMM()
+                                        .format(DateTime.parse(e["time"])),
 
 
+                            content: e["Tweet"] ?? "",
+                            repliesCount: e["replies"] ?? 0,
+                            likesCount: e["likes"] ?? 0,
+                          ))
+                      .toList()
                   : [
                       const TweetSkeleton(),
                       const TweetSkeleton(),

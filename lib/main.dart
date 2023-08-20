@@ -5,15 +5,21 @@ import 'package:flutter_app_1/pages/GroupsMain.dart';
 import 'package:flutter_app_1/pages/SearchedUser.dart';
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/Timetable.dart';
+
+import 'package:flutter_app_1/pages/EditProfile.dart';
+
 import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/Home.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app_1/pages/ManageSociety.dart';
+import 'package:flutter_app_1/pages/Rooms.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 import 'package:flutter_app_1/pages/Society.dart';
+
 import 'package:flutter_app_1/pages/TimeCard.dart';
 import 'package:flutter_app_1/pages/TotalSocieties.dart';
+
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,7 +50,13 @@ class Main extends StatelessWidget {
       // ),
    //home: auth.currentUser == null ? MyApp() : Home(),
 
+
   home: TotalSocieties(), // add your page for quick testing
+
+      // home: UserProfile(
+      //   myself: true,
+      // ), // add your page for quick testing
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
           textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),

@@ -5,7 +5,7 @@ import 'package:flutter_app_1/main.dart';
 class Feed {
   static List<dynamic> tweets = [];
 
-  static void storeTweets(List<dynamic> t) async {
+  static Future storeTweets(List<dynamic> t) async {
     await Main.localStorage.write(key: "tweets", value: jsonEncode(t));
   }
 

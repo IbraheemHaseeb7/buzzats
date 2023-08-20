@@ -6,26 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
-import 'package:flutter_app_1/CustomWidgets/HomeDrawer.dart';
-import 'package:flutter_app_1/CustomWidgets/Reply.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyTweet.dart';
-import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/pages/ChatsHome.dart';
-import 'package:flutter_app_1/pages/CreateTweet.dart';
 import 'package:flutter_app_1/pages/HomeShow.dart';
-import 'package:flutter_app_1/pages/Logout.dart';
-import 'package:flutter_app_1/pages/Society.dart';
+
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/TotalSocieties.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
-import 'package:toast_notification/ToasterType.dart';
-import 'package:toast_notification/toast_notification.dart';
-
-import '../Skeletons/UserSkeleton.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -39,7 +28,11 @@ class HomeState extends State<Home> {
     HomeShow(),
     SuggestionPage(),
     TotalSocieties(),
-    UserProfile()
+  
+    ChatsHome(),
+    UserProfile(
+      myself: true,
+    )
   ];
 
   @override
