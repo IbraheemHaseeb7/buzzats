@@ -16,16 +16,15 @@ class PhoneNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserData();
-    String q = "select us.[Name] from tb_UserProfile us where us.UserID = '${UserData.id}'";
+    String q =
+        "select us.[Name] from tb_UserProfile us where us.UserID = '${UserData.id}'";
     double screenWidth = MediaQuery.of(context).size.width;
     String name = "";
     double screenHeight = MediaQuery.of(context).size.height;
     List<int> semesters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
-
-    void Name(){
-      query(q).then((value) => name= value.toString());
-
+    void Name() {
+      query(q).then((value) => name = value.toString());
     }
 
     return Scaffold(
@@ -37,7 +36,7 @@ class PhoneNumber extends StatelessWidget {
             children: [
               Container(
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
-                  child:  Text("Welcome, $name",
+                  child: const Text("Welcome to Buzzats",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,
@@ -58,7 +57,7 @@ class PhoneNumber extends StatelessWidget {
               ),
               Center(
                 child: Image.asset(
-                  "lib\\Assets\\musaImage.png",
+                  "lib\\Assets\\profile.png",
                   width: 200,
                   height: 200,
                 ),
@@ -180,7 +179,6 @@ class PhoneNumber extends StatelessWidget {
                           context,
                           MaterialPageRoute(builder: (context) => Home()),
                         );
-                      
                       },
                       child: Text("Let's Buzzz!!"),
                       style: ButtonStyle(

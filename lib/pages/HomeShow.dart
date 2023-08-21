@@ -4,8 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
-import 'package:flutter_app_1/Cache/Query.dart';
+// import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Notif.dart';
 import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
 import 'package:flutter_app_1/pages/Notifcations.dart';
@@ -26,28 +27,22 @@ class HomeShow extends StatefulWidget {
 }
 
 class HomeShowState extends State<HomeShow> {
-  List<dynamic> tweets = [];
+  static List<dynamic> tweets = [];
   List<dynamic> likes = [];
   bool isFetched = false;
-  bool liked = false;
-  
-
+  UserData u = UserData();
   String q =
-      "select id.Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet,twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select count(c.CommentID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, (select count(t.UserID) from tb_Like t where t.TweetID = twt.TweetID ) as likes ,(select count(c.UserID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
+      "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
 
   @override
   void initState() {
     Feed.isEmpty().then((value) {
       if (value) {
-        print(value);
-        query(q).then((value) {
+        socketQuery(q).then((e) {
           setState(() {
-           
-            Feed.storeTweets(value);
-            tweets = value;
+            Feed.storeTweets(e);
+            tweets = e;
             isFetched = true;
-
-
           });
         });
       } else {
@@ -59,22 +54,9 @@ class HomeShowState extends State<HomeShow> {
         });
       }
     });
-   
+
     super.initState();
   }
-
-
-
-  void checkLiked() async {
-    String check = "SELECT * FROM tb_Like t WHERE t.UserID = '${UserData.id}'";
-
-    List result = await query(check);
-
-    setState(() {
-      liked = result.isNotEmpty;
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +64,6 @@ class HomeShowState extends State<HomeShow> {
     double screenHeight = MediaQuery.of(context).size.height;
     bool isSelected = false;
 
-    
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
 
@@ -123,7 +104,7 @@ class HomeShowState extends State<HomeShow> {
 
       body: RefreshIndicator(
           onRefresh: () async {
-            return query(q).then((value) {
+            return socketQuery(q).then((value) {
               setState(() {
                 Feed.storeTweets(value);
                 tweets = value;
@@ -134,15 +115,14 @@ class HomeShowState extends State<HomeShow> {
           child: SingleChildScrollView(
             child: Column(
               children: isFetched
-
                   ? tweets
                       .map((e) => TweetWidget(
-                            // liked: liked,
+                            isLiked: e["HasLiked"] == "yes",
                             twtId: e[
                                 "TweetID"], // Fetching the TweetID from the API response
                             id: e["UserID"] ?? "",
                             name: e["Name"] ?? "",
-                            image: e["image"] != null ? e["image"]["data"] : "",
+                            image: e["image"] != null ? e["image"] : "",
                             time: DateTime.parse(e["time"]).day ==
                                     DateTime.now().day
                                 ? DateTime.parse(e["time"]).hour.toString() +
@@ -151,8 +131,6 @@ class HomeShowState extends State<HomeShow> {
                                 : DateTime.parse(e["time"]).day.toString() +
                                     DateFormat.MMM()
                                         .format(DateTime.parse(e["time"])),
-
-
                             content: e["Tweet"] ?? "",
                             repliesCount: e["replies"] ?? 0,
                             likesCount: e["likes"] ?? 0,
@@ -182,8 +160,9 @@ class HomeShowState extends State<HomeShow> {
       ),
     );
   }
+
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 }

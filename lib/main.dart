@@ -1,11 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
-import 'package:flutter_app_1/pages/GroupsMain.dart';
-import 'package:flutter_app_1/pages/SearchedUser.dart';
-import 'package:flutter_app_1/pages/SuggestionPage.dart';
-import 'package:flutter_app_1/pages/Timetable.dart';
-
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
 import 'package:flutter_app_1/pages/GettingStarted.dart';
@@ -32,26 +28,23 @@ void main() async {
   );
 
   runApp(Main());
+  socketConnection();
 }
 
 class Main extends StatelessWidget {
   static FirebaseAuth auth = FirebaseAuth.instance;
   static final localStorage = new FlutterSecureStorage();
-  
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-
-      
       // home: Society(
       //   society: SocietyData.societies[0],
       // ),
-   //home: auth.currentUser == null ? MyApp() : Home(),
+      //home: auth.currentUser == null ? MyApp() : Home(),
 
-
-  home: TotalSocieties(), // add your page for quick testing
+      home: TotalSocieties(), // add your page for quick testing
 
       // home: UserProfile(
       //   myself: true,
@@ -76,8 +69,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-          
-          appBar: AppBar(toolbarHeight: 0,),
+      appBar: AppBar(
+        toolbarHeight: 0,
+      ),
       backgroundColor: Color(0xff141d26),
       body: Align(
         alignment: Alignment.topCenter,

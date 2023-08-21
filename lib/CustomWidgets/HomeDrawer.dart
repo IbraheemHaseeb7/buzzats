@@ -1,6 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+<<<<<<< HEAD
+import 'dart:typed_data';
+
+=======
 import 'package:firebase_auth/firebase_auth.dart';
+>>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
@@ -16,9 +21,34 @@ import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+<<<<<<< HEAD
+class HomeDrawer extends StatefulWidget {
+  @override
+  createState() => HomeDrawerState();
+}
+
+class HomeDrawerState extends State<HomeDrawer> {
+  var image;
+  late String email = "";
+  late String name = "";
+
+  @override
+  void initState() {
+    UserData.fetchUser().then((value) {
+      setState(() {
+        image = value[0]["Image"]["data"];
+        email = value[0]["Email"];
+        name = value[0]["Name"];
+      });
+    });
+
+    super.initState();
+  }
+=======
 class HomeDrawer extends StatelessWidget {
 
 
+>>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +78,11 @@ class HomeDrawer extends StatelessWidget {
                               Border(bottom: BorderSide(color: Colors.white))),
                       child: UserAccountsDrawerHeader(
                         margin: EdgeInsets.zero,
-                        accountName: Text("abdullah"),
-                        accountEmail: Text("fa21-bcs-082@gmail.com"),
+                        accountName: Text(name),
+                        accountEmail: Text(email),
                         currentAccountPicture: CircleAvatar(
-                          backgroundImage: AssetImage("lib\\Assets\\abdu.jpg"),
+                          backgroundImage: MemoryImage(
+                              Uint8List.fromList(List<int>.from(image))),
                         ),
                       ),
                     ),
