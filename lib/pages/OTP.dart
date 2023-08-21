@@ -61,7 +61,7 @@ class OTPState extends State<OTP> {
             padding:
                 const EdgeInsets.only(top: 5, left: 25, right: 25, bottom: 15),
             child: const Text(
-              "We have sent one time OTP Code on to your given comsats email address",
+              "We have sent the OTP Code on to your given COMSATS Email address",
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,

@@ -1,13 +1,17 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_app_1/Cache/UserProfile.dart';
+
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
+import '../Cache/UserProfile.dart';
 import '../Cache/query.dart';
 import 'package:intl/intl.dart';
+
 
 String userID = "";
 String email = "";
@@ -19,6 +23,7 @@ String departmentRec = "";
 int semester = 0;
 String regNo = "";
 String batch = "";
+
 
 class UserProfile extends StatefulWidget {
   bool myself;
@@ -50,6 +55,8 @@ class UserProfileState extends State<UserProfile> {
   bool isFetched = false;
   int connections = 0;
 
+
+
   String q1 =
       "SELECT (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
 
@@ -57,6 +64,7 @@ class UserProfileState extends State<UserProfile> {
       "select count(FriendUserID) As 'connections' from tb_Friends where UserID='$userID'";
 
   String q3 = "select * from [tb_Userprofile] u WHERE u.userID='$userID'";
+
 
   @override
   void initState() {
@@ -167,6 +175,11 @@ class UserProfileState extends State<UserProfile> {
   }
 
   @override
+  void dispose(){
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //screenheight and width
     double screenWidth = MediaQuery.of(context).size.width;
@@ -198,6 +211,7 @@ class UserProfileState extends State<UserProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -222,6 +236,7 @@ class UserProfileState extends State<UserProfile> {
                                   color: Colors.blue)
                             ],
                           ),
+
                           const SizedBox(height: 8),
                           Row(
                             children: [
@@ -283,7 +298,7 @@ class UserProfileState extends State<UserProfile> {
                                           height:
                                               4), // Add some space between the texts
                                       Text(
-                                        "Mutuals",
+                                       "Mutuals",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 16,
@@ -315,7 +330,7 @@ class UserProfileState extends State<UserProfile> {
                         ],
                       ),
                       const SizedBox(
-                        width: 60,
+                        width: 30,
                       ),
                       Column(
                         children: [
@@ -333,14 +348,14 @@ class UserProfileState extends State<UserProfile> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.only(
                       bottom: 16.0, top: 2, left: 16, right: 16),
                   child: Container(
                     padding: const EdgeInsets.only(left: 11, top: 4),
                     width: screenWidth,
-                    height: screenHeight - 730,
+                    height: 120,
                     decoration: const BoxDecoration(
                         border: Border(
                             top: BorderSide(color: Colors.grey),
@@ -437,9 +452,16 @@ class UserProfileState extends State<UserProfile> {
                   children: isFetched
                       ? tweets
                           .map((e) => TweetWidget(
+<<<<<<< HEAD
                               isLiked: e["HasLiked"] == "yes",
                               twtId: e["TweetID"],
                               id: UserData.id ?? "",
+=======
+
+                              twtId: e["TweetID"],
+
+                              id: "fa21bcs140",
+>>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
                               name: e["Name"],
                               image: bytes,
                               time: DateTime.parse(e["time"]).day ==
@@ -458,8 +480,7 @@ class UserProfileState extends State<UserProfile> {
                           .toList()
                       : [
                           const TweetSkeleton(),
-                          const TweetSkeleton(),
-                          const TweetSkeleton(),
+                        
                         ],
                 ),
               ],

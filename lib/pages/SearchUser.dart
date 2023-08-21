@@ -1,25 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
+
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Skeletons/ChatSkeleton.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:http/http.dart' as http;
+import 'package:iconly/iconly.dart';
 import '../CustomWidgets/UserSuggest.dart';
+import '../Skeletons/SuggestUserSkel.dart';
+import 'SearchedUser.dart';
 import 'Userlist.dart';
 
 String? batchFinal;
 String query = 'test';
 double? screenWidth;
 
-class SearchMain extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SearchUser(),
-    );
-  }
-}
+
 
 class SearchUser extends StatefulWidget {
   const SearchUser({super.key});
@@ -32,6 +31,11 @@ class _SearchUser extends State<SearchUser> {
   Timer? _debounce;
 
   final TextEditingController _queryController = TextEditingController();
+  
+  @override
+  void initState(){
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -45,6 +49,7 @@ class _SearchUser extends State<SearchUser> {
 
     return Scaffold(
       backgroundColor: Color(0xff141d26),
+      appBar: AppBar(toolbarHeight: 3,),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,23 +61,20 @@ class _SearchUser extends State<SearchUser> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(18, 0, 0, 10),
+                padding: EdgeInsets.fromLTRB(6, 0, 0, 6),
                 child: IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SuggestionPage()),
-                    );
+                   Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(IconlyLight.arrow_left_2),
                   color: Colors.white,
-                  iconSize: 38,
+                  iconSize: 24,
                 ),
               ),
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(35, 15, 10, 20),
+                  padding: EdgeInsets.fromLTRB(1, 15, 10, 20),
                   child: TextField(
                     controller: _queryController,
                     autofocus: true,
@@ -121,11 +123,19 @@ class _SearchUser extends State<SearchUser> {
                       filled: true,
                       fillColor: const Color(0x20ffffff),
                       isDense: false,
-                      contentPadding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-                      prefixIcon: const Icon(Icons.search,
+                      contentPadding: const EdgeInsets.fromLTRB(8, 4, 12, 4),
+                      prefixIcon: const Icon(IconlyLight.search,
                           color: Color(0xffffffff), size: 28),
                     ),
                   ),
+                ),
+              ),
+               Padding(
+                padding: EdgeInsets.only(left: 3,right: 7),
+                child: Icon(
+                  IconlyLight.filter_2,
+                  color: Colors.white,
+                  size: 24,
                 ),
               ),
             ],
@@ -134,31 +144,39 @@ class _SearchUser extends State<SearchUser> {
             future: searchUser(query: query),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Column(
-                  children: [
-                    TweetSkeleton(),
-                    TweetSkeleton(),
-                    TweetSkeleton(),
-                    TweetSkeleton(),
-                    TweetSkeleton(),
-                    TweetSkeleton(),
-                  ],
-                );
+
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ChatSkeleton(),
+                      ChatSkeleton(),
+                      ChatSkeleton(),
+                      ChatSkeleton(),
+
+                    ],
+                  ),
+                ); 
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text('No users found.');
+
+                return Text('No users found.',style: TextStyle(color: Colors.white),);
+
               } else {
                 List<Userlist>? data = snapshot.data;
                 return Column(
                   children: data!.map((user) {
+                    //print("done");
                     return userGet(
-                      user.email!,
-                      user.bytes,
-                      user.name!,
-                      user.department!,
-                      user.semester!,
-                    );
+                      
+                      name: user.name!, 
+                      semester: user.semester.toString()!,
+                       bytes: user.bytes!, 
+                       email: user.email!, 
+                       department: user.department!,
+                       bio: user.bio,
+                       userID: user.userID!
+                       );
                   }).toList(),
                 );
               }
@@ -170,40 +188,78 @@ class _SearchUser extends State<SearchUser> {
   }
 }
 
+
+
+
 Future<List<Userlist>> searchUser({String? query}) async {
   List<Userlist> users = [];
 
-  query = query!.toLowerCase();
+  if (query == null || query.isEmpty) {
+    return users;
+  }
+
+  query = query.toLowerCase();
   const url = 'https://great-resonant-year.glitch.me/query';
   final headers = {'Content-Type': 'application/json'};
   final body = {
     'query': "select * from [tb_Userprofile] u WHERE u.Name LIKE '%$query%';"
   };
 
-  final response = await http.post(
-    Uri.parse(url),
-    headers: headers,
-    body: jsonEncode(body),
-  );
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(body),
+    );
 
-  if (response.statusCode == 200) {
-    Map<String, dynamic> data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
 
-    List<dynamic> usersData = data['data'];
+      List<dynamic> usersData = data['data'];
 
-    users = usersData
+       users = usersData
         .where((element) => element['Name'].toLowerCase().contains(query))
         .map((userJson) => Userlist.fromJson(userJson))
         .toList();
+  
+          return users;
+    } else {
+      print('Error: ${response.statusCode}');
+      // Handle non-200 status codes
+    }
+  } catch (e) {
+    print('Error: $e');
+    // Handle request errors
   }
 
   return users;
 }
 
-Stack userGet(String email, Uint8List? bytes, String name, String department,
-    int semester) {
-  batchFinal = email!.substring(0, 4);
+
+class userGet extends StatelessWidget{
+  String? email,department,name,userID,semester,bio;
+  Uint8List bytes;
+  
+  userGet({
+    Key? key,
+    required this.name,
+    required this.semester,
+    required this.bytes,
+    required this.email,
+    required this.department,
+    this.bio,
+    this.userID
+   
+
+  });
+
+
+  @override
+  Widget build(BuildContext context) {
+     batchFinal = email!.substring(0, 4);
   batchFinal = batchFinal!.toUpperCase();
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 
   return Stack(children: [
     Container(
@@ -232,7 +288,7 @@ Stack userGet(String email, Uint8List? bytes, String name, String department,
                 shape: BoxShape.circle,
               ),
               child: bytes != null
-                  ? Image.memory(bytes, width: 200, height: 200)
+                  ? Image.memory(bytes!, width: 200, height: 200)
                   : CircularProgressIndicator(),
             ),
           ),
@@ -246,7 +302,7 @@ Stack userGet(String email, Uint8List? bytes, String name, String department,
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
                   child: Text(
-                    name,
+                    name.toString(),
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.clip,
                     style: const TextStyle(
@@ -320,12 +376,29 @@ Stack userGet(String email, Uint8List? bytes, String name, String department,
       ),
     ),
     MaterialButton(
-      onPressed: () {
-        // Nevigate to user profile//
-        print("Hi");
-      },
+      onPressed: () {},
+          //  Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) =>
+          //   // SearchedUser(
+          //   //   name: name!, 
+          //   //   userID: userID!, 
+          //   //   email: email!, 
+          //   //   bio: bio!, 
+          //   //   department: department!, 
+          //   //   semester: semester!, 
+          //   //   bytes: bytes
+          //   //   )
+          //   SearchedUser(myself: myself)
       minWidth: screenWidth,
       height: 120,
-    ),
-  ]);
-}
+             ),
+  ],
+          );
+      }
+    
+    
+  }
+
+
+

@@ -1,44 +1,37 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter_app_1/CustomWidgets/SocietySuggest.dart';
 import 'package:flutter_app_1/CustomWidgets/UserSuggest.dart';
 import 'package:flutter_app_1/Skeletons/SuggestSocSkel.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:iconly/iconly.dart';
 import 'package:flutter_app_1/pages/SearchUser.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-
+import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:http/http.dart' as http;
 
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:intl/intl.dart';
+import '../Cache/Suggestions.dart';
 import 'Userlist.dart';
 
-String? userID;
-String? name;
-String? email;
-String? recoveryEmail;
-String? department;
-String? departmentRec;
-String? batch;
-int? semester;
-String? bio;
-Uint8List? bytes;
 
-void main() {
-  runApp(SugesstionsMain());
-}
-
-class SugesstionsMain extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SuggestionPage(),
-    );
-  }
-}
 
 class SuggestionPage extends StatefulWidget {
-  const SuggestionPage({super.key});
+  SuggestionPage({super.key});
+    String? userID;
+    String? name;
+    String? email;
+    String? recoveryEmail;
+    String? department;
+    String? departmentRec;
+    String? batch;
+    int? semester;
+    String? bio;
+    Uint8List? bytes;
 
   @override
   State<SuggestionPage> createState() => _SuggestionPage();
@@ -64,15 +57,93 @@ class _SuggestionPage extends State<SuggestionPage> {
     setState(() {});
   }
 
+
   bool showPeopleWidgets = true;
   bool showSocietyWidgets = false;
   bool showPeopleButton = true;
   bool showSocietyButton = true;
   bool showSuggestionsText = true;
 
+
+  String q = "select count(sm.SMemberID) as members, s.SocietyID,s.About,s.SocietyName from tb_Society s inner join tb_SocietyMembers sm on s.SocietyID = sm.SocietyID group by s.SocietyID, s.About,s.SocietyName order by rand()";
+
+  String q2 = "select top 10 * from [tb_Userprofile]";
+
+   List<dynamic> people = [];
+  List<dynamic> societies = [];
+  bool isSoc = false;
+  bool isPeople = false;
+
+ 
+  
+ 
+  @override
+  void initState(){
+
+     Suggestions.EmptySoc().then((value) {
+      if (value) {
+        suggestSoc(q).then((value) {
+          setState(() {
+           
+            Suggestions.storeSocieites(value);
+            societies = value;
+             isSoc = true;
+
+
+          });
+        });
+      } else {
+        Suggestions.fetchSocieties().then((value) {
+          setState(() {
+            societies = value;
+            isSoc = true;
+          });
+        });
+      }
+    });
+
+    
+    //  Suggestions.EmptySoc().then((value) {
+    //   if (value) {
+    //     suggestSoc(q).then((value) {
+    //       setState(() {
+           
+    //         Suggestions.storeSocieites(value);
+    //         societies = value;
+    //          isSoc = true;
+
+
+    //       });
+    //     });
+    //   } else {
+    //     Suggestions.fetchSocieties().then((value) {
+    //       setState(() {
+    //         societies = value;
+    //         isSoc = true;
+    //       });
+    //     });
+    //   }
+    // });
+    super.initState();
+        
+  }
+  @override
+  void dispose(){
+
+    super.dispose();
+        
+  }
+
+ 
+
+
+ 
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
+      appBar: AppBar(toolbarHeight: 0),
       backgroundColor: const Color(0xff141d26),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -84,18 +155,11 @@ class _SuggestionPage extends State<SuggestionPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(18, 0, 0, 10),
-                child: Icon(
-                  Icons.filter_alt_outlined,
-                  color: Colors.white,
-                  size: 38,
-                ),
-              ),
+              
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(35, 15, 10, 20),
+                  padding: const EdgeInsets.fromLTRB(12, 15, 10, 20),
                   child: TextField(
                     controller: TextEditingController(),
                     readOnly: true,
@@ -139,15 +203,24 @@ class _SuggestionPage extends State<SuggestionPage> {
                         color: Color(0xffffffff),
                       ),
                       filled: true,
-                      fillColor: const Color(0x20ffffff),
+                      fillColor: Color.fromARGB(36, 73, 72, 99),
                       isDense: false,
                       contentPadding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-                      prefixIcon: const Icon(Icons.search,
+                      prefixIcon: const Icon(IconlyLight.search,
                           color: Color(0xffffffff), size: 28),
                     ),
                   ),
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.only(top: 2,right: 5),
+                child: Icon(
+                  IconlyLight.filter_2,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ),
+             
             ],
           ),
           Column(
@@ -184,6 +257,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                       child: MaterialButton(
                         onPressed: () {
                           setState(() {
+                            
                             // Reduce the font size by a certain amount when the button is pressed
                             peopleColor = const Color(0xFF4137BD);
                             societyColor = const Color(0xffffffff);
@@ -194,9 +268,12 @@ class _SuggestionPage extends State<SuggestionPage> {
                         },
                         color: const Color(0x00ffffff),
                         elevation: 0,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
+                       shape: Border(
+                        bottom:BorderSide(
+                          color:showPeopleWidgets?  const Color(0xFF4137BD) : Colors.transparent, // Bottom border color
+                          width: 2.0, // Border width
+                        )  
+                      ),
                         padding: const EdgeInsets.all(0),
                         textColor: peopleColor,
                         height: 40,
@@ -213,7 +290,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(120, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(100, 20, 0, 20),
                     child: MaterialButton(
                       onPressed: () {
                         setState(() {
@@ -223,11 +300,16 @@ class _SuggestionPage extends State<SuggestionPage> {
                           showSocietyWidgets = true;
                           showPeopleWidgets = false;
                         });
+
+
                       },
                       color: const Color(0x00ffffff),
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
+                    shape: Border(
+                        bottom: BorderSide(
+                          color: showSocietyWidgets ? const Color(0xFF4137BD) : Colors.transparent, // Bottom border color
+                          width: 2.0, // Border width
+                        ),
                       ),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
@@ -248,15 +330,16 @@ class _SuggestionPage extends State<SuggestionPage> {
               ),
             ],
           ),
-          Visibility(
-            visible: showPeopleWidgets,
-            child: Expanded(
+
+
+          showPeopleWidgets ? 
+          Expanded(
               child: RefreshIndicator(
                 key: _refreshPeopleKey,
                 onRefresh: _handlePeopleRefresh,
                 child: SingleChildScrollView(
                   child: FutureBuilder<List<Userlist>?>(
-                    future: showSuggestions(),
+                    future: showSuggestions(q2),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Column(
@@ -292,42 +375,77 @@ class _SuggestionPage extends State<SuggestionPage> {
                   ),
                 ),
               ),
-            ),
-          ),
-          Visibility(
-            visible: showSocietyWidgets,
-            child: Expanded(
-              child: RefreshIndicator(
-                key: _refreshSocietyKey,
-                onRefresh: _handleSocietyRefresh,
-                child: const SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SocietySuggest(),
-                      SocietySuggest(),
-                      SocietySuggest(),
-                      SocietySuggest(),
-                      SocietySuggest(),
-                      SocietySuggest(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+            ) 
+            :
+
+         Expanded(
+    child: RefreshIndicator(
+      key: _refreshSocietyKey,
+      onRefresh: _handleSocietyRefresh,
+      child:isSoc ? Column(
+                  children: societies.map((e) => 
+                     SocietySuggest(
+                  name: e["SocietyName"],
+                  about: e["About"],
+                  connections: e["members"],
+                )
+
+                  ).toList()): SuggestSocSkel(),
+             
+        
+    ),
+  ),
+
+          
         ],
       ),
     );
   }
+
+Future<List<dynamic>> suggestSoc(String q) async {
+  List<dynamic> soc = [];
+
+
+  const url = 'https://great-resonant-year.glitch.me/query';
+  final headers = {'Content-Type': 'application/json'};
+  final body = {'query': q};
+
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+      print('Response Status Code: ${response.statusCode}');
+  print('Response Body: ${response.body}');
+
+    if (response.statusCode == 200) {
+     Map<String,dynamic> data = jsonDecode(response.body);
+      
+      soc = data['data'];
+      print(soc);
+
+      return soc;
+      
+
+    } else {
+      return soc;
+    }
+  } catch (e) {
+    return soc;
+  }
 }
 
-Future<List<Userlist>?> showSuggestions() async {
+
+
+Future<List<Userlist>?> showSuggestions(String q2) async {
   List<Userlist>? users;
 
   final url = 'https://great-resonant-year.glitch.me/query';
   final headers = {'Content-Type': 'application/json'};
   final body = {
-    'query': 'select top 10 * from [tb_Userprofile]',
+    'query': q2,
   };
 
   final response = await http.post(
@@ -349,8 +467,7 @@ Future<List<Userlist>?> showSuggestions() async {
   return users;
 }
 
-Stack userGet(String email, Uint8List? bytes, String name, String department,
-    int semester) {
+Stack userGet(String email, Uint8List? bytes, String name, String department, int semester) {
   batchFinal = email!.substring(0, 4);
   batchFinal = batchFinal!.toUpperCase();
 
@@ -478,3 +595,5 @@ Stack userGet(String email, Uint8List? bytes, String name, String department,
     ),
   ]);
 }
+}
+

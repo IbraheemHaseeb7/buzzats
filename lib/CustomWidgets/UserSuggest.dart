@@ -32,7 +32,8 @@ class _UserSuggest extends State<UserSuggest> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return Stack(children: [
+    return Stack(
+      children: [
       Container(
         margin: EdgeInsets.zero,
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -71,19 +72,24 @@ class _UserSuggest extends State<UserSuggest> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
-                    child: Text(
-                      name,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.clip,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16,
-                        color: Color(0xffffffff),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
+                        child: Text(
+                          name,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 16,
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                        
                       ),
-                    ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),

@@ -160,4 +160,9 @@ class HomeShowState extends State<HomeShow> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

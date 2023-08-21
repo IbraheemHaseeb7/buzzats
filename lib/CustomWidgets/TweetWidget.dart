@@ -15,6 +15,7 @@ class TweetWidget extends StatefulWidget {
   bool isLiked;
   var image;
 
+<<<<<<< HEAD
   TweetWidget(
       {Key? key,
       required this.name,
@@ -27,6 +28,20 @@ class TweetWidget extends StatefulWidget {
       required this.likesCount,
       required this.isLiked})
       : super(key: key);
+=======
+  TweetWidget({
+    Key? key,
+    this.liked,
+    required this.name,
+    required this.twtId,
+    required this.id,
+    required this.image,
+    required this.time,
+    required this.content,
+    required this.repliesCount,
+    required this.likesCount,
+  });
+>>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
 
   @override
   _TweetWidgetState createState() => _TweetWidgetState();
@@ -38,15 +53,20 @@ class _TweetWidgetState extends State<TweetWidget> {
 
   @override
   void initState() {
+<<<<<<< HEAD
     setState(() {
       isLiked = widget.isLiked;
     });
+=======
+    isLiked = widget.liked!;
+>>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
     super.initState();
     imageBytes = Uint8List.fromList(List<int>.from(widget.image));
     // Check if the user has already liked the tweet
   }
 
   void handleLike() async {
+<<<<<<< HEAD
     String queryStatement;
     if (!isLiked) {
       queryStatement =
@@ -79,7 +99,40 @@ class _TweetWidgetState extends State<TweetWidget> {
         });
       }
     });
+=======
+  int likes = widget.likesCount;
+
+  // Update the likes count based on the like/unlike action
+  if (!isLiked) {
+    likes++; // Increment likes count if liking the tweet
+  } else {
+    likes--; // Decrement likes count if unliking the tweet
+>>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
   }
+
+  // Update the UI with the new likes count and liked status
+  setState(() {
+    isLiked = !isLiked; // Toggle liked status
+    widget.likesCount = likes; // Update likes count in the widget
+  });
+
+  String queryStatement;
+  if (isLiked) {
+    queryStatement =
+        "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())";
+  } else {
+    queryStatement =
+        "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${widget.id}'";
+  }
+
+  await query(queryStatement); // Execute the SQL query
+}
+
+
+
+
+
+  
 
   @override
   Widget build(BuildContext context) {
