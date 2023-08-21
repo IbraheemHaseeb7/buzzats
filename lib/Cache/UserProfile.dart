@@ -20,7 +20,7 @@ class UserData {
   }
 
   static Future<List<dynamic>> fetchUser() async {
-    return jsonDecode(await Main.localStorage.read(key: "user") ?? "");
+    return jsonDecode(await Main.localStorage.read(key: "user") ?? "[]");
   }
 
   static Future<dynamic> isEmpty() async {

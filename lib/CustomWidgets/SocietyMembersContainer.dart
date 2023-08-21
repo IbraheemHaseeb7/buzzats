@@ -12,8 +12,16 @@ class SocietyMembersContainer extends StatefulWidget {
 }
 
 class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
+  
+  //late String q = "select * from tb_SocietyMembers"
+  
   @override
   void initState() {
+
+
+
+
+
     super.initState();
   }
 
@@ -62,7 +70,7 @@ class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
                         borderRadius: BorderRadius.circular(60),
                         borderSide: const BorderSide(
                             color: Color(0xff6080A7), width: 1)),
-                    hintText: "Search...",
+                    hintText: "Search Members",
                     hintStyle:
                         TextStyle(color: Color(0xff6080A7), fontSize: 12)),
               ),

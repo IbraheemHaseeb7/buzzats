@@ -1,9 +1,42 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
-class SocietyMutual extends StatelessWidget {
-  Image image;
+class SocietyMutual extends StatefulWidget{
+  var image;
   String name;
-  SocietyMutual({super.key, required this.image, required this.name});
+  SocietyMutual({
+    super.key,
+     required this.image, 
+     required this.name});
+  
+  @override
+  MutualState createState() => MutualState();
+
+
+
+}
+
+
+class MutualState extends State<SocietyMutual> {
+
+late Uint8List imageBytes;
+late List<int> imageData;
+late  Map<String, dynamic> imageMap;
+
+  @override 
+  void initState(){
+    super.initState();
+
+imageMap = widget.image;
+imageData = List<int>.from(imageMap['data']);
+ imageBytes = Uint8List.fromList(imageData);
+
+
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +54,11 @@ class SocietyMutual extends StatelessWidget {
               width: 60,
               margin: const EdgeInsets.only(left: 15, right: 15),
               child: ClipOval(
-                child: image,
+                child: Image.memory(imageBytes),
               ),
             ),
             Text(
-              name,
+              widget.name,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold),
             )

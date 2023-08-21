@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
 class Groups extends StatelessWidget {
-  // String name,description;
+  String name,description;
 
-  // Groups({super.key, required this.name,required this.description});
+  Groups({super.key, required this.name,required this.description});
 
-  Map<String, dynamic> group;
-  Groups({super.key, required this.group});
+  // Map<String, dynamic> group;
+  // Groups({super.key, required this.group});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class Groups extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              group["name"],
+              name,
               style: const TextStyle(color: Colors.white),
             ),
             Container(
@@ -35,7 +35,7 @@ class Groups extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    group["description"],
+                    description,
                     style: const TextStyle(color: Color(0xff6080A7)),
                   ),
                 ],

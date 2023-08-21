@@ -65,60 +65,91 @@ class SocietyState extends State<Society> {
   late String q3;
   List<dynamic> sameGroups = [];
   List<dynamic> groups = [];
+  List<dynamic> sameMembers = [];
+  List<dynamic> members = [];
+
+  List<dynamic> mutuals = [];
   bool isGroup = false;
+  bool isMember = false;
+  bool isMutual = false;
+  int groupsCount = 0;
  
 
 
 
   void initState(){
+    UserData();
 
     //GroupsCache.delete();
 
    q2 = "select * from tb_SocietyTweets soc where soc.SocietyID = '${widget.id}' ";
-            print(widget.id);
-            q3 = "select * from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' ";
+   
+    q3 = "select count(soc.SGroupID) as groups, soc.* from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' group by soc.SGroupName,soc.SGroupID,soc.SocietyID,soc.DirectorID,soc.[description] ";
 
-   print(widget.id);
 
-    // GroupsCache.fetchGc().then((value) {
+
+    GroupsCache.fetchGc().then((value) {
  
-    // groups = value;
-    //       print(value);
+    widget.groups = value;
+    print(widget.groups);
+  
 
-    // for(int index =0;index<value.length;index++)
-    // {
-    //     if(value[index]["SocietyID"]==widget.id)
-    //     {
-    //       setState(() {
-    //       isGroup = true; 
-    //       sameGroups = value[index]["SGroupName"];
-    //       print("inrrr");
+    for(int index =0;index<value.length;index++)
+    {
+
+        print(value[index]["SocietyID"]);
+        if(value[index]["SocietyID"]==widget.id)
+        {
+          setState(() {
+          print("fghhjfegfvgjevj  $value");
+          isGroup = true; 
+          print("neyvhwev    ${value[index]["SGroupsName"]}");
+          sameGroups = value[index]["SGroupsName"];
+          
+          // UserData.fetchUser().then((value){
+
+          //   print(value[0]["name"]);
+          //   widget.president = value[0]["name"];
+
+          // });
             
-    //       });
-    //        return;
-    //     }
+        
+
+
+          }  );
+           return;
+        }
       
 
-    // }
-    // query(q3).then((e){
+    }
+    query(q3).then((e){
 
-    //        setState(() {
+           setState(() {
             
-    //         groups.add({"SGroupsName":e , "SocietyID":widget.id});
-    //         GroupsCache.storeGc(groups);
-    //         sameGroups = e;
+            widget.groups.add({"SGroupsName":e , "SocietyID":widget.id});
+            GroupsCache.storeGc(widget.groups);
+            sameGroups = e;
           
-    //         isGroup = true;
+            isGroup = true;
+             sameGroups.map((e){
+           
+              print("grouspss ${e["groups"]}");
+              groupsCount = e["groups"];
+            });
+          
 
 
-    //       });
+          });
        
 
-    // });
+    });
 
-    // });
+    });
+
+         
 
 
+          
   SocietyMain.fetchTwts().then((value) {
  
     tweets = value;
@@ -155,57 +186,7 @@ class SocietyState extends State<Society> {
     });
 
     });
-    //   if (value) {
-    //     query(q2).then((value) {
-    //       setState(() {
-           
-    //         SocietyMain.storeTwts(value);
-    //         tweets = value;
-          
-    //         isTweet = true;
-
-
-    //       });
-    //     });
-    //   } else {
-    //     SocietyMain.fetchTwts().then((value) {
-    //       setState(() {
-    //         //print(value);
-    //         print("ttwtfu  $value");
-    //          tweets = value;
-    //         print("agdggege  $tweets");
-    //         isTweet = true;
-    //       });
-    //     });
-    //   }
-    // });
-
-//     print(widget.id);
-// setState(() {
-  
-//     for (var e in tweets) {
-//       print("ierhug");
-//       if (e["SocietyID"] == '${widget.id}') {
-//         tweetsWithSameId.add(e);
-       
-//         print("hfhr");
-//       }
-//     }
-
-//     if (tweetsWithSameId.isNotEmpty) {
-//       isTweet = true;
-//       for (var tweet in tweetsWithSameId) {
-        
-//         print("heree   $tweet");
-//       }
-//     } else {
-//       print("No tweets with the given SocietyID found");
-//     }
     
-// });
-
-
-
     super.initState();
 
 
@@ -301,7 +282,7 @@ class SocietyState extends State<Society> {
       body: RefreshIndicator(
           onRefresh: handleRefresh,
           child: Container(
-              padding: const EdgeInsets.only(top: 50),
+              padding: const EdgeInsets.only(top: 30),
               color: const Color(0xff141D26),
               width: screenWidth,
               child: SingleChildScrollView(
@@ -316,7 +297,7 @@ class SocietyState extends State<Society> {
                     widget.name,
                     style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 25,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none),
                   ),
@@ -325,28 +306,28 @@ class SocietyState extends State<Society> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Column(
-                        //   children: [
-                        //     Text(
-                        //       widget.society["followersCount"],
-                        //       style: const TextStyle(
-                        //           color: Colors.white,
-                        //           fontSize: 30,
-                        //           fontWeight: FontWeight.bold,
-                        //           decoration: TextDecoration.none),
-                        //     ),
-                        //     const Text(
-                        //       "followers",
-                        //       style: TextStyle(
-                        //           fontSize: 15,
-                        //           color: Colors.white,
-                        //           decoration: TextDecoration.none),
-                        //     )
-                        //   ],
-                        // ),
-                        // const SizedBox(
-                        //   width: 30,
-                        // ),
+                        Column(
+                          children: [
+                            Text(
+                              groupsCount.toString(),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.none),
+                            ),
+                            const Text(
+                              "Groups",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
                         Column(
                           children: [
                             Text(
@@ -358,7 +339,7 @@ class SocietyState extends State<Society> {
                                   decoration: TextDecoration.none),
                             ),
                             const Text(
-                              "members",
+                              "Members",
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,
@@ -378,7 +359,7 @@ class SocietyState extends State<Society> {
                       style: const TextStyle(
                           color: Color(0xff6080A7),
                           decoration: TextDecoration.none,
-                          fontSize: 15),
+                          fontSize: 17),
                     ),
                   ),
                   Container(
@@ -387,26 +368,26 @@ class SocietyState extends State<Society> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                              height: 35,
-                              width: screenWidth * 0.4,
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                          side: const BorderSide(
-                                              color: Color(0xff6080A7),
-                                              width: 2.0),
-                                        ),
-                                      ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              const Color(0xff141D26))),
-                                  onPressed: handleFollow,
-                                  child: const Text("follow"))),
+                          // Container(
+                          //     height: 35,
+                          //     width: screenWidth * 0.4,
+                          //     child: ElevatedButton(
+                          //         style: ButtonStyle(
+                          //             shape: MaterialStateProperty.all<
+                          //                 RoundedRectangleBorder>(
+                          //               RoundedRectangleBorder(
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(50.0),
+                          //                 side: const BorderSide(
+                          //                     color: Color(0xff6080A7),
+                          //                     width: 2.0),
+                          //               ),
+                          //             ),
+                          //             backgroundColor:
+                          //                 MaterialStateProperty.all<Color>(
+                          //                     const Color(0xff141D26))),
+                          //         onPressed: handleFollow,
+                          //         child: const Text("follow"))),
                           Container(
                               height: 35,
                               width: screenWidth * 0.4,
@@ -581,10 +562,12 @@ class SocietyState extends State<Society> {
                         );
                       case Displayed.groups: 
                         return SocietyGroupsContainer(
-                            groups: widget.society["groups"]);
+                            groups:sameGroups, id: widget.id,isGroup: isGroup,);
                       case Displayed.mutuals:
                         return SocietyMutualsContainer(
-                          members: widget.society["mutuals"],
+                          members: mutuals,
+                          id: widget.id,
+                          isMutual: isMutual,
                         );
                       case Displayed.members:
                         return SocietyMembersContainer(

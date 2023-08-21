@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 
-import '../Cache/GroupsCache.dart';
-import '../Cache/Query.dart';
 import '../Cache/Society.dart';
-import '../Cache/SocietyMain.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 class MySoc extends StatefulWidget {
   String name,about,id,president;
@@ -68,7 +66,7 @@ class SocState extends State<MySoc> {
   Widget build(BuildContext context) {
 
      double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    //double screenHeight = MediaQuery.of(context).size.height;
 
     print(widget.about);
 

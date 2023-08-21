@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/MutualsCache.dart';
+import 'package:flutter_app_1/CustomWidgets/SocietyMutual.dart';
+import 'package:flutter_app_1/Skeletons/SuggestUserSkel.dart';
 
+import '../Cache/Query.dart';
+import '../Cache/UserProfile.dart';
 import 'SocietyMember.dart';
 
 class SocietyMutualsContainer extends StatefulWidget {
-  List<Map<String, dynamic>> members;
-  SocietyMutualsContainer({super.key, required this.members});
+  List<dynamic> members;
+  String id;
+  bool isMutual;
+  SocietyMutualsContainer({
+    super.key, 
+    required this.members,
+    required this.id,
+    required this.isMutual,
+    });
 
   @override
   _SocietyMutualsContainerState createState() =>
@@ -12,8 +24,68 @@ class SocietyMutualsContainer extends StatefulWidget {
 }
 
 class _SocietyMutualsContainerState extends State<SocietyMutualsContainer> {
+  
+
+  late String q3;
+  List<dynamic> sameMutuals = [];
+  
+        
+  
   @override
   void initState() {
+    UserData();
+
+   q3 = "select prof.UserID,prof.[Name],prof.BIO, prof.[Image]	from tb_UserProfile prof inner join tb_SocietyMembers members on members.UserID = prof.UserID where prof.UserID in (select frn.FriendUserID from tb_Friends frn where frn.UserID = '${UserData.id}' and members.SocietyID = '${widget.id}')";
+
+
+
+    MutualsCache.fetchMutuals().then((value) {
+ 
+    widget.members = value;
+    print(widget.members);
+  
+
+    for(int index =0;index<value.length;index++)
+    {
+
+        print(value[index]["SocietyID"]);
+        if(value[index]["SocietyID"]==widget.id)
+        {
+          setState(() {
+         print("fghhjfegfvgjevj  $value");
+          widget.isMutual = true; 
+          print("neyvhwev    ${value[index]["Mutual"]}");
+          sameMutuals = value[index]["Mutual"];
+          
+         
+            print(sameMutuals);
+          }  );
+           return;
+        }
+      
+
+    }
+    query(q3).then((e){
+
+           setState(() {
+            
+            widget.members.add({"Mutual":e , "SocietyID":widget.id});
+            MutualsCache.storeMutuals(widget.members);
+            sameMutuals = e;
+          
+            widget.isMutual = true;
+            print("wurey   $sameMutuals");
+
+          });
+       
+
+    });
+
+    });
+
+
+
+
     super.initState();
   }
 
@@ -62,19 +134,22 @@ class _SocietyMutualsContainerState extends State<SocietyMutualsContainer> {
                         borderRadius: BorderRadius.circular(60),
                         borderSide: const BorderSide(
                             color: Color(0xff6080A7), width: 1)),
-                    hintText: "Search...",
+                    hintText: "Search",
                     hintStyle:
                         TextStyle(color: Color(0xff6080A7), fontSize: 12)),
               ),
             ),
             Container(
               child: Column(
-                  children: widget.members
-                      .map((e) => SocietyMember(
-                          image: e["image"],
-                          name: e["name"],
-                          roles: e["roles"]))
-                      .toList()),
+                  children: widget.isMutual ? sameMutuals
+                      .map((e) {
+                        return SocietyMutual(
+                          image:e["Image"], 
+                          name: e["Name"] ?? "");
+
+                      }
+                      )
+                      .toList() : [SuggestUserSkel(),]),
             )
           ],
         ));
