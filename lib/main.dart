@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:flutter_app_1/pages/GettingStarted.dart';
 import 'package:flutter_app_1/pages/Home.dart';
@@ -22,6 +23,7 @@ void main() async {
   );
 
   runApp(Main());
+  socketConnection();
 }
 
 class Main extends StatelessWidget {

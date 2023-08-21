@@ -26,7 +26,7 @@ class PhoneNumber extends StatelessWidget {
             children: [
               Container(
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
-                  child: const Text("Welcome, Musa Raza",
+                  child: const Text("Welcome to Buzzats",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,
@@ -47,7 +47,7 @@ class PhoneNumber extends StatelessWidget {
               ),
               Center(
                 child: Image.asset(
-                  "lib\\Assets\\musaImage.png",
+                  "lib\\Assets\\profile.png",
                   width: 200,
                   height: 200,
                 ),
@@ -169,7 +169,6 @@ class PhoneNumber extends StatelessWidget {
                           context,
                           MaterialPageRoute(builder: (context) => Home()),
                         );
-                      
                       },
                       child: Text("Let's Buzzz!!"),
                       style: ButtonStyle(

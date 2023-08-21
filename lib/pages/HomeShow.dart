@@ -4,8 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
-import 'package:flutter_app_1/Cache/Query.dart';
+// import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Notif.dart';
 import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
 import 'package:flutter_app_1/pages/Notifcations.dart';
@@ -35,13 +36,12 @@ class HomeShowState extends State<HomeShow> {
 
   @override
   void initState() {
-    //  checkLiked();
     Feed.isEmpty().then((value) {
       if (value) {
-        query(q).then((value) {
+        socketQuery(q).then((e) {
           setState(() {
-            Feed.storeTweets(value);
-            tweets = value;
+            Feed.storeTweets(e);
+            tweets = e;
             isFetched = true;
           });
         });
@@ -104,7 +104,7 @@ class HomeShowState extends State<HomeShow> {
 
       body: RefreshIndicator(
           onRefresh: () async {
-            return query(q).then((value) {
+            return socketQuery(q).then((value) {
               setState(() {
                 Feed.storeTweets(value);
                 tweets = value;
@@ -122,7 +122,7 @@ class HomeShowState extends State<HomeShow> {
                                 "TweetID"], // Fetching the TweetID from the API response
                             id: e["UserID"] ?? "",
                             name: e["Name"] ?? "",
-                            image: e["image"] != null ? e["image"]["data"] : "",
+                            image: e["image"] != null ? e["image"] : "",
                             time: DateTime.parse(e["time"]).day ==
                                     DateTime.now().day
                                 ? DateTime.parse(e["time"]).hour.toString() +
@@ -131,7 +131,6 @@ class HomeShowState extends State<HomeShow> {
                                 : DateTime.parse(e["time"]).day.toString() +
                                     DateFormat.MMM()
                                         .format(DateTime.parse(e["time"])),
-
                             content: e["Tweet"] ?? "",
                             repliesCount: e["replies"] ?? 0,
                             likesCount: e["likes"] ?? 0,

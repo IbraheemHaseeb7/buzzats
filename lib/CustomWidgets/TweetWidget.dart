@@ -113,11 +113,13 @@ class _TweetWidgetState extends State<TweetWidget> {
                 child: widget.image == null
                     ? Image.asset(
                         "lib/Assets/profile.jpg",
+                        fit: BoxFit.cover,
                         width: 50,
                       )
                     : Image.memory(
                         imageBytes,
                         width: 50,
+                        fit: BoxFit.cover,
                       ),
               ),
             ),
