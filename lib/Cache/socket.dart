@@ -25,18 +25,28 @@ void socketConnection() {
   });
 }
 
+final _completers = <String, Completer<List<dynamic>>>{};
+
 Future<List<dynamic>> socketQuery(String query) async {
-  final completer = Completer<List<dynamic>>(); // Create a Completer object
+  Completer<List<dynamic>> completer =
+      Completer<List<dynamic>>(); // Create a Completer object
+  _completers["event"] = completer;
 
   socket.emit("query", [query, UserData.id]);
 
   socket.on("query", (data) {
-    completer.complete(data["data"]); // Complete the Completer with the data
+    final completer = _completers.remove("event");
+    if (completer != null) {
+      completer.complete(data["data"]); // Complete the Completer with the data
+    }
   });
 
   socket.onError((data) {
-    completer
-        .complete(throw Error()); // Complete the Completer with an empty list
+    final completer = _completers.remove("event");
+    if (completer != null) {
+      completer.completeError(
+          throw Error()); // Complete the Completer with an empty list
+    }
   });
 
   return completer.future; // Return the Future from the Completer

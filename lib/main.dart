@@ -42,9 +42,9 @@ class Main extends StatelessWidget {
       // home: Society(
       //   society: SocietyData.societies[0],
       // ),
-      //home: auth.currentUser == null ? MyApp() : Home(),
+      home: auth.currentUser == null ? MyApp() : Home(),
 
-      home: TotalSocieties(), // add your page for quick testing
+      // home: TotalSocieties(), // add your page for quick testing
 
       // home: UserProfile(
       //   myself: true,

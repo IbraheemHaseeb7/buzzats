@@ -15,6 +15,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 import '../Cache/Likes.dart';
 import '../CustomWidgets/HomeDrawer.dart';
 import '../CustomWidgets/SocietyTweet.dart';
@@ -28,16 +30,19 @@ class HomeShow extends StatefulWidget {
 
 class HomeShowState extends State<HomeShow> {
   static List<dynamic> tweets = [];
+  final scrollController = ScrollController();
   List<dynamic> likes = [];
   bool isFetched = false;
+  bool isLoadingMore = false;
   UserData u = UserData();
+  var renderedTweets;
   String q =
-      "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc";
+      "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc offset 0 rows fetch next 6 rows only";
 
   @override
   void initState() {
     Feed.isEmpty().then((value) {
-      if (value) {
+      if (!value) {
         socketQuery(q).then((e) {
           setState(() {
             Feed.storeTweets(e);
@@ -55,7 +60,39 @@ class HomeShowState extends State<HomeShow> {
       }
     });
 
+    scrollController.addListener(scrollListener);
+
     super.initState();
+  }
+
+  void scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      setState(() {
+        isLoadingMore = true;
+        loadMore();
+      });
+    }
+  }
+
+  void loadMore() {
+    socketQuery(
+            "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked',(select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID where twt.[Date/Time] < '${tweets[tweets.length - 1]["time"]}'order by [time] desc offset 0 rows fetch next 6 rows only")
+        .then((value) {
+      setState(() {
+        tweets.addAll(value);
+        isLoadingMore = false;
+      });
+    }).catchError((e) {
+      ToastMe(text: "Error Occurred!", type: ToasterType.Error, duration: 2000)
+          .showToast(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -110,32 +147,52 @@ class HomeShowState extends State<HomeShow> {
                 tweets = value;
                 isFetched = true;
               });
+            }).catchError((err) {
+              ToastMe(
+                      text: "Error Occurred",
+                      type: ToasterType.Error,
+                      duration: 2000)
+                  .showToast(context);
             });
           },
           child: SingleChildScrollView(
+            controller: scrollController,
             child: Column(
               children: isFetched
-                  ? tweets
-                      .map((e) => TweetWidget(
-                            isLiked: e["HasLiked"] == "yes",
-                            twtId: e[
-                                "TweetID"], // Fetching the TweetID from the API response
-                            id: e["UserID"] ?? "",
-                            name: e["Name"] ?? "",
-                            image: e["image"] != null ? e["image"] : "",
-                            time: DateTime.parse(e["time"]).day ==
-                                    DateTime.now().day
-                                ? DateTime.parse(e["time"]).hour.toString() +
-                                    ":" +
-                                    DateTime.parse(e["time"]).minute.toString()
-                                : DateTime.parse(e["time"]).day.toString() +
-                                    DateFormat.MMM()
-                                        .format(DateTime.parse(e["time"])),
-                            content: e["Tweet"] ?? "",
-                            repliesCount: e["replies"] ?? 0,
-                            likesCount: e["likes"] ?? 0,
-                          ))
-                      .toList()
+                  ? [
+                      Column(
+                          children: tweets.map((e) {
+                        return TweetWidget(
+                          isLiked: e["HasLiked"] == "yes",
+                          twtId: e["TweetID"],
+                          id: e["UserID"] ?? "",
+                          name: e["Name"] ?? "",
+                          image: e["image"] ?? "",
+                          time: DateTime.parse(e["time"]).day ==
+                                  DateTime.now().day
+                              ? DateTime.parse(e["time"]).hour.toString() +
+                                  ":" +
+                                  DateTime.parse(e["time"]).minute.toString()
+                              : DateTime.parse(e["time"]).day.toString() +
+                                  DateFormat.MMM()
+                                      .format(DateTime.parse(e["time"])),
+                          content: e["Tweet"] ?? "",
+                          repliesCount: e["replies"] ?? 0,
+                          likesCount: e["likes"] ?? 0,
+                        );
+                      }).toList()),
+                      (() {
+                        if (isLoadingMore) {
+                          return Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+                        return Container();
+                      })()
+                    ]
                   : [
                       const TweetSkeleton(),
                       const TweetSkeleton(),
@@ -159,10 +216,5 @@ class HomeShowState extends State<HomeShow> {
         backgroundColor: Color(0xFF4137BD),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
