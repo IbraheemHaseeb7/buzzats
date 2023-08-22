@@ -19,6 +19,7 @@ import '../Cache/Query.dart';
 import '../Cache/GroupsCache.dart';
 import '../Cache/SocietyMain.dart';
 import '../Cache/UserProfile.dart';
+import 'CreateSocietyTweet.dart';
 
 class Society extends StatefulWidget {
   
@@ -585,6 +586,18 @@ class SocietyState extends State<Society> {
                   })(),
                 ],
               )))),
+              floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CreateSocietyTweet(id: widget.id, groups: widget.groups)),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF4137BD),
+      ),
     );
   }
 }

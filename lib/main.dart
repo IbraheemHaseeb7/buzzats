@@ -28,7 +28,7 @@ void main() async {
   );
 
   runApp(Main());
-  socketConnection();
+  // socketConnection();
 }
 
 class Main extends StatelessWidget {
@@ -37,6 +37,8 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    auth.currentUser != null ? socketConnection() : "";
+
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       // home: Society(
