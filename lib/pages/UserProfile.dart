@@ -451,17 +451,12 @@ class UserProfileState extends State<UserProfile> {
                 Column(
                   children: isFetched
                       ? tweets
-                          .map((e) => TweetWidget(
-<<<<<<< HEAD
+                          .map((e) 
+                          {  return
+                           TweetWidget(
                               isLiked: e["HasLiked"] == "yes",
                               twtId: e["TweetID"],
                               id: UserData.id ?? "",
-=======
-
-                              twtId: e["TweetID"],
-
-                              id: "fa21bcs140",
->>>>>>> 7180ea21132697f4b119c233e5643d60f8c42616
                               name: e["Name"],
                               image: bytes,
                               time: DateTime.parse(e["time"]).day ==
@@ -476,8 +471,8 @@ class UserProfileState extends State<UserProfile> {
                                           .format(DateTime.parse(e["time"])),
                               content: e["Tweet"],
                               repliesCount: e["replies"],
-                              likesCount: e["likes"]))
-                          .toList()
+                              likesCount: e["likes"]);
+                          }).toList()
                       : [
                           const TweetSkeleton(),
                         
