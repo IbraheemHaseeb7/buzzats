@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/ImageOverlay.dart';
 
 class SocietyTweetImage extends StatefulWidget {
-  SocietyTweetImage({super.key});
+  var image;
+  SocietyTweetImage(
+    {
+      super.key,
+      required this.image
+      });
 
   @override
   SocietyTweetImageState createState() => SocietyTweetImageState();

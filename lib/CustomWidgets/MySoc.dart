@@ -1,13 +1,17 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/MembersCache.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 
 import '../Cache/Society.dart';
+import '../Cache/UserProfile.dart';
 
 class MySoc extends StatefulWidget {
   String name, about, id, president, presidentId;
   int connections;
+  var image;
 
   MySoc({
     super.key,
@@ -17,6 +21,7 @@ class MySoc extends StatefulWidget {
     required this.id,
     required this.president,
     required this.presidentId,
+    required this.image,
   });
 
   @override
@@ -25,15 +30,22 @@ class MySoc extends StatefulWidget {
 
 class SocState extends State<MySoc> {
   late String q2;
-  late String q3;
-  List<dynamic> sameGroups = [];
+  List<dynamic> members = [];
   List<dynamic> groups = [];
-  bool isGroup = false;
-  //bool isT = false;
+  bool isMember = false;
 
   @override
   void initState() {
-    //q2 = "select * from tb_SocietyTweets sc where sc.SocietyID = '${widget.id}' ";
+    UserData();
+
+    // UserData.fetchUser().then((value){
+    //       setState(() {
+
+    //           print(value[0]["name"]);
+    //           widget.president = value[0]["name"];
+    //       });
+
+    //         });
 
     super.initState();
   }
@@ -55,16 +67,18 @@ class SocState extends State<MySoc> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Society(
-                  name: widget.name,
-                  groups: groups,
-                  id: widget.id,
-                  about: widget.about,
-                  presidentId: widget.presidentId,
-                  members: widget.connections,
-                  society: SocietyData.societies[0],
-                  president: widget.president),
-            ));
+                builder: (context) => Society(
+                      memberss: [],
+                      name: widget.name,
+                      groups: groups,
+                      id: widget.id,
+                      about: widget.about,
+                      presidentId: widget.presidentId,
+                      members: widget.connections,
+                      society: SocietyData.societies[0],
+                      president: widget.president,
+                      image: widget.image,
+                    )));
       },
       child: Container(
         margin: EdgeInsets.zero,

@@ -1,19 +1,36 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyTweetImage.dart';
 import 'package:iconly/iconly.dart';
+import 'package:toast_notification/ToasterType.dart';
+import 'package:toast_notification/toast_notification.dart';
 
 import 'Replying.dart';
 
 class SocietyTweet extends StatefulWidget {
-  String name,tweet;
+  String name,tweet,twtId;
+  List<Image> tweetImage;
+  bool isLiked;
+  int likesCount;
+  var image;
   SocietyTweet({
     
     super.key,
+
     required this.name,
     required this.tweet,
+    //required this.time,
+    required this.twtId,
+    required this.image,
+    required this.tweetImage,
+    required this.isLiked,
+    required this.likesCount,
     
     });
 
@@ -22,12 +39,69 @@ class SocietyTweet extends StatefulWidget {
 }
 
 class _SocietyTweet extends State<SocietyTweet> {
+  
   bool isLiked = false;
+  var imageBytes;
 
-  void handleLike() {
+    @override 
+    void initState(){
+      UserData();
+      
+     if(widget.image!=null)
+    {
+
+    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    }
+    
+      
+
+
+
+      
+      super.initState();
+    
+    
     setState(() {
-      isLiked = !isLiked;
+      isLiked = widget.isLiked;
     });
+    }
+
+
+
+  Future<void> handleLike() async {
+     String queryStatement;
+    if (!isLiked) {
+      queryStatement =
+          "INSERT INTO STweetsLike VALUES ('${widget.twtId}', '${UserData.id}', GETDATE())";
+      setState(() {
+        ++widget.likesCount;
+        isLiked = !isLiked;
+      });
+    } else {
+      queryStatement =
+          "DELETE FROM STweetsLike WHERE STweetID = '${widget.twtId}' AND UserID = '${UserData.id}'";
+      setState(() {
+        --widget.likesCount;
+        isLiked = !isLiked;
+      });
+    }
+
+    await socketQuery(queryStatement).then((value) {}).catchError((err) {
+      ToastMe(text: "Error occurred!", type: ToasterType.Error)
+          .showToast(context);
+      if (isLiked) {
+        setState(() {
+          --widget.likesCount;
+          isLiked = false;
+        });
+      } else {
+        setState(() {
+          ++widget.likesCount;
+          isLiked = true;
+        });
+      }
+    });
+  
   }
 
   @override
@@ -49,10 +123,17 @@ class _SocietyTweet extends State<SocietyTweet> {
               padding: EdgeInsets.only(top: 12, left: 12, right: 8),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(200)),
-                child: Image.asset(
-                  "lib\\Assets\\abdu.jpg",
-                  width: 50,
-                ),
+                child: widget.image == null
+                    ? Image.asset(
+                        "lib/Assets/profile.jpg",
+                        fit: BoxFit.cover,
+                        width: 50,
+                      )
+                    : Image.memory(
+                        imageBytes,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
 
@@ -90,7 +171,13 @@ class _SocietyTweet extends State<SocietyTweet> {
                             ),
                           ],
                         ),
-                        
+                        //  Text(
+                        //   widget.time,
+                        //   style: TextStyle(
+                        //       color: const Color.fromARGB(255, 114, 114, 114),
+                        //       fontSize: 13,
+                        //       fontWeight: FontWeight.w600),
+                        // ),
                       ],
                     ),
                   ),
@@ -105,19 +192,19 @@ class _SocietyTweet extends State<SocietyTweet> {
                       ),
                     ),
                   ),
-                  Container(
+                  widget.tweetImage.isNotEmpty ? Container(
                     margin: const EdgeInsets.only(top: 20),
                     width: screenWidth - 100,
                     height: 150, // Set the desired height of the container
                     child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        SocietyTweetImage(),
-                        SocietyTweetImage(),
-                        SocietyTweetImage(),
-                      ],
-                    ),
+                  scrollDirection: Axis.horizontal,
+                  children: List.generate(
+                    widget.tweetImage.length, // Replace with the actual number of images you have
+                    (index) => SocietyTweetImage(image: widget.tweetImage[index]),
                   ),
+                ),
+
+                  ) : SizedBox(height: 0,),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: Column(
@@ -130,42 +217,21 @@ class _SocietyTweet extends State<SocietyTweet> {
                                 IconButton(
                                   onPressed: handleLike,
                                   icon: Icon(
-                                    !isLiked
-                                        ? CupertinoIcons.heart
-                                        : CupertinoIcons.heart_fill,
-                                    color: !isLiked ? Colors.white : Colors.red,
+                                   isLiked
+                                        ? CupertinoIcons.heart_fill
+                                        : CupertinoIcons.heart,
+                                    color: isLiked ? Colors.red : Colors.white,
                                   ),
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  "20",
+                                  widget.likesCount.toString(),
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 12),
                                 ),
                               ],
                             ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (context) => Replying(twtId: "",));
-                                  },
-                                  icon: Icon(
-                                    CupertinoIcons.arrow_counterclockwise,
-                                    color: Colors.white,
-                                  ),
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  "4 ",
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
-                              ],
-                            ),
+                           
                             IconButton(
                               onPressed: null,
                               icon: Icon(

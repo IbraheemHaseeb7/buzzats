@@ -1,4 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/MembersCache.dart';
+import 'package:flutter_app_1/Cache/MutualsCache.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Groups.dart';
 import 'package:flutter_app_1/Cache/GroupsCache.dart';
 import 'package:flutter_app_1/CustomWidgets/PushNotif.dart';
@@ -14,6 +19,7 @@ import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
 import 'package:flutter_app_1/pages/Apply.dart';
 import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:iconly/iconly.dart';
+import 'package:intl/intl.dart';
 
 import '../Cache/Query.dart';
 import '../Cache/GroupsCache.dart';
@@ -22,11 +28,12 @@ import '../Cache/UserProfile.dart';
 import 'CreateSocietyTweet.dart';
 
 class Society extends StatefulWidget {
-  Map<String, dynamic> society;
   String name, id, about, president, presidentId;
-
+  var image;
   List<dynamic> groups = [];
+  List<dynamic> memberss = [];
   int members;
+  Map<String, dynamic> society;
 
   Society({
     super.key,
@@ -35,9 +42,11 @@ class Society extends StatefulWidget {
     required this.id,
     required this.about,
     required this.members,
+    required this.memberss,
     required this.society,
     required this.president,
     required this.presidentId,
+    required this.image,
   });
 
   @override
@@ -62,25 +71,30 @@ class SocietyState extends State<Society> {
   List<dynamic> sameGroups = [];
   List<dynamic> groups = [];
   List<dynamic> sameMembers = [];
-  List<dynamic> members = [];
 
   List<dynamic> mutuals = [];
   bool isGroup = false;
   bool isMember = false;
   bool isMutual = false;
+  bool hasTweets = true;
   int groupsCount = 0;
+  var imageBytes;
 
   void initState() {
+    if (widget.image != null) {
+      imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    }
+
+    // SocietyMain.delete();
     UserData();
     if (UserData.id == widget.presidentId) {
       setState(() {
         isPresident = true;
       });
     }
-    //GroupsCache.delete();
 
     q2 =
-        "select * from tb_SocietyTweets soc where soc.SocietyID = '${widget.id}' ";
+        "select twt.STweet,twt.SGroupID,twt.Picture, (select count(l.UserID) from STweetsLike l where l.STweetID = twt.STweetID) as likes,(select isnull('yes','no') from STweetsLike tl where tl.STweetID=twt.STweetID and tl.UserID='${UserData.id}') as 'HasLiked' from tb_SocietyTweets twt where twt.SocietyID = '${widget.id}'";
 
     q3 =
         "select count(soc.SGroupID) as groups, soc.* from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' group by soc.SGroupName,soc.SGroupID,soc.SocietyID,soc.DirectorID,soc.[description] ";
@@ -97,22 +111,48 @@ class SocietyState extends State<Society> {
             isGroup = true;
             print("neyvhwev    ${value[index]["SGroupsName"]}");
             sameGroups = value[index]["SGroupsName"];
-
-            // UserData.fetchUser().then((value){
-
-            //   print(value[0]["name"]);
-            //   widget.president = value[0]["name"];
-
-            // });
           });
           return;
         }
       }
-      query(q3).then((e) {
+      socketQuery(q3).then((e) {
         setState(() {
           widget.groups.add({"SGroupsName": e, "SocietyID": widget.id});
           GroupsCache.storeGc(widget.groups);
           sameGroups = e;
+
+          isGroup = true;
+
+          // UserData.fetchUser().then((value){
+
+          //   print(value[0]["name"]);
+          //   widget.president = value[0]["name"];
+
+          // });
+        });
+      });
+    });
+
+    SocietyMain.fetchTwts().then((value) {
+      tweets = value;
+      print(value);
+
+      for (int index = 0; index < value.length; index++) {
+        if (value[index]["SocietyID"] == widget.id) {
+          setState(() {
+            isTweet = true;
+            tweetsWithSameId = value[index]["STweet"];
+          });
+          return;
+        }
+      }
+      socketQuery(q2).then((e) {
+        setState(() {
+          tweets.add({"STweet": e, "SocietyID": widget.id});
+          SocietyMain.storeTwts(tweets);
+          tweetsWithSameId = e;
+
+          isTweet = true;
 
           isGroup = true;
           sameGroups.map((e) {
@@ -256,7 +296,19 @@ class SocietyState extends State<Society> {
                       margin: const EdgeInsets.only(bottom: 20),
                       width: screenWidth * 0.35,
                       height: screenWidth * 0.35,
-                      child: ClipOval(child: widget.society["logo"])),
+                      child: ClipOval(
+                        child: widget.image == null
+                            ? Image.asset(
+                                "lib/Assets/profile.jpg",
+                                fit: BoxFit.cover,
+                                width: 50,
+                              )
+                            : Image.memory(
+                                imageBytes,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                      )),
                   Text(
                     widget.name,
                     style: const TextStyle(
@@ -273,7 +325,7 @@ class SocietyState extends State<Society> {
                         Column(
                           children: [
                             Text(
-                              groupsCount.toString(),
+                              sameGroups.length.toString(),
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
@@ -503,20 +555,45 @@ class SocietyState extends State<Society> {
                           width: screenWidth,
                           constraints: const BoxConstraints(minHeight: 500),
                           child: Column(
-                            children: isTweet
+                            children: isTweet && tweetsWithSameId.isNotEmpty
                                 ? tweetsWithSameId.map((e) {
                                     return SocietyTweet(
                                       name: widget.name,
-                                      tweet: e["STweet"],
+                                      tweet: e["STweet"] ?? "",
+                                      likesCount: e["likes"] ?? 0,
+                                      isLiked: e["HasLiked"] == "yes",
+                                      //    time:DateTime.parse(e["time"]).day ==
+                                      //     DateTime.now().day
+                                      // ? DateTime.parse(e["time"]).hour.toString() +
+                                      //     ":" +
+                                      //     DateTime.parse(e["time"]).minute.toString()
+                                      // : DateTime.parse(e["time"]).day.toString() +
+                                      //     DateFormat.MMM()
+                                      //         .format(DateTime.parse(e["time"])),
+                                      twtId: e["STweetID"] ?? "",
+                                      image: widget.image,
+                                      tweetImage: e["Picture"] ?? [],
                                     );
                                   }).toList()
-                                : [
-                                    SocietyTwtSkeleton(),
-                                    SocietyTwtSkeleton(),
-                                    SocietyTwtSkeleton(),
+                                : tweetsWithSameId.isEmpty
+                                    ? [
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Center(
+                                              child: Text(
+                                            "No tweets available",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
+                                        ),
+                                      ]
+                                    : [
+                                        SocietyTwtSkeleton(),
+                                        SocietyTwtSkeleton(),
+                                        SocietyTwtSkeleton(),
 
-                                    // SocietyTweet()
-                                  ],
+                                        // SocietyTweet()
+                                      ],
                           ),
                         );
                       case Displayed.groups:
@@ -533,7 +610,8 @@ class SocietyState extends State<Society> {
                         );
                       case Displayed.members:
                         return SocietyMembersContainer(
-                          members: widget.society["members"],
+                          members: sameMembers,
+                          id: widget.id,
                         );
                       default:
                         return Container(
@@ -550,8 +628,11 @@ class SocietyState extends State<Society> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    CreateSocietyTweet(id: widget.id, groups: widget.groups)),
+                builder: (context) => CreateSocietyTweet(
+                      id: widget.id,
+                      groups: widget.groups,
+                      image: widget.image,
+                    )),
           );
         },
         child: Icon(Icons.add),

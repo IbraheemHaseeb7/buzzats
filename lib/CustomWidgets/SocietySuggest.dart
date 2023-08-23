@@ -5,6 +5,7 @@ import 'package:flutter_app_1/pages/Society.dart';
 class SocietySuggest extends StatefulWidget {
   String name, about, president, id, presidentId;
   int connections;
+  var image;
 
   SocietySuggest({
     required this.name,
@@ -13,6 +14,7 @@ class SocietySuggest extends StatefulWidget {
     required this.connections,
     required this.president,
     required this.presidentId,
+    required this.image,
   });
 
   @override
@@ -33,6 +35,8 @@ class _SocietySuggest extends State<SocietySuggest> {
                   builder: (builder) => Society(
                       name: widget.name,
                       groups: [],
+                      memberss: [],
+                      image: widget.image,
                       presidentId: widget.presidentId,
                       id: widget.id,
                       about: widget.about,

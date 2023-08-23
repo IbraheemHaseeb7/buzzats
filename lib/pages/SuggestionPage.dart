@@ -65,7 +65,7 @@ class _SuggestionPage extends State<SuggestionPage> {
   bool showSuggestionsText = true;
 
   String q =
-      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID)as members, soc.SocietyID, (select [Name] from tb_UserProfile u where u.[UserID]=soc.PresidentID) as President, soc.PresidentID, soc.About,soc.SocietyName from tb_Society soc";
+      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID) as members, soc.SocietyID, (select [Name] from tb_UserProfile u where u.[UserID]=soc.PresidentID) as President, soc.PresidentID,soc.About, soc.Picture, soc.SocietyName from tb_Society soc";
 
   String q2 = "select top 10 * from [tb_Userprofile]";
 
@@ -358,6 +358,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                             return Column(
                                 children: data.map((s) {
                               return SocietySuggest(
+                                  image: s["Picture"],
                                   president: s["President"],
                                   presidentId: s["PresidentID"],
                                   id: s["SocietyID"],

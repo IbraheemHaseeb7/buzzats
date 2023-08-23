@@ -21,11 +21,13 @@ import '../CustomWidgets/CustomDropDownMenu.dart';
 class CreateSocietyTweet extends StatefulWidget {
   String id;
   List<dynamic> groups = [];
+  var image;
 
   CreateSocietyTweet({
     super.key,
     required this.id,
     required this.groups,
+    required this.image,
   });
 
   @override
@@ -34,16 +36,38 @@ class CreateSocietyTweet extends StatefulWidget {
 
 class CreateSocietyTweetState extends State<CreateSocietyTweet> {
   List<File> images = [];
+  List<String> grps = ["hbdjhfbh"];
   TextEditingController tweetController = TextEditingController();
   bool isButtonDisabled = true;
   var twtLimit = "500";
-  var img;
+  var img,imageBytes;
 
   String selectedItem = 'Society Tweet';
 
   @override
   void initState() {
     super.initState();
+
+       if(widget.image!=null)
+    {
+
+    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    }
+    
+      
+
+    widget.groups.map((e) {
+      
+       setState(() {
+         
+          grps = e["SGroupName"];
+       });
+       
+
+
+    });
+
+    print(widget.groups);
     tweetController.addListener(updateButtonState);
   }
 
@@ -128,10 +152,20 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(200)),
                     child: Container(
-                      child: Image(
-                        image: AssetImage("lib\\Assets\\ieee.jpg"),
+                      child:  ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(200)),
+                child: widget.image == null
+                    ? Image.asset(
+                        "lib/Assets/profile.jpg",
+                        fit: BoxFit.cover,
                         width: 50,
+                      )
+                    : Image.memory(
+                        imageBytes,
+                        width: 50,
+                        fit: BoxFit.cover,
                       ),
+              ),
                     ),
                   ),
                 ),
@@ -205,33 +239,29 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
             Expanded(
               flex: 3,
               child: Container(
-                child: DropdownButton<String>(
-                  value: selectedItem,
-                  dropdownColor: Color(0xff141d26),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedItem = newValue ?? '';
-                    });
-                  },
-                  items: <String>[
-                    'Society Tweet',
-                    'Photography Team',
-                    'Designing Team',
-                    'Registrations Team',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(
-                          color: Colors.white, // Change the text color here
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
+                child:  DropdownButton<String>(
+            items: widget.groups.map<DropdownMenuItem<String>>(
+              (value) {
+                return DropdownMenuItem<String>(
+                  value: value["SGroupName"],
+                  child: Text(value["SGroupName"].toString()),
+                );
+              },
+            ).toList(),
+            onChanged: (newValue) {
+              setState(() {
+                
+               selectedItem = newValue.toString();
+              });
+           
+            },
+            value: widget.groups.map((e) => e["SGroupName"]).toString(), // Initially selected value
+            isExpanded: true, // Allow the dropdown to take up the full width
+          ),
+        ),
+        ),
+              
+            
 
             SizedBox(width: 8), // Add spacing between the buttons
 
