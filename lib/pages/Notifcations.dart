@@ -19,6 +19,7 @@ class Notifications extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
       appBar: AppBar(
+        
         backgroundColor: Color(0xFF141D26), 
         title: Text("Buzzers",
         style: TextStyle(

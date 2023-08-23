@@ -205,7 +205,10 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
             ),
             if (images.isNotEmpty)
               CarouselSlider(
-                items: images.map((file) => Image.file(file)).toList(),
+                items: images.map((file) => Image.file(file,
+                 width: 100,
+                  height: 150,
+                  fit: BoxFit.cover,)).toList(),
                 options:
                     CarouselOptions(height: 400, enableInfiniteScroll: false),
               ),

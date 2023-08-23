@@ -59,23 +59,28 @@ class TotalState extends State<TotalSocieties> {
 
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text("My Societies"),
         ),
         body: Container(
+          padding: EdgeInsets.all(10),
           width: screenWidth,
           height: screenHeight,
           color: Color(0xff141d26),
           child: isFetched
               ? Column(
                   children: soc
-                      .map((e) => MySoc(
-                          name: e["SocietyName"],
-                          about: e["About"],
-                          connections: e["members"],
-                          id: e["SocietyID"],
-                          president: e["PresidentID"],
-                          image: e["Picture"],
-                          ))
+                      .map((e) => Padding(
+                        padding: EdgeInsets.only(bottom:8),
+                        child: MySoc(
+                            name: e["SocietyName"],
+                            about: e["About"],
+                            connections: e["members"],
+                            id: e["SocietyID"],
+                            president: e["PresidentID"],
+                            image: e["Picture"],
+                            ),
+                      ))
                       .toList())
               : SuggestUserSkel(),
         ));

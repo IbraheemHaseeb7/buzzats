@@ -125,23 +125,23 @@ class _TweetWidgetState extends State<TweetWidget> {
                     ? Image.asset(
                         "lib/Assets/profile.jpg",
                         fit: BoxFit.cover,
-                        width: 50,
+                        width: 40,
                       )
                     : Image.memory(
                         imageBytes,
-                        width: 50,
+                        width: 40,
                         fit: BoxFit.cover,
                       ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.only(top:10,bottom: 7,left: 8,right: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: screenWidth - 120,
+                    width: screenWidth - 110,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +152,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                               widget.name,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 255, 255, 255),
-                                fontSize: 17,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
@@ -166,7 +166,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                       child: Icon(
                                         Icons.verified,
                                         color: Colors.white,
-                                        size: 17,
+                                        size: 16,
                                       ));
                                 default:
                                   return Container();
@@ -196,14 +196,18 @@ class _TweetWidgetState extends State<TweetWidget> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 14.0, bottom: 6),
+                    padding: const EdgeInsets.only(top: 5.0, bottom: 0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 IconButton(
                                   onPressed: handleLike,
@@ -214,6 +218,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                     color: isLiked ? Colors.red : Colors.white,
                                   ),
                                   color: Colors.white,
+                                  iconSize: 20,
                                 ),
                                 Text(
                                   widget.likesCount.toString(),
@@ -223,6 +228,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 IconButton(
                                   onPressed: () {
@@ -237,6 +243,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                     color: Colors.white,
                                   ),
                                   color: Colors.white,
+                                   iconSize: 20,
                                 ),
                                 Text(
                                   widget.repliesCount.toString(),
@@ -251,6 +258,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 Icons.more_vert,
                                 color: Colors.white,
                               ),
+                                iconSize: 20,
                               color: Colors.white,
                             ),
                           ],

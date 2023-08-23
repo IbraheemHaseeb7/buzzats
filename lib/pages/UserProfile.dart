@@ -9,6 +9,7 @@ import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
+import 'package:flutter_app_1/pages/Connections.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 import '../Cache/UserProfile.dart';
 import '../Cache/query.dart';
@@ -57,9 +58,10 @@ class UserProfileState extends State<UserProfile> {
   int connections = 0;
   @override
   void initState() {
-    if (widget.myself) {
       UserData();
+    if (widget.myself) {
       UserData.fetchUser().then((value) async {
+        
         final tweetsValue = await socketQuery(
             "SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${UserData.id}' order by [time] desc");
         setState(() {
@@ -167,6 +169,7 @@ class UserProfileState extends State<UserProfile> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text(regNo.toUpperCase()),
           backgroundColor: const Color(0xFF141D26),
         ),
@@ -227,13 +230,24 @@ class UserProfileState extends State<UserProfile> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "$connections",
-                                        textAlign: TextAlign.left,
-                                        style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                      GestureDetector(
+                                        onTap: () {
+                                          print(UserData.id);
+                                            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>  Connections(id:UserData.id)),
+                        );
+                                         
+                                        },
+                                        child: Text(
+                                          "$connections",
+                                          textAlign: TextAlign.left,
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(
@@ -430,7 +444,7 @@ class UserProfileState extends State<UserProfile> {
                       ? tweets.map((e) {
                           return TweetWidget(
                               isLiked: e["HasLiked"] == "yes",
-                              twtId: e["TweetID"],
+                              twtId: e["TweetID"] ?? "",
                               id: UserData.id ?? "",
                               name: e["Name"],
                               image: bytes,

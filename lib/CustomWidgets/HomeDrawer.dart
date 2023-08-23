@@ -29,7 +29,9 @@ class HomeDrawerState extends State<HomeDrawer> {
   void initState() {
     UserData.fetchUser().then((value) {
       setState(() {
+
         image = value[0]["Image"]["data"];
+        print(image);
         email = value[0]["Email"];
         name = value[0]["Name"];
       });
@@ -256,6 +258,45 @@ class HomeDrawerState extends State<HomeDrawer> {
                             translation: Offset(0.1, 0.5),
                             child: Text(
                               "About Us",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => About()),
+                            );
+                          }, 
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 9, left: 9),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: ListTile(
+                          leading: FractionalTranslation(
+                            translation: Offset(0.1, 0.5),
+                            child: Icon(
+                              IconlyLight.notification,
+                              color: Colors.white,
+                            ),
+                          ),
+                          title: FractionalTranslation(
+                            translation: Offset(0.1, 0.5),
+                            child: Text(
+                              "Handle Notification",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.white,

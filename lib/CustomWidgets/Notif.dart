@@ -73,52 +73,17 @@ class Notif extends StatelessWidget {
     ),
 
 ),
-        
-
-           Padding(
-             padding: const EdgeInsets.only(top: 0),
-             child: Stack(
-              alignment: Alignment.bottomLeft,
-               children: [
-                type != Types.Connect &&  type!=Types.View ?
-                 ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  child: Image.asset(
-                                    "lib\\Assets\\ieee.jpg",
-                                    width: 37,
-                                  ),
-                                ): type == Types.Connect ? ElevatedButton(
-        onPressed: null,
-        child: Text("Accept" , style: TextStyle(color: Colors.white),),
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue,foregroundColor: Colors.blue),
-        
-      ): type == Types.View ? chooseIcon(type):
-      Container(),
-                              
-                              Container(
+              
+    Container(
                 
-                 decoration: BoxDecoration(
-             boxShadow: [
-                     BoxShadow(
-              color: Colors.black.withOpacity(0.3), // Shadow color
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 2), // Shadow offset
-                     ),
-                   ],
-                 ),
                  child: chooseIcon(type)
                ),
                                
                ],
              ),
-           ),
-
-
-        ],
-      ),
-
     );
+
+
   }
 
 

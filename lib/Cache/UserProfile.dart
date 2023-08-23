@@ -24,12 +24,12 @@ class UserData {
   }
 
   static Future<dynamic> isEmpty() async {
-    var temp = jsonDecode(await Main.localStorage.read(key: "user") ?? "");
+    var temp = jsonDecode(await Main.localStorage.read(key: "user") ?? "[]");
     return temp == "" || temp!.length == 0;
   }
 
   static Future getImage() async {
-    var img = jsonDecode(await Main.localStorage.read(key: "user") ?? "")[0]
+    var img = jsonDecode(await Main.localStorage.read(key: "user") ?? "[]")[0]
         ["Image"]["data"];
     var bytes = Uint8List.fromList(List<int>.from(img));
     return bytes;
