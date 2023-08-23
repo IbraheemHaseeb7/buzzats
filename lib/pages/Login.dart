@@ -167,32 +167,33 @@ class _LoginScreen extends State<LoginScreen> {
                       ),
                       SizedBox(height: 16),
                       TextFormField(
-                        cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
-                        controller: emailController,
-                        onChanged: (text) {
-                          handleEmail(text);
-                        },
-                        decoration: InputDecoration(
-                          hintStyle: const TextStyle(
-                              color: Color.fromARGB(255, 110, 110, 110)),
-                          hintText: "COMSATS Email Address",
-                          labelStyle: TextStyle(color: Colors.white),
-                          labelText: "Email",
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: emailColor, width: 2),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: emailColor, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: emailColor, width: 2),
-                          ),
+                      style: TextStyle(color: Colors.white),
+                      controller: emailController,
+                      onChanged: (text) {
+                        handleEmail(text);
+                      },
+                      decoration: InputDecoration(
+                        hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 110, 110, 110)),
+                        hintText: "COMSATS Email Address",
+                        labelStyle: TextStyle(color: Colors.white),
+                        floatingLabelStyle: TextStyle(
+                            color: Color.fromRGBO(148, 95, 255, 0.612)),
+                        labelText: "Email",
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: emailColor, width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: emailColor, width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: emailColor, width: 2),
                         ),
                       ),
+                    ),
                       SizedBox(height: 16),
                       TextFormField(
                         cursorColor: Colors.white,
