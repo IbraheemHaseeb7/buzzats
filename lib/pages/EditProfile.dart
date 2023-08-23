@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UploadPicture.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
-import 'package:flutter_app_1/CustomWidgets/CustomDropDownMenu.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/FrostedTwt.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
@@ -91,11 +92,17 @@ class EditProfileState extends State<EditProfile> {
   }
 
   void handleCommitChanges() async {
+    final toasterController = ToasterController();
+    ToastMe(
+            text: "Saving Changes...",
+            type: ToasterType.Loading,
+            controller: toasterController)
+        .showToast(context);
     UserData();
     if (isImageChanged) {
-      print("noooooooooooooo");
       await uploadImageToAzure(image).then((res) {
-        query("UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text}, [Image] = (SELECT TOP 1 BulkColumn FROM OPENROWSET( BULK 'profilepictures/$res', DATA_SOURCE = 'MyAzureBlobStorage2', SINGLE_BLOB) AS Image) WHERE UserID = '${UserData.id}';")
+        socketQuery(
+                "UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text}, [Image] = (SELECT TOP 1 BulkColumn FROM OPENROWSET( BULK 'profilepictures/$res', DATA_SOURCE = 'MyAzureBlobStorage2', SINGLE_BLOB) AS Image) WHERE UserID = '${UserData.id}';")
             .then((value) {
           ToastMe(
                   text: "Succesfully Made Changes",
@@ -104,12 +111,14 @@ class EditProfileState extends State<EditProfile> {
               .showToast(context);
           query("SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.UserID = '${UserData.id}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
               .then((value) {
+            toasterController.end();
             UserData.storeUser(value);
           });
         });
       });
     } else {
-      query("UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text} WHERE UserID = '${UserData.id}';")
+      socketQuery(
+              "UPDATE tb_UserProfile SET [Name]='${usernameController.text}', BIO='${descriptionController.text}', RecoveryEmail='${emailController.text}', Semester=${semesterController.text} WHERE UserID = '${UserData.id}';")
           .then((value) {
         ToastMe(
                 text: "Succesfully Made Changes",
@@ -118,6 +127,7 @@ class EditProfileState extends State<EditProfile> {
             .showToast(context);
         query("SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.UserID = '${UserData.id}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
             .then((value) {
+          toasterController.end();
           UserData.storeUser(value);
         });
       });

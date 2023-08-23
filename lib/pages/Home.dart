@@ -28,7 +28,6 @@ class HomeState extends State<Home> {
     HomeShow(),
     SuggestionPage(),
     TotalSocieties(),
-
     UserProfile(
       myself: true,
     )
@@ -73,7 +72,7 @@ class HomeState extends State<Home> {
                 backgroundColor: Color(0xFF141D26),
                 onPressed: () {
                   setState(() {
-                 print(UserData.id);
+                    print(UserData.id);
 
                     currentPageIndex = 0;
                   });
@@ -85,8 +84,9 @@ class HomeState extends State<Home> {
                 iconSize: 35.0,
               ),
               GButton(
-                icon:
-                    currentPageIndex == 2 ? IconlyBold.user_3 : IconlyLight.user_1,
+                icon: currentPageIndex == 2
+                    ? IconlyBold.user_3
+                    : IconlyLight.user_1,
                 backgroundColor: Color(0xFF141D26),
                 iconSize: 35.0,
                 onPressed: () {

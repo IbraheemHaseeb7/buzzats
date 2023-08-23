@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app_1/Cache/UserProfile.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
@@ -11,7 +13,6 @@ import 'package:flutter_app_1/pages/EditProfile.dart';
 import '../Cache/UserProfile.dart';
 import '../Cache/query.dart';
 import 'package:intl/intl.dart';
-
 
 String userID = "";
 String email = "";
@@ -24,10 +25,10 @@ int semester = 0;
 String regNo = "";
 String batch = "";
 
-
 class UserProfile extends StatefulWidget {
   bool myself;
-  UserProfile({super.key, required this.myself});
+  Map<String, dynamic>? user;
+  UserProfile({super.key, required this.myself, this.user});
 
   @override
   createState() => UserProfileState();
@@ -54,24 +55,12 @@ class UserProfileState extends State<UserProfile> {
   List<dynamic> tweets = [];
   bool isFetched = false;
   int connections = 0;
-
-
-
-  String q1 =
-      "SELECT (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='$userID' order by [time] desc";
-
-  String q2 =
-      "select count(FriendUserID) As 'connections' from tb_Friends where UserID='$userID'";
-
-  String q3 = "select * from [tb_Userprofile] u WHERE u.userID='$userID'";
-
-
   @override
   void initState() {
     if (widget.myself) {
       UserData();
       UserData.fetchUser().then((value) async {
-        final tweetsValue = await query(
+        final tweetsValue = await socketQuery(
             "SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${UserData.id}' order by [time] desc");
         setState(() {
           name = value[0]["Name"];
@@ -90,41 +79,31 @@ class UserProfileState extends State<UserProfile> {
         });
       });
     } else {
-      loadData();
-    }
-  }
-
-  Future<void> loadData() async {
-    try {
-      final tweetsValue = await query(q1);
-      final connectionsValue = await query(q2);
-      final users = await query(q3);
-      Map<String, dynamic> userConnections = connectionsValue[0];
-      Map<String, dynamic> userData = users[0];
-      final imageBuffer = userData['Image']['data'];
-      final imageBytes = Uint8List.fromList(
-          List<int>.from(imageBuffer.map((dynamic element) => element as int)));
-
-      setState(() {
-        tweets = tweetsValue;
-        connections = userConnections["connections"];
-        isFetched = true;
-
-        userID = userData["UserID"];
-        email = userData["Email"];
-        name = userData["Name"];
-        department = userData["Department"] ?? "Unknown";
-        semester = userData["Semester"] ?? "Unknown";
-        bio = userData["BIO"] ?? "Unknown";
-        bytes = imageBytes;
-
-        batch = email.substring(0, 4).toUpperCase();
-
-        regNo = email!.substring(0, 12).toUpperCase();
+      Timer(const Duration(milliseconds: 2000), () {
+        socketQuery(
+                "SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${widget.user!["UserID"]}' order by [time] desc")
+            .then((value) {
+          setState(() {
+            name = widget.user!["Name"];
+            userID = widget.user!["UserID"];
+            bytes = Uint8List.fromList(List<int>.from(widget.user!["Image"]));
+            bio = widget.user!["BIO"];
+            regNo =
+                "${widget.user!["UserID"].toString().substring(0, 4)}-${widget.user!["UserID"].toString().substring(4, 7)}-${widget.user!["UserID"].toString().substring(7, 10)}";
+            batch =
+                widget.user!["UserID"].toString().substring(0, 4).toUpperCase();
+            semester = widget.user!["Semester"];
+            department =
+                widget.user!["UserID"].toString().substring(4, 7).toUpperCase();
+            connections = widget.user!["Connections"];
+            tweets = value;
+            isFetched = true;
+          });
+        });
       });
-    } catch (error) {
-      print("Error: $error");
     }
+
+    super.initState();
   }
 
   void handleTweet() {
@@ -175,7 +154,7 @@ class UserProfileState extends State<UserProfile> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
@@ -211,7 +190,6 @@ class UserProfileState extends State<UserProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -236,7 +214,6 @@ class UserProfileState extends State<UserProfile> {
                                   color: Colors.blue)
                             ],
                           ),
-
                           const SizedBox(height: 8),
                           Row(
                             children: [
@@ -298,7 +275,7 @@ class UserProfileState extends State<UserProfile> {
                                           height:
                                               4), // Add some space between the texts
                                       Text(
-                                       "Mutuals",
+                                        "Mutuals",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontSize: 16,
@@ -342,7 +319,7 @@ class UserProfileState extends State<UserProfile> {
                                 : const CircularProgressIndicator(),
                           ),
                           const SizedBox(height: 20),
-                          generateButtons()
+                          widget.myself ? generateButtons() : SizedBox.shrink()
                         ],
                       ),
                     ],
@@ -450,10 +427,8 @@ class UserProfileState extends State<UserProfile> {
                 ),
                 Column(
                   children: isFetched
-                      ? tweets
-                          .map((e) 
-                          {  return
-                           TweetWidget(
+                      ? tweets.map((e) {
+                          return TweetWidget(
                               isLiked: e["HasLiked"] == "yes",
                               twtId: e["TweetID"],
                               id: UserData.id ?? "",
@@ -472,10 +447,10 @@ class UserProfileState extends State<UserProfile> {
                               content: e["Tweet"],
                               repliesCount: e["replies"],
                               likesCount: e["likes"]);
-                          }).toList()
+                        }).toList()
                       : [
                           const TweetSkeleton(),
-                        
+                          const TweetSkeleton(),
                         ],
                 ),
               ],

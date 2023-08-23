@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/CommentSkeleton.dart';
+import 'package:flutter_app_1/pages/SearchUser.dart';
 import 'package:intl/intl.dart';
 import '../Cache/Query.dart';
 
@@ -84,42 +86,65 @@ class CommentSection extends StatelessWidget {
                           // Fetch new comments here if needed
                         },
                         child: FutureBuilder<List<dynamic>>(
-                          future: query(q),
+                          future: socketQuery(q),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return Container(
+                                  width: screenWidth,
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )));
                             } else if (snapshot.hasError) {
-                              return Text('Error fetching data');
+                              return Container(
+                                  width: screenWidth,
+                                  child: const Center(
+                                    child: Text(
+                                      "Error fetching comments",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ));
+                            } else if (snapshot.hasData &&
+                                snapshot.data!.isEmpty) {
+                              return Container(
+                                  width: screenWidth,
+                                  child: const Center(
+                                    child: Text(
+                                      "No Comments yet",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ));
                             } else if (snapshot.hasData) {
                               List<dynamic> comments = snapshot.data!;
 
                               return SingleChildScrollView(
                                 child: Column(
-                                  children: comments.map((e) => Reply(
-                                        twtId: e["TweetID"],
-                                        id: e["UserID"] ?? "",
-                                        name: e["Name"] ?? "",
-                                        image: e["image"] != null
-                                            ? e["image"]["data"]
-                                            : "",
-                                        time: DateTime.parse(e["time"])
-                                                    .day ==
-                                                DateTime.now().day
-                                            ? DateTime.parse(e["time"])
-                                                    .hour
-                                                    .toString() +
-                                                ":" +
-                                                DateTime.parse(e["time"])
-                                                    .minute
-                                                    .toString()
-                                            : DateTime.parse(e["time"])
-                                                    .day
-                                                    .toString() +
-                                                DateFormat.MMM().format(
-                                                    DateTime.parse(e["time"])),
-                                        content: e["Comment"] ?? "",
-                                      )).toList(),
+                                  children: comments
+                                      .map((e) => Reply(
+                                            twtId: e["TweetID"],
+                                            id: e["UserID"] ?? "",
+                                            name: e["Name"] ?? "",
+                                            image: e["image"] ?? "",
+                                            time: DateTime.parse(e["time"])
+                                                        .day ==
+                                                    DateTime.now().day
+                                                ? DateTime.parse(e["time"])
+                                                        .hour
+                                                        .toString() +
+                                                    ":" +
+                                                    DateTime.parse(e["time"])
+                                                        .minute
+                                                        .toString()
+                                                : DateTime.parse(e["time"])
+                                                        .day
+                                                        .toString() +
+                                                    DateFormat.MMM().format(
+                                                        DateTime.parse(
+                                                            e["time"])),
+                                            content: e["Comment"] ?? "",
+                                          ))
+                                      .toList(),
                                 ),
                               );
                             } else {
