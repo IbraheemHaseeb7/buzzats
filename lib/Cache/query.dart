@@ -14,8 +14,6 @@ Future<List<dynamic>> query(String query) async {
       headers: headers,
       body: jsonEncode(body),
     );
-    print(response.body);
-    print(response.statusCode);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -25,6 +23,7 @@ Future<List<dynamic>> query(String query) async {
       throw Exception('Failed to fetch data'); // Custom error message
     }
   } catch (e) {
-    throw Exception('Error: $e'); // Catch and re-throw the error with additional context
+    throw Exception(
+        'Error: $e'); // Catch and re-throw the error with additional context
   }
 }

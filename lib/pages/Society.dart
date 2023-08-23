@@ -28,19 +28,15 @@ import '../Cache/UserProfile.dart';
 import 'CreateSocietyTweet.dart';
 
 class Society extends StatefulWidget {
-  
-  Map<String,dynamic> society;
-  String name,id,about,president;
+  String name, id, about, president, presidentId;
   var image;
   List<dynamic> groups = [];
   List<dynamic> memberss = [];
   int members;
-  
+  Map<String, dynamic> society;
 
   Society({
-  
-    
-    super.key, 
+    super.key,
     required this.name,
     required this.groups,
     required this.id,
@@ -49,10 +45,9 @@ class Society extends StatefulWidget {
     required this.memberss,
     required this.society,
     required this.president,
+    required this.presidentId,
     required this.image,
-    
-    
-    });
+  });
 
   @override
   SocietyState createState() => SocietyState();
@@ -67,10 +62,10 @@ class SocietyState extends State<Society> {
   Color membersButtonColor = const Color(0xff141D26);
   Displayed displayed = Displayed.tweets;
 
-  final bool isPresident = true;
+  bool isPresident = false;
   bool isTweet = false;
-  List<dynamic> tweetsWithSameId = [];  //use this list for the tweets fetching
-  List<dynamic> tweets = [];  //use this list for the tweets fetching
+  List<dynamic> tweetsWithSameId = []; //use this list for the tweets fetching
+  List<dynamic> tweets = []; //use this list for the tweets fetching
   late String q2;
   late String q3;
   List<dynamic> sameGroups = [];
@@ -85,119 +80,115 @@ class SocietyState extends State<Society> {
   int groupsCount = 0;
   var imageBytes;
 
-
-
-  void initState(){
-    if(widget.image!=null)
-    {
-
-    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+  void initState() {
+    if (widget.image != null) {
+      imageBytes = Uint8List.fromList(List<int>.from(widget.image));
     }
-    
 
     // SocietyMain.delete();
     UserData();
+    if (UserData.id == widget.presidentId) {
+      setState(() {
+        isPresident = true;
+      });
+    }
 
-   q2 = "select twt.STweet,twt.SGroupID,twt.Picture, (select count(l.UserID) from STweetsLike l where l.STweetID = twt.STweetID) as likes,(select isnull('yes','no') from STweetsLike tl where tl.STweetID=twt.STweetID and tl.UserID='${UserData.id}') as 'HasLiked' from tb_SocietyTweets twt where twt.SocietyID = '${widget.id}'";
-   
-    q3 = "select count(soc.SGroupID) as groups, soc.* from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' group by soc.SGroupName,soc.SGroupID,soc.SocietyID,soc.DirectorID,soc.[description] ";
+    q2 =
+        "select twt.STweet,twt.SGroupID,twt.Picture, (select count(l.UserID) from STweetsLike l where l.STweetID = twt.STweetID) as likes,(select isnull('yes','no') from STweetsLike tl where tl.STweetID=twt.STweetID and tl.UserID='${UserData.id}') as 'HasLiked' from tb_SocietyTweets twt where twt.SocietyID = '${widget.id}'";
 
-    
+    q3 =
+        "select count(soc.SGroupID) as groups, soc.* from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' group by soc.SGroupName,soc.SGroupID,soc.SocietyID,soc.DirectorID,soc.[description] ";
 
     GroupsCache.fetchGc().then((value) {
- 
-    widget.groups = value;
-    print(widget.groups);
-  
+      widget.groups = value;
+      print(widget.groups);
 
-    for(int index =0;index<value.length;index++)
-    {
-
+      for (int index = 0; index < value.length; index++) {
         print(value[index]["SocietyID"]);
-        if(value[index]["SocietyID"]==widget.id)
-        {
+        if (value[index]["SocietyID"] == widget.id) {
           setState(() {
-          print("fghhjfegfvgjevj  $value");
-          isGroup = true; 
-          print("neyvhwev    ${value[index]["SGroupsName"]}");
-          sameGroups = value[index]["SGroupsName"];
-          }  );
-           return;
-        }
-      
-
-    }
-    socketQuery(q3).then((e){
-
-           setState(() {
-            
-            widget.groups.add({"SGroupsName":e , "SocietyID":widget.id});
-            GroupsCache.storeGc(widget.groups);
-            sameGroups = e;
-          
+            print("fghhjfegfvgjevj  $value");
             isGroup = true;
-           
-          
-
-
+            print("neyvhwev    ${value[index]["SGroupsName"]}");
+            sameGroups = value[index]["SGroupsName"];
           });
-       
-
-    });
-
-    });
-
-
-
-
-
-
-
-
-
-          
-  SocietyMain.fetchTwts().then((value) {
- 
-    tweets = value;
-          print(value);
-
-    for(int index =0;index<value.length;index++)
-    {
-        if(value[index]["SocietyID"]==widget.id)
-        {
-          setState(() {
-          isTweet = true; 
-          tweetsWithSameId= value[index]["STweet"];
-            
-          });
-           return;
+          return;
         }
-      
+      }
+      socketQuery(q3).then((e) {
+        setState(() {
+          widget.groups.add({"SGroupsName": e, "SocietyID": widget.id});
+          GroupsCache.storeGc(widget.groups);
+          sameGroups = e;
 
-    }
-    socketQuery(q2).then((e){
+          isGroup = true;
 
-           setState(() {
-            
-            tweets.add({"STweet":e , "SocietyID":widget.id});
-            SocietyMain.storeTwts(tweets);
-            tweetsWithSameId = e;
-          
+          // UserData.fetchUser().then((value){
+
+          //   print(value[0]["name"]);
+          //   widget.president = value[0]["name"];
+
+          // });
+        });
+      });
+    });
+
+    SocietyMain.fetchTwts().then((value) {
+      tweets = value;
+      print(value);
+
+      for (int index = 0; index < value.length; index++) {
+        if (value[index]["SocietyID"] == widget.id) {
+          setState(() {
             isTweet = true;
-
-
+            tweetsWithSameId = value[index]["STweet"];
           });
-       
+          return;
+        }
+      }
+      socketQuery(q2).then((e) {
+        setState(() {
+          tweets.add({"STweet": e, "SocietyID": widget.id});
+          SocietyMain.storeTwts(tweets);
+          tweetsWithSameId = e;
 
+          isTweet = true;
+
+          isGroup = true;
+          sameGroups.map((e) {
+            print("grouspss ${e["groups"]}");
+            groupsCount = e["groups"];
+          });
+        });
+      });
     });
 
+    SocietyMain.fetchTwts().then((value) {
+      tweets = value;
+      print(value);
+
+      for (int index = 0; index < value.length; index++) {
+        if (value[index]["SocietyID"] == widget.id) {
+          setState(() {
+            isTweet = true;
+            tweetsWithSameId = value[index]["STweet"];
+          });
+          return;
+        }
+      }
+      query(q2).then((e) {
+        setState(() {
+          tweets.add({"STweet": e, "SocietyID": widget.id});
+          SocietyMain.storeTwts(tweets);
+          tweetsWithSameId = e;
+
+          isTweet = true;
+        });
+      });
     });
-    
+
     super.initState();
-
-
   }
-
 
   void handleFollow() {
     // List temp = widget.groups.map((e) {
@@ -263,29 +254,35 @@ class SocietyState extends State<Society> {
             builder: (context) => ManageSociety(society: widget.society)));
   }
 
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
+
   Future<void> handleRefresh() async {}
 
   @override
   Widget build(BuildContext context) {
-  
-      
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 40,title: Text(widget.name),centerTitle: true,actions: [IconButton(
-        icon: Icon(IconlyLight.notification), // Change the icon as needed
-        onPressed: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PushNotif()), // Replace YourNewPage with the actual page you want to navigate to
-          );
-        },
+      appBar: AppBar(
+        title: Text(widget.name),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(IconlyLight.notification), // Change the icon as needed
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        PushNotif()), // Replace YourNewPage with the actual page you want to navigate to
+              );
+            },
+          ),
+        ],
       ),
-],),
       body: RefreshIndicator(
           onRefresh: handleRefresh,
           child: Container(
@@ -299,17 +296,19 @@ class SocietyState extends State<Society> {
                       margin: const EdgeInsets.only(bottom: 20),
                       width: screenWidth * 0.35,
                       height: screenWidth * 0.35,
-                      child: ClipOval(child:  widget.image == null
-                    ? Image.asset(
-                        "lib/Assets/profile.jpg",
-                        fit: BoxFit.cover,
-                        width: 50,
-                      )
-                    : Image.memory(
-                        imageBytes,
-                        width: 50,
-                        fit: BoxFit.cover,
-                      ),)),
+                      child: ClipOval(
+                        child: widget.image == null
+                            ? Image.asset(
+                                "lib/Assets/profile.jpg",
+                                fit: BoxFit.cover,
+                                width: 50,
+                              )
+                            : Image.memory(
+                                imageBytes,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                      )),
                   Text(
                     widget.name,
                     style: const TextStyle(
@@ -556,46 +555,53 @@ class SocietyState extends State<Society> {
                           width: screenWidth,
                           constraints: const BoxConstraints(minHeight: 500),
                           child: Column(
-                            children: isTweet && tweetsWithSameId.isNotEmpty? tweetsWithSameId.map((e){
-                              return SocietyTweet(
-                                  name: widget.name,
-                                 tweet: e["STweet"] ?? "",
-                                 likesCount: e["likes"] ?? 0,
-                                 isLiked: e["HasLiked"] == "yes",
-                              //    time:DateTime.parse(e["time"]).day ==
-                              //     DateTime.now().day
-                              // ? DateTime.parse(e["time"]).hour.toString() +
-                              //     ":" +
-                              //     DateTime.parse(e["time"]).minute.toString()
-                              // : DateTime.parse(e["time"]).day.toString() +
-                              //     DateFormat.MMM()
-                              //         .format(DateTime.parse(e["time"])),
-                                 twtId: e["STweetID"] ?? "",
-                                 image: widget.image,
-                                 tweetImage: e["Picture"] ?? [],
+                            children: isTweet && tweetsWithSameId.isNotEmpty
+                                ? tweetsWithSameId.map((e) {
+                                    return SocietyTweet(
+                                      name: widget.name,
+                                      tweet: e["STweet"] ?? "",
+                                      likesCount: e["likes"] ?? 0,
+                                      isLiked: e["HasLiked"] == "yes",
+                                      //    time:DateTime.parse(e["time"]).day ==
+                                      //     DateTime.now().day
+                                      // ? DateTime.parse(e["time"]).hour.toString() +
+                                      //     ":" +
+                                      //     DateTime.parse(e["time"]).minute.toString()
+                                      // : DateTime.parse(e["time"]).day.toString() +
+                                      //     DateFormat.MMM()
+                                      //         .format(DateTime.parse(e["time"])),
+                                      twtId: e["STweetID"] ?? "",
+                                      image: widget.image,
+                                      tweetImage: e["Picture"] ?? [],
+                                    );
+                                  }).toList()
+                                : tweetsWithSameId.isEmpty
+                                    ? [
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Center(
+                                              child: Text(
+                                            "No tweets available",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
+                                        ),
+                                      ]
+                                    : [
+                                        SocietyTwtSkeleton(),
+                                        SocietyTwtSkeleton(),
+                                        SocietyTwtSkeleton(),
 
-
-                              );
-                              
-                            }
-                            ).toList() :
-                            tweetsWithSameId.isEmpty ? [Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Center(child: Text("No tweets available",style: TextStyle(color: Colors.white),)),
-                            ),] :
-                            [
-
-                                  SocietyTwtSkeleton(),
-                                  SocietyTwtSkeleton(),
-                                  SocietyTwtSkeleton(),
-
-                                  // SocietyTweet()
-                            ],
-                            ),
+                                        // SocietyTweet()
+                                      ],
+                          ),
                         );
-                      case Displayed.groups: 
+                      case Displayed.groups:
                         return SocietyGroupsContainer(
-                            groups:sameGroups, id: widget.id,isGroup: isGroup,);
+                          groups: sameGroups,
+                          id: widget.id,
+                          isGroup: isGroup,
+                        );
                       case Displayed.mutuals:
                         return SocietyMutualsContainer(
                           members: mutuals,
@@ -611,21 +617,22 @@ class SocietyState extends State<Society> {
                         return Container(
                           constraints: const BoxConstraints(minHeight: 500),
                           width: screenWidth,
-                          child: Column(children: [
-                            SocietyTwtSkeleton()
-                          ]),
+                          child: Column(children: [SocietyTwtSkeleton()]),
                         );
                     }
                   })(),
                 ],
               )))),
-              floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    CreateSocietyTweet(id: widget.id, groups: widget.groups,image: widget.image,)),
+                builder: (context) => CreateSocietyTweet(
+                      id: widget.id,
+                      groups: widget.groups,
+                      image: widget.image,
+                    )),
           );
         },
         child: Icon(Icons.add),

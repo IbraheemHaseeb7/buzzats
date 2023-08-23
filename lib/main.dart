@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
-import 'package:flutter_app_1/pages/Connections.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
 import 'package:flutter_app_1/pages/GettingStarted.dart';
@@ -59,7 +58,7 @@ class Main extends StatelessWidget {
       // ),
       home: auth.currentUser == null ? MyApp() : Home(),
 
-      //home: Notifications(), // add your page for quick testing
+      // home: TotalSocieties(), // add your page for quick testing
 
       // home: UserProfile(
       //   myself: true,

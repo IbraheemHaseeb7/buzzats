@@ -2,12 +2,12 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
-import '../Cache/Query.dart';
-import '../Cache/UserProfile.dart';
+import '../Cache/socket.dart';
 
 class TweetWidget extends StatefulWidget {
   String name, time, content, id, twtId;
@@ -35,6 +35,7 @@ class TweetWidget extends StatefulWidget {
 class _TweetWidgetState extends State<TweetWidget> {
   bool isLiked = false;
   var imageBytes;
+  final t = UserData();
 
   @override
   void initState() {
@@ -54,21 +55,20 @@ class _TweetWidgetState extends State<TweetWidget> {
     String queryStatement;
     if (!isLiked) {
       queryStatement =
-          "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${widget.id}', GETDATE())";
+          "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${UserData.id}', GETDATE())";
       setState(() {
         ++widget.likesCount;
         isLiked = !isLiked;
       });
     } else {
       queryStatement =
-          "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${widget.id}'";
+          "DELETE FROM tb_Like WHERE TweetID = '${widget.twtId}' AND UserID = '${UserData.id}'";
       setState(() {
         --widget.likesCount;
         isLiked = !isLiked;
       });
     }
-
-    await query(queryStatement).then((value) {}).catchError((err) {
+    await socketQuery(queryStatement).then((value) {}).catchError((err) {
       ToastMe(text: "Error occurred!", type: ToasterType.Error)
           .showToast(context);
       if (isLiked) {
@@ -84,13 +84,6 @@ class _TweetWidgetState extends State<TweetWidget> {
       }
     });
   }
-
-
-  
-
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -275,4 +268,3 @@ class _TweetWidgetState extends State<TweetWidget> {
     );
   }
 }
-

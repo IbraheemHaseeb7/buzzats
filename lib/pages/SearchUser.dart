@@ -4,6 +4,7 @@ import 'dart:core';
 
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/Skeletons/ChatSkeleton.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
@@ -99,6 +100,7 @@ class _SearchUser extends State<SearchUser> {
                       fontSize: 17,
                       color: Color.fromARGB(255, 255, 255, 255),
                     ),
+                    cursorColor: Colors.white,
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
@@ -217,22 +219,20 @@ class userGet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 3, 20, 0),
+              Center(
                 child: Container(
-                  height: 90,
-                  width: 70,
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                   clipBehavior: Clip.antiAlias,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
                   child: user["Image"] != null
-                      ? Image.memory(user["Image"]!, width: 200, height: 200)
+                      ? Image.memory(user["Image"]!, width: 50, height: 50)
                       : Image.asset("lib/Assets/profile.jpg"),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                padding: const EdgeInsets.fromLTRB(10, 5, 0, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,48 +266,52 @@ class userGet extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6080A7),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          'Semester: ${user["Semester"]}',
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.clip,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xffffffff),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 5, 2),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6080A7),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(4),
+                            child: Text(
+                              'Semester: ${user["Semester"]}',
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.clip,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6080A7),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          'Department: ${user["Department"]}',
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.clip,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xffffffff),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF6080A7),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(4),
+                            child: Text(
+                              'Department: ${user["Department"]}',
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.clip,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      ],
+                    )
                   ],
                 ),
               ),

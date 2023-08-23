@@ -77,7 +77,7 @@ class _LoginScreen extends State<LoginScreen> {
     }
   }
 
-  void handleLogin() {
+  void handleLogin() async {
     final tempController = ToasterController();
     ToastMe(
             text: "Validating...",
@@ -93,9 +93,9 @@ class _LoginScreen extends State<LoginScreen> {
               type: ToasterType.Error,
               duration: 3000)
           .showToast(context);
-      query("SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Email = '${emailController.text}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
+      await query(
+              "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Email = '${emailController.text}' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
           .then((value) {
-            
         UserData.storeUser(value);
       });
       Navigator.push(
@@ -131,9 +131,10 @@ class _LoginScreen extends State<LoginScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0.0,),
+      appBar: AppBar(
+        toolbarHeight: 0.0,
+      ),
       body: SingleChildScrollView(
         child: Container(
           height: screenHeight,
@@ -153,7 +154,6 @@ class _LoginScreen extends State<LoginScreen> {
                         style: TextStyle(
                             fontSize: 48,
                             fontWeight: FontWeight.bold,
-                            
                             color: Color.fromARGB(255, 255, 255, 255)),
                       ),
                       const SizedBox(height: 10),
@@ -162,38 +162,37 @@ class _LoginScreen extends State<LoginScreen> {
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
-                           
                             color: Color.fromARGB(255, 255, 255, 255)),
                       ),
                       SizedBox(height: 16),
                       TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: emailController,
-                      onChanged: (text) {
-                        handleEmail(text);
-                      },
-                      decoration: InputDecoration(
-                        hintStyle: const TextStyle(
-                            color: Color.fromARGB(255, 110, 110, 110)),
-                        hintText: "COMSATS Email Address",
-                        labelStyle: TextStyle(color: Colors.white),
-                        floatingLabelStyle: TextStyle(
-                            color: Color.fromRGBO(148, 95, 255, 0.612)),
-                        labelText: "Email",
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: emailColor, width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: emailColor, width: 2),
+                        style: TextStyle(color: Colors.white),
+                        controller: emailController,
+                        onChanged: (text) {
+                          handleEmail(text);
+                        },
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 110, 110, 110)),
+                          hintText: "COMSATS Email Address",
+                          labelStyle: TextStyle(color: Colors.white),
+                          floatingLabelStyle: TextStyle(
+                              color: Color.fromRGBO(148, 95, 255, 0.612)),
+                          labelText: "Email",
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: emailColor, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: emailColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: emailColor, width: 2),
+                          ),
                         ),
                       ),
-                    ),
                       SizedBox(height: 16),
                       TextFormField(
                         cursorColor: Colors.white,
@@ -250,7 +249,8 @@ class _LoginScreen extends State<LoginScreen> {
                           foregroundColor: MaterialStateProperty.all(
                               Color.fromRGBO(255, 255, 255, 1)),
                           fixedSize: MaterialStateProperty.all(Size(400, 55)),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24.0),
                           )),
                         ),

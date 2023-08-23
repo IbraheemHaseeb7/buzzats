@@ -18,9 +18,7 @@ class TotalState extends State<TotalSocieties> {
   List<dynamic> soc = [];
   bool isFetched = false;
   String q =
-      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID) as members, soc.SocietyID,soc.PresidentID,soc.About,soc.SocietyName,soc.Picture from tb_Society soc where soc.PresidentID = '${UserData.id}'";
-
- 
+      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID) as members, soc.SocietyID, (select [Name] from tb_UserProfile u where u.[UserID]=soc.PresidentID) as President, soc.PresidentID,soc.About, soc.Picture, soc.SocietyName from tb_Society soc where soc.PresidentID = '${UserData.id}'";
 
   @override
   void initState() {
@@ -70,17 +68,15 @@ class TotalState extends State<TotalSocieties> {
           child: isFetched
               ? Column(
                   children: soc
-                      .map((e) => Padding(
-                        padding: EdgeInsets.only(bottom:8),
-                        child: MySoc(
+                      .map((e) => MySoc(
+                            presidentId: e["PresidentID"],
                             name: e["SocietyName"],
                             about: e["About"],
                             connections: e["members"],
                             id: e["SocietyID"],
-                            president: e["PresidentID"],
+                            president: e["President"],
                             image: e["Picture"],
-                            ),
-                      ))
+                          ))
                       .toList())
               : SuggestUserSkel(),
         ));
