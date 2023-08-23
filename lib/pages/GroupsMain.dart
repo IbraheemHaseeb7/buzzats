@@ -245,7 +245,7 @@ void handleApplied() {
                           constraints: const BoxConstraints(minHeight: 500),
                           child: Column(
                             children: [
-                              SocietyTweet(name: "name", tweet: "tweet")
+                              //SocietyTweet(name: "name", tweet: "tweet")
 
 
                             ] ),

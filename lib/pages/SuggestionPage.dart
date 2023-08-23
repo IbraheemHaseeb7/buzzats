@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter_app_1/CustomWidgets/SocietySuggest.dart';
@@ -82,7 +83,7 @@ class _SuggestionPage extends State<SuggestionPage> {
 
      Suggestions.EmptySoc().then((value) {
       if (value) {
-        suggestSoc(q).then((value) {
+        socketQuery(q).then((value) {
           setState(() {
            
             Suggestions.storeSocieites(value);

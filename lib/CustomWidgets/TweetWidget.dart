@@ -42,7 +42,11 @@ class _TweetWidgetState extends State<TweetWidget> {
       isLiked = widget.isLiked;
     });
     super.initState();
+    if(widget.image != null)
+    {
+
     imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    }
     // Check if the user has already liked the tweet
   }
 

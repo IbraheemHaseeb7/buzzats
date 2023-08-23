@@ -1,27 +1,30 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 class SocietyMember extends StatelessWidget {
-  Image image;
+  var image;
   String name;
-  List<String> roles;
+  //List<String> roles;
   late String roleString = "";
   SocietyMember(
       {super.key,
       required this.image,
       required this.name,
-      required this.roles}) {
-    for (int i = 0; i < roles.length; i++) {
-      if (i == roles.length - 1) {
-        roleString = roleString + roles[i];
-      } else {
-        roleString = roleString + roles[i] + ", ";
-      }
-    }
-  }
+     });
+
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    var imageBytes;
+
+     if(image!=null)
+    {
+
+    imageBytes = Uint8List.fromList(List<int>.from(image));
+    }
+
 
     return Container(
         width: screenWidth,
@@ -35,7 +38,7 @@ class SocietyMember extends StatelessWidget {
               width: 60,
               margin: const EdgeInsets.only(left: 15, right: 15),
               child: ClipOval(
-                child: image,
+                child: Image.memory(imageBytes),
               ),
             ),
             Container(
@@ -50,12 +53,12 @@ class SocietyMember extends StatelessWidget {
                     style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  Container(
-                      width: screenWidth - 120,
-                      child: Text(
-                        roleString,
-                        style: const TextStyle(color: Colors.white),
-                      )),
+                  // Container(
+                  //     width: screenWidth - 120,
+                  //     child: Text(
+                  //       roleString,
+                  //       style: const TextStyle(color: Colors.white),
+                  //     )),
                 ],
               ),
             )

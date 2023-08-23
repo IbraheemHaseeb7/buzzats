@@ -224,7 +224,7 @@ class UserProfileState extends State<UserProfile> {
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
-                                    fontFamily: 'Roboto',
+                                   
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

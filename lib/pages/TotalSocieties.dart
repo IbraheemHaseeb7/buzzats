@@ -18,7 +18,9 @@ class TotalState extends State<TotalSocieties> {
   List<dynamic> soc = [];
   bool isFetched = false;
   String q =
-      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID) as members, soc.SocietyID,soc.PresidentID,soc.About,soc.SocietyName from tb_Society soc where soc.PresidentID = '${UserData.id}'";
+      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID) as members, soc.SocietyID,soc.PresidentID,soc.About,soc.SocietyName,soc.Picture from tb_Society soc where soc.PresidentID = '${UserData.id}'";
+
+ 
 
   @override
   void initState() {
@@ -71,7 +73,9 @@ class TotalState extends State<TotalSocieties> {
                           about: e["About"],
                           connections: e["members"],
                           id: e["SocietyID"],
-                          president: e["PresidentID"]))
+                          president: e["PresidentID"],
+                          image: e["Picture"],
+                          ))
                       .toList())
               : SuggestUserSkel(),
         ));

@@ -28,8 +28,7 @@ class HomeState extends State<Home> {
     HomeShow(),
     SuggestionPage(),
     TotalSocieties(),
-  
-    ChatsHome(),
+
     UserProfile(
       myself: true,
     )

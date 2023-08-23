@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../Cache/MembersCache.dart';
+import '../Cache/socket.dart';
 import 'SocietyMember.dart';
 
 class SocietyMembersContainer extends StatefulWidget {
-  List<Map<String, dynamic>> members;
-  SocietyMembersContainer({super.key, required this.members});
+  List<dynamic> members;
+  String id;
+  SocietyMembersContainer({super.key, required this.members, required this.id});
 
   @override
   _SocietyMembersContainerState createState() =>
@@ -13,16 +16,69 @@ class SocietyMembersContainer extends StatefulWidget {
 
 class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
   
-  //late String q = "select * from tb_SocietyMembers"
-  
+  late String  q2 = " select prof.UserID,prof.[Name],prof.BIO, prof.[Image]	from tb_UserProfile prof inner join tb_SocietyMembers members on members.UserID = prof.UserID where members.SocietyID = '${widget.id}'";
+
+  bool isMember = false;
+  List<dynamic> sameMembers = [];
+
+
   @override
   void initState() {
+
+
+
+      
+    MembersCache.fetchM().then((value) {
+ 
+  
+    for(int index =0;index<value.length;index++)
+    {
+
+        print(value[index]["SocietyID"]);
+        if(value[index]["SocietyID"]==widget.id)
+        {
+          setState(() {
+          print("fghhjfegfvgjevj  $value");
+          isMember = true; 
+          print("neyvhwev    ${value[index]["Member"]}");
+          sameMembers = value[index]["Member"];
+          }  );
+           return;
+        }
+      
+
+    }
+    
+    socketQuery(q2).then((e){
+
+           setState(() {
+            
+            widget.members.add({"Member":e , "SocietyID":widget.id});
+            MembersCache.storeM(widget.members);
+            sameMembers = e;
+          
+            isMember = true;
+
+
+          });
+       
+
+    });
+    
+    });
+
+
 
 
 
 
 
     super.initState();
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
   }
 
   void handleChange(String? value) {
@@ -77,11 +133,11 @@ class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
             ),
             Container(
               child: Column(
-                  children: widget.members
+                  children: sameMembers
                       .map((e) => SocietyMember(
-                          image: e["image"],
-                          name: e["name"],
-                          roles: e["roles"]))
+                          image: e["Image"],
+                          name: e["Name"],
+                          ))
                       .toList()),
             )
           ],
