@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
@@ -63,7 +65,7 @@ class _SuggestionPage extends State<SuggestionPage> {
   bool showSuggestionsText = true;
 
   String q =
-      "select count(sm.SMemberID) as members, s.SocietyID,s.About,s.SocietyName from tb_Society s inner join tb_SocietyMembers sm on s.SocietyID = sm.SocietyID group by s.SocietyID, s.About,s.SocietyName order by rand()";
+      "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID)as members, soc.SocietyID, (select [Name] from tb_UserProfile u where u.[UserID]=soc.PresidentID) as President, soc.PresidentID, soc.About,soc.SocietyName from tb_Society soc";
 
   String q2 = "select top 10 * from [tb_Userprofile]";
 
@@ -74,45 +76,6 @@ class _SuggestionPage extends State<SuggestionPage> {
 
   @override
   void initState() {
-    Suggestions.EmptySoc().then((value) {
-      if (value) {
-        socketQuery(q).then((value) {
-          setState(() {
-            Suggestions.storeSocieites(value);
-            societies = value;
-            isSoc = true;
-          });
-        });
-      } else {
-        Suggestions.fetchSocieties().then((value) {
-          setState(() {
-            societies = value;
-            isSoc = true;
-          });
-        });
-      }
-    });
-
-    //  Suggestions.EmptySoc().then((value) {
-    //   if (value) {
-    //     suggestSoc(q).then((value) {
-    //       setState(() {
-
-    //         Suggestions.storeSocieites(value);
-    //         societies = value;
-    //          isSoc = true;
-
-    //       });
-    //     });
-    //   } else {
-    //     Suggestions.fetchSocieties().then((value) {
-    //       setState(() {
-    //         societies = value;
-    //         isSoc = true;
-    //       });
-    //     });
-    //   }
-    // });
     super.initState();
   }
 
@@ -331,11 +294,17 @@ class _SuggestionPage extends State<SuggestionPage> {
                             ); // Show shimmer loading
                           } else if (snapshot.hasError) {
                             // Handle error case
-                            return Text('Error: ${snapshot.error}');
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: const TextStyle(color: Colors.white),
+                            );
                           } else if (!snapshot.hasData ||
                               snapshot.data!.isEmpty) {
                             // Show empty state
-                            return Text('No users found.');
+                            return const Text(
+                              'No users found.',
+                              style: TextStyle(color: Colors.white),
+                            );
                           } else {
                             List<dynamic> data = snapshot.data!;
                             return Column(
@@ -359,16 +328,47 @@ class _SuggestionPage extends State<SuggestionPage> {
                   child: RefreshIndicator(
                     key: _refreshSocietyKey,
                     onRefresh: _handleSocietyRefresh,
-                    child: isSoc
-                        ? Column(
-                            children: societies
-                                .map((e) => SocietySuggest(
-                                      name: e["SocietyName"],
-                                      about: e["About"],
-                                      connections: e["members"],
-                                    ))
-                                .toList())
-                        : SuggestSocSkel(),
+                    child: SingleChildScrollView(
+                      child: FutureBuilder<List<dynamic>>(
+                        future: socketQuery(q),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Column(
+                              children: [
+                                SuggestSocSkel(),
+                                SuggestSocSkel(),
+                              ],
+                            ); // Show shimmer loading
+                          } else if (snapshot.hasError) {
+                            // Handle error case
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: const TextStyle(color: Colors.white),
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            // Show empty state
+                            return const Text(
+                              'No societies found.',
+                              style: TextStyle(color: Colors.white),
+                            );
+                          } else {
+                            List<dynamic> data = snapshot.data!;
+                            return Column(
+                                children: data.map((s) {
+                              return SocietySuggest(
+                                  president: s["President"],
+                                  presidentId: s["PresidentID"],
+                                  id: s["SocietyID"],
+                                  name: s["SocietyName"],
+                                  about: s["About"],
+                                  connections: s["members"]);
+                            }).toList());
+                          }
+                        },
+                      ),
+                    ),
                   ),
                 ),
         ],

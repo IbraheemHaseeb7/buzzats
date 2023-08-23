@@ -39,7 +39,6 @@ class HomeState extends State<Home> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     UserData();
-    print("POINT,${UserData.id.toString()}");
 
     return Scaffold(
       backgroundColor: Color(0xFF141D26),

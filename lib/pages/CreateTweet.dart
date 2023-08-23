@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/HomeShow.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/cupertino.dart';
@@ -220,7 +221,8 @@ class CreateTweetState extends State<CreateTweet> {
                                 controller: toasterController)
                             .showToast(context);
                         String twt = tweetController.text;
-                        query("begin tran declare @temp varchar(10); set @temp = (select concat('T', count(TweetID) + 1) from tb_Tweets); insert into tb_Tweets (TweetID, UserID, Tweet, [Date/Time]) values (@temp, '${UserData.id}', '$twt', GETDATE()) commit")
+                        socketQuery(
+                                "begin tran declare @temp varchar(10); set @temp = (select concat('T', count(TweetID) + 1) from tb_Tweets); insert into tb_Tweets (TweetID, UserID, Tweet, [Date/Time]) values (@temp, '${UserData.id}', '$twt', GETDATE()) commit")
                             .then((v) {
                           toasterController.end();
                           ToastMe(
@@ -228,6 +230,7 @@ class CreateTweetState extends State<CreateTweet> {
                                   type: ToasterType.Check,
                                   duration: 2000)
                               .showToast(context);
+                          Navigator.pop(context);
                           // UserData.fetchUser().then((user) {
                           //   setState(() {
                           //     HomeShowState.tweets.add({

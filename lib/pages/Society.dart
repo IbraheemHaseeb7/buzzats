@@ -22,18 +22,14 @@ import '../Cache/UserProfile.dart';
 import 'CreateSocietyTweet.dart';
 
 class Society extends StatefulWidget {
-  
-  Map<String,dynamic> society;
-  String name,id,about,president;
+  Map<String, dynamic> society;
+  String name, id, about, president, presidentId;
 
   List<dynamic> groups = [];
   int members;
-  
 
   Society({
-  
-    
-    super.key, 
+    super.key,
     required this.name,
     required this.groups,
     required this.id,
@@ -41,9 +37,8 @@ class Society extends StatefulWidget {
     required this.members,
     required this.society,
     required this.president,
-    
-    
-    });
+    required this.presidentId,
+  });
 
   @override
   SocietyState createState() => SocietyState();
@@ -58,10 +53,10 @@ class SocietyState extends State<Society> {
   Color membersButtonColor = const Color(0xff141D26);
   Displayed displayed = Displayed.tweets;
 
-  final bool isPresident = true;
+  bool isPresident = false;
   bool isTweet = false;
-  List<dynamic> tweetsWithSameId = [];  //use this list for the tweets fetching
-  List<dynamic> tweets = [];  //use this list for the tweets fetching
+  List<dynamic> tweetsWithSameId = []; //use this list for the tweets fetching
+  List<dynamic> tweets = []; //use this list for the tweets fetching
   late String q2;
   late String q3;
   List<dynamic> sameGroups = [];
@@ -74,125 +69,86 @@ class SocietyState extends State<Society> {
   bool isMember = false;
   bool isMutual = false;
   int groupsCount = 0;
- 
 
-
-
-  void initState(){
+  void initState() {
     UserData();
-
+    if (UserData.id == widget.presidentId) {
+      setState(() {
+        isPresident = true;
+      });
+    }
     //GroupsCache.delete();
 
-   q2 = "select * from tb_SocietyTweets soc where soc.SocietyID = '${widget.id}' ";
-   
-    q3 = "select count(soc.SGroupID) as groups, soc.* from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' group by soc.SGroupName,soc.SGroupID,soc.SocietyID,soc.DirectorID,soc.[description] ";
+    q2 =
+        "select * from tb_SocietyTweets soc where soc.SocietyID = '${widget.id}' ";
 
-
+    q3 =
+        "select count(soc.SGroupID) as groups, soc.* from tb_SocietyGroups soc where soc.SocietyID = '${widget.id}' group by soc.SGroupName,soc.SGroupID,soc.SocietyID,soc.DirectorID,soc.[description] ";
 
     GroupsCache.fetchGc().then((value) {
- 
-    widget.groups = value;
-    print(widget.groups);
-  
+      widget.groups = value;
+      print(widget.groups);
 
-    for(int index =0;index<value.length;index++)
-    {
-
+      for (int index = 0; index < value.length; index++) {
         print(value[index]["SocietyID"]);
-        if(value[index]["SocietyID"]==widget.id)
-        {
+        if (value[index]["SocietyID"] == widget.id) {
           setState(() {
-          print("fghhjfegfvgjevj  $value");
-          isGroup = true; 
-          print("neyvhwev    ${value[index]["SGroupsName"]}");
-          sameGroups = value[index]["SGroupsName"];
-          
-          // UserData.fetchUser().then((value){
-
-          //   print(value[0]["name"]);
-          //   widget.president = value[0]["name"];
-
-          // });
-            
-        
-
-
-          }  );
-           return;
-        }
-      
-
-    }
-    query(q3).then((e){
-
-           setState(() {
-            
-            widget.groups.add({"SGroupsName":e , "SocietyID":widget.id});
-            GroupsCache.storeGc(widget.groups);
-            sameGroups = e;
-          
+            print("fghhjfegfvgjevj  $value");
             isGroup = true;
-             sameGroups.map((e){
-           
-              print("grouspss ${e["groups"]}");
-              groupsCount = e["groups"];
-            });
-          
+            print("neyvhwev    ${value[index]["SGroupsName"]}");
+            sameGroups = value[index]["SGroupsName"];
 
+            // UserData.fetchUser().then((value){
 
+            //   print(value[0]["name"]);
+            //   widget.president = value[0]["name"];
+
+            // });
           });
-       
-
-    });
-
-    });
-
-         
-
-
-          
-  SocietyMain.fetchTwts().then((value) {
- 
-    tweets = value;
-          print(value);
-
-    for(int index =0;index<value.length;index++)
-    {
-        if(value[index]["SocietyID"]==widget.id)
-        {
-          setState(() {
-          isTweet = true; 
-          tweetsWithSameId= value[index]["STweet"];
-            
-          });
-           return;
+          return;
         }
-      
+      }
+      query(q3).then((e) {
+        setState(() {
+          widget.groups.add({"SGroupsName": e, "SocietyID": widget.id});
+          GroupsCache.storeGc(widget.groups);
+          sameGroups = e;
 
-    }
-    query(q2).then((e){
-
-           setState(() {
-            
-            tweets.add({"STweet":e , "SocietyID":widget.id});
-            SocietyMain.storeTwts(tweets);
-            tweetsWithSameId = e;
-          
-            isTweet = true;
-
-
+          isGroup = true;
+          sameGroups.map((e) {
+            print("grouspss ${e["groups"]}");
+            groupsCount = e["groups"];
           });
-       
-
+        });
+      });
     });
 
+    SocietyMain.fetchTwts().then((value) {
+      tweets = value;
+      print(value);
+
+      for (int index = 0; index < value.length; index++) {
+        if (value[index]["SocietyID"] == widget.id) {
+          setState(() {
+            isTweet = true;
+            tweetsWithSameId = value[index]["STweet"];
+          });
+          return;
+        }
+      }
+      query(q2).then((e) {
+        setState(() {
+          tweets.add({"STweet": e, "SocietyID": widget.id});
+          SocietyMain.storeTwts(tweets);
+          tweetsWithSameId = e;
+
+          isTweet = true;
+        });
+      });
     });
-    
+
     super.initState();
-
-
   }
-
 
   void handleFollow() {
     // List temp = widget.groups.map((e) {
@@ -258,28 +214,35 @@ class SocietyState extends State<Society> {
             builder: (context) => ManageSociety(society: widget.society)));
   }
 
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
+
   Future<void> handleRefresh() async {}
 
   @override
   Widget build(BuildContext context) {
-  
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 40,title: Text(widget.name),centerTitle: true,actions: [IconButton(
-        icon: Icon(IconlyLight.notification), // Change the icon as needed
-        onPressed: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PushNotif()), // Replace YourNewPage with the actual page you want to navigate to
-          );
-        },
+      appBar: AppBar(
+        title: Text(widget.name),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(IconlyLight.notification), // Change the icon as needed
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        PushNotif()), // Replace YourNewPage with the actual page you want to navigate to
+              );
+            },
+          ),
+        ],
       ),
-],),
       body: RefreshIndicator(
           onRefresh: handleRefresh,
           child: Container(
@@ -540,30 +503,28 @@ class SocietyState extends State<Society> {
                           width: screenWidth,
                           constraints: const BoxConstraints(minHeight: 500),
                           child: Column(
-                            children: isTweet ? tweetsWithSameId.map((e){
-                              return SocietyTweet(
-                                  name: widget.name,
-                                 tweet: e["STweet"],
+                            children: isTweet
+                                ? tweetsWithSameId.map((e) {
+                                    return SocietyTweet(
+                                      name: widget.name,
+                                      tweet: e["STweet"],
+                                    );
+                                  }).toList()
+                                : [
+                                    SocietyTwtSkeleton(),
+                                    SocietyTwtSkeleton(),
+                                    SocietyTwtSkeleton(),
 
-
-                              );
-
-
-                            }
-                            ).toList() :
-                            [
-
-                                  SocietyTwtSkeleton(),
-                                  SocietyTwtSkeleton(),
-                                  SocietyTwtSkeleton(),
-
-                                  // SocietyTweet()
-                            ],
-                            ),
+                                    // SocietyTweet()
+                                  ],
+                          ),
                         );
-                      case Displayed.groups: 
+                      case Displayed.groups:
                         return SocietyGroupsContainer(
-                            groups:sameGroups, id: widget.id,isGroup: isGroup,);
+                          groups: sameGroups,
+                          id: widget.id,
+                          isGroup: isGroup,
+                        );
                       case Displayed.mutuals:
                         return SocietyMutualsContainer(
                           members: mutuals,
@@ -578,15 +539,13 @@ class SocietyState extends State<Society> {
                         return Container(
                           constraints: const BoxConstraints(minHeight: 500),
                           width: screenWidth,
-                          child: Column(children: [
-                            SocietyTwtSkeleton()
-                          ]),
+                          child: Column(children: [SocietyTwtSkeleton()]),
                         );
                     }
                   })(),
                 ],
               )))),
-              floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,

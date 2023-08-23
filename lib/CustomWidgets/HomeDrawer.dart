@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/About.dart';
@@ -263,14 +264,12 @@ class HomeDrawerState extends State<HomeDrawer> {
                               ),
                             ),
                           ),
-
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => About()),
+                              MaterialPageRoute(builder: (context) => About()),
                             );
-                          }, 
+                          },
                         ),
                       ),
                     ],
@@ -314,6 +313,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                       onTap: () async {
                         await Main.auth.signOut().then((value) {
                           UserData.storeUser([]);
+                          Feed.storeTweets([]);
 
                           // Navigate to the main screen and clear the back stack
                           Navigator.pushAndRemoveUntil(

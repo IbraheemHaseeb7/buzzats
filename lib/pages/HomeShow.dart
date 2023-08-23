@@ -145,7 +145,6 @@ class HomeShowState extends State<HomeShow> {
               setState(() {
                 Feed.storeTweets(value);
                 tweets = value;
-                isFetched = true;
               });
             }).catchError((err) {
               ToastMe(

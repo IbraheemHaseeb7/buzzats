@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
+import 'package:flutter_app_1/Skeletons/UserSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
 import 'package:flutter_app_1/pages/GettingStarted.dart';
@@ -46,7 +47,7 @@ class Main extends StatelessWidget {
       // ),
       home: auth.currentUser == null ? MyApp() : Home(),
 
-      // home: TotalSocieties(), // add your page for quick testing
+      // home: UserSkeleton(), // add your page for quick testing
 
       // home: UserProfile(
       //   myself: true,

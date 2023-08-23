@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
@@ -117,7 +118,8 @@ class ReplyingState extends State<Replying> {
                                     controller: toasterController)
                                 .showToast(context);
                             String twt = cmnt.text;
-                            query("insert into tb_Comment values ('${widget.twtId}' ,'${UserData.id}', '$twt', GETDATE())")
+                            socketQuery(
+                                    "insert into tb_Comment values ('${widget.twtId}' ,'${UserData.id}', '$twt', GETDATE())")
                                 .then((v) {
                               toasterController.end();
                               ToastMe(
