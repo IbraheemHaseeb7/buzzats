@@ -4,9 +4,11 @@ import 'dart:core';
 
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/Skeletons/ChatSkeleton.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
+import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:http/http.dart' as http;
 import 'package:iconly/iconly.dart';
 import '../CustomWidgets/UserSuggest.dart';
@@ -17,8 +19,6 @@ import 'Userlist.dart';
 String? batchFinal;
 String query = 'test';
 double? screenWidth;
-
-
 
 class SearchUser extends StatefulWidget {
   const SearchUser({super.key});
@@ -31,9 +31,9 @@ class _SearchUser extends State<SearchUser> {
   Timer? _debounce;
 
   final TextEditingController _queryController = TextEditingController();
-  
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -49,7 +49,9 @@ class _SearchUser extends State<SearchUser> {
 
     return Scaffold(
       backgroundColor: Color(0xff141d26),
-      appBar: AppBar(toolbarHeight: 3,),
+      appBar: AppBar(
+        toolbarHeight: 3,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +66,7 @@ class _SearchUser extends State<SearchUser> {
                 padding: EdgeInsets.fromLTRB(6, 0, 0, 6),
                 child: IconButton(
                   onPressed: () {
-                   Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   icon: Icon(IconlyLight.arrow_left_2),
                   color: Colors.white,
@@ -80,12 +82,12 @@ class _SearchUser extends State<SearchUser> {
                     autofocus: true,
                     onChanged: (text) {
                       if (_debounce?.isActive ?? false) _debounce!.cancel();
-
                       _debounce = Timer(const Duration(milliseconds: 1000), () {
-                        setState(() {
-                          query = text;
-                          print(query);
-                        });
+                        if (text != "") {
+                          setState(() {
+                            query = text;
+                          });
+                        }
                       });
                     },
                     obscureText: false,
@@ -130,8 +132,8 @@ class _SearchUser extends State<SearchUser> {
                   ),
                 ),
               ),
-               Padding(
-                padding: EdgeInsets.only(left: 3,right: 7),
+              Padding(
+                padding: EdgeInsets.only(left: 3, right: 7),
                 child: Icon(
                   IconlyLight.filter_2,
                   color: Colors.white,
@@ -140,11 +142,11 @@ class _SearchUser extends State<SearchUser> {
               ),
             ],
           ),
-          FutureBuilder<List<Userlist>>(
-            future: searchUser(query: query),
+          FutureBuilder<List<dynamic>>(
+            future: socketQuery(
+                "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;"),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -152,31 +154,22 @@ class _SearchUser extends State<SearchUser> {
                       ChatSkeleton(),
                       ChatSkeleton(),
                       ChatSkeleton(),
-
                     ],
                   ),
-                ); 
+                );
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-
-                return Text('No users found.',style: TextStyle(color: Colors.white),);
-
+                return const Text(
+                  'No users found.',
+                  style: TextStyle(color: Colors.white),
+                );
               } else {
-                List<Userlist>? data = snapshot.data;
+                List<dynamic> data = snapshot.data!;
+
                 return Column(
-                  children: data!.map((user) {
-                    //print("done");
-                    return userGet(
-                      
-                      name: user.name!, 
-                      semester: user.semester.toString()!,
-                       bytes: user.bytes!, 
-                       email: user.email!, 
-                       department: user.department!,
-                       bio: user.bio,
-                       userID: user.userID!
-                       );
+                  children: data.map((user) {
+                    return userGet(user: user);
                   }).toList(),
                 );
               }
@@ -188,217 +181,138 @@ class _SearchUser extends State<SearchUser> {
   }
 }
 
+class userGet extends StatelessWidget {
+  Map<String, dynamic> user;
 
-
-
-Future<List<Userlist>> searchUser({String? query}) async {
-  List<Userlist> users = [];
-
-  if (query == null || query.isEmpty) {
-    return users;
-  }
-
-  query = query.toLowerCase();
-  const url = 'https://great-resonant-year.glitch.me/query';
-  final headers = {'Content-Type': 'application/json'};
-  final body = {
-    'query': "select * from [tb_Userprofile] u WHERE u.Name LIKE '%$query%';"
-  };
-
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: headers,
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-
-      List<dynamic> usersData = data['data'];
-
-       users = usersData
-        .where((element) => element['Name'].toLowerCase().contains(query))
-        .map((userJson) => Userlist.fromJson(userJson))
-        .toList();
-  
-          return users;
-    } else {
-      print('Error: ${response.statusCode}');
-      // Handle non-200 status codes
-    }
-  } catch (e) {
-    print('Error: $e');
-    // Handle request errors
-  }
-
-  return users;
-}
-
-
-class userGet extends StatelessWidget{
-  String? email,department,name,userID,semester,bio;
-  Uint8List bytes;
-  
-  userGet({
-    Key? key,
-    required this.name,
-    required this.semester,
-    required this.bytes,
-    required this.email,
-    required this.department,
-    this.bio,
-    this.userID
-   
-
-  });
-
+  userGet({Key? key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-     batchFinal = email!.substring(0, 4);
-  batchFinal = batchFinal!.toUpperCase();
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+    batchFinal = user["Email"].toString().substring(0, 4);
+    batchFinal = batchFinal!.toUpperCase();
+    GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-
-  return Stack(children: [
-    Container(
-      margin: EdgeInsets.zero,
-      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-      width: screenWidth,
-      height: 120,
-      decoration: BoxDecoration(
-        color: const Color(0x00474747),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.zero,
-        border: Border.all(color: const Color(0xff6080a7), width: 1),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 3, 20, 0),
-            child: Container(
-              height: 90,
-              width: 70,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (builder) => UserProfile(
+                        myself: false,
+                        user: user,
+                      )));
+        },
+        child: Container(
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          width: screenWidth,
+          decoration: const BoxDecoration(
+              color: Color(0x00474747),
+              shape: BoxShape.rectangle,
+              border: Border(
+                  top: BorderSide(color: Color(0xff6080a7), width: 1),
+                  bottom: BorderSide(color: Color(0xff6080a7), width: 1))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 3, 20, 0),
+                child: Container(
+                  height: 90,
+                  width: 70,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: user["Image"] != null
+                      ? Image.memory(user["Image"]!, width: 200, height: 200)
+                      : Image.asset("lib/Assets/profile.jpg"),
+                ),
               ),
-              child: bytes != null
-                  ? Image.memory(bytes!, width: 200, height: 200)
-                  : CircularProgressIndicator(),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
-                  child: Text(
-                    name.toString(),
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.clip,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 14,
-                      color: Color(0xffffffff),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                  child: Text(
-                    "Batch: $batchFinal",
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.clip,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 14,
-                      color: Color(0xffffffff),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF6080A7),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: Text(
-                      'Semester: $semester',
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.clip,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color(0xffffffff),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
+                      child: Text(
+                        user["Name"],
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.clip,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF6080A7),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: Text(
-                      'Department: $department',
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.clip,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14,
-                        color: Color(0xffffffff),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: Text(
+                        "Batch: $batchFinal",
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.clip,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14,
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF6080A7),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          'Semester: ${user["Semester"]}',
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF6080A7),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          'Department: ${user["Department"]}',
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.clip,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-    MaterialButton(
-      onPressed: () {},
-          //  Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) =>
-          //   // SearchedUser(
-          //   //   name: name!, 
-          //   //   userID: userID!, 
-          //   //   email: email!, 
-          //   //   bio: bio!, 
-          //   //   department: department!, 
-          //   //   semester: semester!, 
-          //   //   bytes: bytes
-          //   //   )
-          //   SearchedUser(myself: myself)
-      minWidth: screenWidth,
-      height: 120,
-             ),
-  ],
-          );
-      }
-    
-    
+        ));
   }
-
-
-
+}

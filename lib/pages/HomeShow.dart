@@ -42,7 +42,7 @@ class HomeShowState extends State<HomeShow> {
   @override
   void initState() {
     Feed.isEmpty().then((value) {
-      if (!value) {
+      if (value) {
         socketQuery(q).then((e) {
           setState(() {
             Feed.storeTweets(e);
