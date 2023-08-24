@@ -80,25 +80,41 @@ class UserProfileState extends State<UserProfile> {
         });
       });
     } else {
-      Timer(const Duration(milliseconds: 2000), () {
-        socketQuery(
-                "SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${widget.user!["UserID"]}' order by [time] desc")
-            .then((value) {
-          setState(() {
-            name = widget.user!["Name"];
-            userID = widget.user!["UserID"];
-            bytes = Uint8List.fromList(List<int>.from(widget.user!["Image"]));
-            bio = widget.user!["BIO"];
-            regNo =
-                "${widget.user!["UserID"].toString().substring(0, 4)}-${widget.user!["UserID"].toString().substring(4, 7)}-${widget.user!["UserID"].toString().substring(7, 10)}";
-            batch =
-                widget.user!["UserID"].toString().substring(0, 4).toUpperCase();
-            semester = widget.user!["Semester"];
-            department =
-                widget.user!["UserID"].toString().substring(4, 7).toUpperCase();
-            connections = widget.user!["Connections"];
-            tweets = value;
-            isFetched = true;
+      UserData();
+      UserData.fetchUser().then((value) {
+        Timer(Duration(seconds: 2), () {
+          socketQuery(
+                  "begin tran declare @temp varchar(5); set @temp = (select concat('N', count(*) + 1) from tb_Notification) insert into tb_Notification (NotificationID, UserID, STweetID, TweetID, NType, [Date/Time], [Data], ReceiverID) values (@temp, '${UserData.id}', null, null, 'View', getdate(), null, '${widget.user!["UserID"]}'); SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${widget.user!["UserID"]}' order by [time] desc commit")
+              .then((value) {
+            socket.emit("notifications", [
+              value[0]["Name"],
+              value[0]["Image"],
+              DateTime.now().toString(),
+              widget.user!["UserID"],
+              "View",
+              ""
+            ]);
+
+            setState(() {
+              name = widget.user!["Name"];
+              userID = widget.user!["UserID"];
+              bytes = Uint8List.fromList(List<int>.from(widget.user!["Image"]));
+              bio = widget.user!["BIO"];
+              regNo =
+                  "${widget.user!["UserID"].toString().substring(0, 4)}-${widget.user!["UserID"].toString().substring(4, 7)}-${widget.user!["UserID"].toString().substring(7, 10)}";
+              batch = widget.user!["UserID"]
+                  .toString()
+                  .substring(0, 4)
+                  .toUpperCase();
+              semester = widget.user!["Semester"];
+              department = widget.user!["UserID"]
+                  .toString()
+                  .substring(4, 7)
+                  .toUpperCase();
+              connections = widget.user!["Connections"];
+              tweets = value;
+              isFetched = true;
+            });
           });
         });
       });
