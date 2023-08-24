@@ -67,7 +67,7 @@ class _SuggestionPage extends State<SuggestionPage> {
   String q =
       "select (select count(*) from tb_SocietyMembers mem where mem.SocietyID = soc.SocietyID) as members, soc.SocietyID, (select [Name] from tb_UserProfile u where u.[UserID]=soc.PresidentID) as President, soc.PresidentID,soc.About, soc.Picture, soc.SocietyName from tb_Society soc";
 
-  String q2 = "select top 10 * from [tb_Userprofile]";
+  String q2 = "select top 2 * from tb_UserProfile tb order by newId()";
 
   List<dynamic> people = [];
   List<dynamic> societies = [];
@@ -87,7 +87,7 @@ class _SuggestionPage extends State<SuggestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0),
+      appBar: AppBar(toolbarHeight: 0,elevation: 0,),
       backgroundColor: const Color(0xff141d26),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -310,11 +310,11 @@ class _SuggestionPage extends State<SuggestionPage> {
                             return Column(
                               children: data.map((user) {
                                 return userGet(
-                                  user["Email"],
+                                  user["Email"]?? "",
                                   user["Image"],
-                                  user["Name"],
-                                  user["Department"],
-                                  user["Semester"],
+                                  user["Name"] ?? "",
+                                  user["Department"] ?? "",
+                                  user["Semester"] ?? "",
                                 );
                               }).toList(),
                             );

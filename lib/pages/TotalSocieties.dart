@@ -57,9 +57,11 @@ class TotalState extends State<TotalSocieties> {
 
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text("My Societies"),
         ),
         body: Container(
+          padding: EdgeInsets.all(10),
           width: screenWidth,
           height: screenHeight,
           color: Color(0xff141d26),

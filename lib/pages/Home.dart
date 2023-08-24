@@ -41,28 +41,30 @@ class HomeState extends State<Home> {
     UserData();
 
     return Scaffold(
+      
       backgroundColor: Color(0xFF141D26),
       bottomNavigationBar: Container(
-        height: 80,
+        height: 75,
         width: screenWidth,
         decoration: BoxDecoration(
           color: Color(0xFF141D26),
           border: Border(
             top: BorderSide(
               color: Color.fromRGBO(72, 72, 72, 1),
-              width: 0.5,
+              width: 0.3,
             ),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 3),
+          padding: const EdgeInsets.only(bottom: 0),
           child: GNav(
             backgroundColor: Color(0xFF141D26),
             color: Color.fromRGBO(150, 183, 223, 1),
             activeColor: Color(0xFF4137BD),
             tabBackgroundColor: Color(0xFF4137BD),
             rippleColor: Color(0xFF4137BD),
-            gap: 6,
+            
+            gap: 4,
             tabs: [
               GButton(
                 icon:

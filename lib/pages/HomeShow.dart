@@ -105,8 +105,9 @@ class HomeShowState extends State<HomeShow> {
       backgroundColor: Color(0xFF141D26),
 
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Color(0xFF141D26),
-        toolbarHeight: 60,
+        toolbarHeight: 50,
         iconTheme: const IconThemeData(
           color: Color.fromRGBO(150, 183, 223, 1),
         ),

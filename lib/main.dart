@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
-import 'package:flutter_app_1/Skeletons/UserSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
 import 'package:flutter_app_1/pages/GettingStarted.dart';
+import 'package:flutter_app_1/pages/HandleNotifs.dart';
 import 'package:flutter_app_1/pages/Home.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,8 +40,17 @@ class Main extends StatelessWidget {
   static FirebaseAuth auth = FirebaseAuth.instance;
   static final localStorage = new FlutterSecureStorage();
 
+
   @override
   Widget build(BuildContext context) {
+
+    SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,statusBarBrightness: Brightness.dark,systemNavigationBarColor: Color(0xff141d26),
+      systemNavigationBarIconBrightness: Brightness.light,systemNavigationBarDividerColor: Color(0xff141d26));
+
+      SystemChrome.setSystemUIOverlayStyle(overlayStyle);
+
+
     auth.currentUser != null ? socketConnection() : "";
     final textTheme = Theme.of(context).textTheme;
 
@@ -73,7 +83,7 @@ class Main extends StatelessWidget {
       // ),
       home: auth.currentUser == null ? MyApp() : Home(),
 
-      // home: UserSkeleton(), // add your page for quick testing
+      // home: TotalSocieties(), // add your page for quick testing
 
       // home: UserProfile(
       //   myself: true,

@@ -40,21 +40,7 @@ class NotifSkeleton extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color:Color(0xFF2E3D4C),),),
                       ),
-               SizedBox(width: 110,),
-
-                      Shimmer.fromColors(
-                baseColor: Color(0xFF2E3D4C) ,
-                       highlightColor: Colors.white.withOpacity(0.5),
-                child: Container(
-                width:37,
-                height: 37,
-                decoration: BoxDecoration(
-                  color:Color(0xFF2E3D4C) ,
-                 borderRadius: BorderRadius.circular(5)
-                
-                ),),
-              ),
-          ],
+          ]    
         ),
 
     );
