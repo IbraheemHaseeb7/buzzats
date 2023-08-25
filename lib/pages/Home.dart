@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int currentPageIndex = 0;
-    PageController _pageController = PageController(initialPage: 0);
+  PageController _pageController = PageController(initialPage: 0);
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -59,81 +59,80 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
-      body: Stack(
+      body: Column(
         children: [
-          PageView(
-            controller: _pageController,
-            children: pages,
-            onPageChanged: (index) {
-              setState(() {
-                currentPageIndex = index;
-              });
-            },
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              children: pages,
+              onPageChanged: (index) {
+                setState(() {
+                  currentPageIndex = index;
+                });
+              },
+            ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 75,
-              decoration: BoxDecoration(
-                color: Color(0xFF141D26),
-                border: Border(
-                  top: BorderSide(
-                    color: Color.fromRGBO(72, 72, 72, 1),
-                    width: 0.3,
-                  ),
+          Container(
+            height: 75,
+            decoration: BoxDecoration(
+              color: Color(0xFF141D26),
+              border: Border(
+                top: BorderSide(
+                  color: Color.fromRGBO(72, 72, 72, 1),
+                  width: 0.3,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: GNav(
-                  backgroundColor: Color(0xFF141D26),
-                  color: Color.fromRGBO(150, 183, 223, 1),
-                  activeColor: Color(0xFF4137BD),
-                  tabBackgroundColor: Color(0xFF4137BD),
-                  rippleColor: Color(0xFF4137BD),
-                  gap: 4,
-                  tabs: [
-                    GButton(
-                      icon: currentPageIndex == 0
-                          ? IconlyBold.home
-                          : IconlyLight.home,
-                      iconSize: 35.0,
-                      backgroundColor: Color(0xFF141D26),
-                      onPressed: () {
-                        _animateToPage(0);
-                      },
-                    ),
-                    GButton(
-                      icon: IconlyLight.search,
-                      backgroundColor: Color(0xFF141D26),
-                      iconSize: 35.0,
-                      onPressed: () {
-                        _animateToPage(1);
-                      },
-                    ),
-                    GButton(
-                      icon: currentPageIndex == 2
-                          ? IconlyBold.user_3
-                          : IconlyLight.user_1,
-                      backgroundColor: Color(0xFF141D26),
-                      iconSize: 35.0,
-                      onPressed: () {
-                        _animateToPage(2);
-                      },
-                    ),
-                    GButton(
-                      icon: currentPageIndex == 3
-                          ? IconlyBold.profile
-                          : IconlyLight.profile,
-                      backgroundColor: Color(0xFF141D26),
-                      iconSize: 35.0,
-                      onPressed: () {
-                        _animateToPage(3);
-                      },
-                    ),
-                  ],
-                  selectedIndex: currentPageIndex,
-                ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: GNav(
+                backgroundColor: Color(0xFF141D26),
+                color: Color.fromRGBO(150, 183, 223, 1),
+                activeColor: Color(0xFF4137BD),
+                tabBackgroundColor: Color(0xFF4137BD),
+                rippleColor: Color(0xFF4137BD),
+                gap: 4,
+                tabs: [
+                  GButton(
+                    icon: currentPageIndex == 0
+                        ? IconlyBold.home
+                        : IconlyLight.home,
+                    iconSize: 35.0,
+                    backgroundColor: Color(0xFF141D26),
+                    onPressed: () {
+                      _animateToPage(0);
+                    },
+                  ),
+                  GButton(
+                    icon: IconlyLight.search,
+                    backgroundColor: Color(0xFF141D26),
+                    iconSize: 35.0,
+                    onPressed: () {
+                      _animateToPage(1);
+                    },
+                  ),
+                  GButton(
+                    icon: currentPageIndex == 2
+                        ? IconlyBold.user_3
+                        : IconlyLight.user_1,
+                    backgroundColor: Color(0xFF141D26),
+                    iconSize: 35.0,
+                    onPressed: () {
+                      _animateToPage(2);
+                    },
+                  ),
+                  GButton(
+                    icon: currentPageIndex == 3
+                        ? IconlyBold.profile
+                        : IconlyLight.profile,
+                    backgroundColor: Color(0xFF141D26),
+                    iconSize: 35.0,
+                    onPressed: () {
+                      _animateToPage(3);
+                    },
+                  ),
+                ],
+                selectedIndex: currentPageIndex,
               ),
             ),
           ),

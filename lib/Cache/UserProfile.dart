@@ -6,21 +6,22 @@ import 'package:flutter_app_1/main.dart';
 
 class UserData {
   var temp = Main.auth.currentUser!.email ?? "";
- static String? id;
+  static String? id;
   UserData() {
     List tempId = temp!.split('-');
     List last = tempId[2].split('');
     id = tempId[0] + tempId[1] + last[0] + last[1] + last[2];
   }
 
-  static List<Map<String, dynamic>> user = [];
+  static List<dynamic> user = [];
 
   static void storeUser(List<dynamic> t) async {
     await Main.localStorage.write(key: "user", value: jsonEncode(t));
   }
 
   static Future<List<dynamic>> fetchUser() async {
-    return jsonDecode(await Main.localStorage.read(key: "user") ?? "[]");
+    user = jsonDecode(await Main.localStorage.read(key: "user") ?? "[]");
+    return user;
   }
 
   static Future<dynamic> isEmpty() async {

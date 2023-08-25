@@ -46,10 +46,8 @@ class _TweetWidgetState extends State<TweetWidget> {
       isLiked = widget.isLiked;
     });
     super.initState();
-    if(widget.image != null)
-    {
-
-    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    if (widget.image != null) {
+      imageBytes = Uint8List.fromList(List<int>.from(widget.image));
     }
     // Check if the user has already liked the tweet
   }
@@ -57,8 +55,17 @@ class _TweetWidgetState extends State<TweetWidget> {
   void handleLike() async {
     String queryStatement;
     if (!isLiked) {
+      socket.emit("notifications", [
+        UserData.user[0]["Name"],
+        UserData.user[0]["Image"],
+        DateTime.now().toString(),
+        widget.id,
+        "Like",
+        widget.content
+      ]);
+
       queryStatement =
-          "INSERT INTO tb_Like VALUES ('${widget.twtId}', '${UserData.id}', GETDATE())";
+          "begin tran declare @temp varchar(5); set @temp = (select concat('N', count(*) + 1) from tb_Notification) insert into tb_Notification (NotificationID, UserID, STweetID, TweetID, NType, [Date/Time], [Data], ReceiverID) values (@temp, '${UserData.id}', null, '${widget.twtId}', 'Like', getdate(), '${widget.content}', '${widget.id}'); INSERT INTO tb_Like VALUES ('${widget.twtId}', '${UserData.id}', GETDATE()) commit";
       setState(() {
         ++widget.likesCount;
         isLiked = !isLiked;
@@ -95,15 +102,10 @@ class _TweetWidgetState extends State<TweetWidget> {
 
     return GestureDetector(
       onTap: () {
-       showBottomSheet(context: context, 
-       backgroundColor: Colors.transparent,
-       
-       builder: ((context) => 
-       
-        CommentSection(twtId: widget.twtId)
-       ));
-
-      
+        showBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: ((context) => CommentSection(twtId: widget.twtId)));
       },
       child: Container(
         width: screenWidth,
@@ -135,7 +137,8 @@ class _TweetWidgetState extends State<TweetWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:10,bottom: 7,left: 8,right: 10),
+              padding:
+                  const EdgeInsets.only(top: 10, bottom: 7, left: 8, right: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +202,6 @@ class _TweetWidgetState extends State<TweetWidget> {
                     padding: const EdgeInsets.only(top: 5.0, bottom: 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -243,7 +245,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                     color: Colors.white,
                                   ),
                                   color: Colors.white,
-                                   iconSize: 20,
+                                  iconSize: 20,
                                 ),
                                 Text(
                                   widget.repliesCount.toString(),
@@ -253,21 +255,19 @@ class _TweetWidgetState extends State<TweetWidget> {
                               ],
                             ),
                             IconButton(
-                              onPressed: (){
-                                showModalBottomSheet(context: context,
-                                backgroundColor: Color.fromARGB(255, 33, 47, 61),
-                                 builder: (context)=>
-                                    ListMore(id: widget.id, twtId: widget.twtId)
-                                 
-                                  );
-                                
-                                
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 33, 47, 61),
+                                    builder: (context) => ListMore(
+                                        id: widget.id, twtId: widget.twtId));
                               },
                               icon: Icon(
                                 Icons.more_vert,
                                 color: Colors.white,
                               ),
-                                iconSize: 20,
+                              iconSize: 20,
                               color: Colors.white,
                             ),
                           ],

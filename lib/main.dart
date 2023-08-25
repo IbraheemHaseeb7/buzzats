@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,38 +42,48 @@ class Main extends StatelessWidget {
   static FirebaseAuth auth = FirebaseAuth.instance;
   static final localStorage = new FlutterSecureStorage();
 
-
   @override
   Widget build(BuildContext context) {
-
     SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,statusBarBrightness: Brightness.dark,systemNavigationBarColor: Color(0xff141d26),
-      systemNavigationBarIconBrightness: Brightness.light,systemNavigationBarDividerColor: Color(0xff141d26));
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: Color(0xff141d26),
+        systemNavigationBarIconBrightness: Brightness.light,
+        systemNavigationBarDividerColor: Color(0xff141d26));
 
-      SystemChrome.setSystemUIOverlayStyle(overlayStyle);
-
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
 
     auth.currentUser != null ? socketConnection() : "";
     final textTheme = Theme.of(context).textTheme;
 
     if (auth.currentUser != null) {
       UserData();
-      socket.onConnect((data) {
-        (() async {
-          await socketQuery(
-                  "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'")
-              .then((value) {
-            notifications.addAll(value);
+      Timer(const Duration(seconds: 0), () {
+        socket.onConnect((data) {
+          socket.emit("query", [
+            "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'",
+            UserData.id,
+            "Notification"
+          ]);
+          socket.on("query", (data) {
+            if (data[1] == "Notification") {
+              notifications.addAll(data[0]["data"]);
+            }
           });
-        })();
-
-        socket.on("notifications", (data) {
-          notifications.add({
-            "Name": data["name"],
-            "NType": data["type"],
-            "Data": data["data"],
-            "Image": data["image"]["data"],
-            "time": data["time"]
+          // socketQuery(
+          //         "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'",
+          //         "Notification")
+          //     .then((value) {
+          //   notifications.addAll(value);
+          // });
+          socket.on("notifications", (data) {
+            notifications.add({
+              "Name": data["name"],
+              "NType": data["type"],
+              "Data": data["data"],
+              "Image": data["image"]["data"],
+              "time": data["time"]
+            });
           });
         });
       });
@@ -122,7 +134,6 @@ class MyApp extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                
                 const Align(
                   alignment: Alignment.center,
                   child: Image(

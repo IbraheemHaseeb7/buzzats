@@ -32,12 +32,13 @@ Future<List<dynamic>> socketQuery(String query) async {
       Completer<List<dynamic>>(); // Create a Completer object
   _completers["event"] = completer;
 
-  socket.emit("query", [query, UserData.id]);
+  socket.emit("query", [query, UserData.id, ""]);
 
   socket.on("query", (data) {
     final completer = _completers.remove("event");
     if (completer != null) {
-      completer.complete(data["data"]); // Complete the Completer with the data
+      completer
+          .complete(data[0]["data"]); // Complete the Completer with the data
     }
   });
 

@@ -26,7 +26,6 @@ import '../CustomWidgets/TweetWidget.dart';
 import 'CreateTweet.dart';
 import 'package:badges/badges.dart' as badges;
 
-
 class HomeShow extends StatefulWidget {
   @override
   HomeShowState createState() => HomeShowState();
@@ -42,21 +41,26 @@ class HomeShowState extends State<HomeShow> {
   var renderedTweets;
   bool hasNewNotifs = true;
 
-
   String q =
-      "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc offset 0 rows fetch next 6 rows only";
+      "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc offset 0 rows fetch next 7 rows only";
 
   @override
   void initState() {
-    Feed.isEmpty().then((value) {
-      if (value) {
-        socketQuery(q).then((e) {
-          setState(() {
-            Feed.storeTweets(e);
-            tweets = e;
-            isFetched = true;
-          });
+    Feed.isEmpty().then((value) async {
+      if (!value) {
+        // await socketQuery(q).then((e) {
+        socket.emit("query", [q, UserData.id, "Feed"]);
+        socket.on("query", (data) {
+          if (data[1] == "Feed") {
+            setState(() {
+              socket.clearListeners();
+              Feed.storeTweets(data[0]["data"]);
+              tweets = data[0]["data"];
+              isFetched = true;
+            });
+          }
         });
+        // });
       } else {
         Feed.fetchTweets().then((value) {
           setState(() {
@@ -84,7 +88,7 @@ class HomeShowState extends State<HomeShow> {
 
   void loadMore() {
     socketQuery(
-            "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked',(select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID where twt.[Date/Time] < '${tweets[tweets.length - 1]["time"]}'order by [time] desc offset 0 rows fetch next 6 rows only")
+            "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked',(select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID where twt.[Date/Time] < '${tweets[tweets.length - 1]["time"]}'order by [time] desc offset 0 rows fetch next 20 rows only")
         .then((value) {
       setState(() {
         tweets.addAll(value);
@@ -96,11 +100,11 @@ class HomeShowState extends State<HomeShow> {
     });
   }
 
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   scrollController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -128,64 +132,59 @@ class HomeShowState extends State<HomeShow> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 6),
-            child: hasNewNotifs ?  badges.Badge(
-              position: badges.BadgePosition.topEnd(top: 7, end: 12),
-            showBadge: true,
-            ignorePointer: false,
-            badgeAnimation: badges.BadgeAnimation.slide(
-        animationDuration: Duration(seconds: 1),
-        colorChangeAnimationDuration: Duration(seconds: 1),
-        loopAnimation: true,
-        curve: Curves.fastOutSlowIn,
-        colorChangeAnimationCurve: Curves.easeInCubic,
-      ),
-      badgeStyle: badges.BadgeStyle(
-        shape: badges.BadgeShape.circle,
-        badgeColor: Colors.red,
-       
-
-        
-        elevation: 1,
-      ),
-              child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      
-                    isSelected = true;
-                    hasNewNotifs = false;
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Notifications()),
-                    );
-            
-                   
-                  },
-                  icon: Icon(
-                    isSelected == true
-                        ? IconlyBold.notification
-                        : IconlyLight.notification,
-                    size: 30,
-                    color: Color.fromRGBO(150, 183, 223, 1),
-                  )),
-            ):
-            IconButton(
-                  onPressed: () {
-                    isSelected = true;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Notifications()),
-                    );
-            
-                   
-                  },
-                  icon: Icon(
-                    isSelected == true
-                        ? IconlyBold.notification
-                        : IconlyLight.notification,
-                    size: 30,
-                    color: Color.fromRGBO(150, 183, 223, 1),
-                  )),
+            child: hasNewNotifs
+                ? badges.Badge(
+                    position: badges.BadgePosition.topEnd(top: 7, end: 12),
+                    showBadge: true,
+                    ignorePointer: false,
+                    badgeAnimation: const badges.BadgeAnimation.slide(
+                      animationDuration: Duration(seconds: 1),
+                      colorChangeAnimationDuration: Duration(seconds: 1),
+                      loopAnimation: true,
+                      curve: Curves.fastOutSlowIn,
+                      colorChangeAnimationCurve: Curves.easeInCubic,
+                    ),
+                    badgeStyle: const badges.BadgeStyle(
+                      shape: badges.BadgeShape.circle,
+                      badgeColor: Colors.red,
+                      elevation: 1,
+                    ),
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isSelected = true;
+                            hasNewNotifs = false;
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Notifications()),
+                          );
+                        },
+                        icon: Icon(
+                          isSelected == true
+                              ? IconlyBold.notification
+                              : IconlyLight.notification,
+                          size: 30,
+                          color: Color.fromRGBO(150, 183, 223, 1),
+                        )),
+                  )
+                : IconButton(
+                    onPressed: () {
+                      isSelected = true;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Notifications()),
+                      );
+                    },
+                    icon: Icon(
+                      isSelected == true
+                          ? IconlyBold.notification
+                          : IconlyLight.notification,
+                      size: 30,
+                      color: Color.fromRGBO(150, 183, 223, 1),
+                    )),
           )
         ],
       ),

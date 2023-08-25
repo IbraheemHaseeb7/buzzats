@@ -58,10 +58,9 @@ class UserProfileState extends State<UserProfile> {
   int connections = 0;
   @override
   void initState() {
-      UserData();
+    UserData();
     if (widget.myself) {
       UserData.fetchUser().then((value) async {
-        
         final tweetsValue = await socketQuery(
             "SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${UserData.id}' order by [time] desc");
         setState(() {
