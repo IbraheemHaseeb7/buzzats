@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/MySoc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +17,14 @@ import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
+import '../Cache/UploadPicture.dart';
+import '../Cache/socket.dart';
 import '../CustomWidgets/CustomDropDownMenu.dart';
 
 class CreateSocietyTweet extends StatefulWidget {
   String id;
   List<dynamic> groups = [];
+  List<String> sGroupNames = ['Society Tweet'];
   var image;
 
   CreateSocietyTweet({
@@ -36,38 +40,31 @@ class CreateSocietyTweet extends StatefulWidget {
 
 class CreateSocietyTweetState extends State<CreateSocietyTweet> {
   List<File> images = [];
-  List<String> grps = ["hbdjhfbh"];
+  bool imageEntered = false;
   TextEditingController tweetController = TextEditingController();
   bool isButtonDisabled = true;
   var twtLimit = "500";
-  var img,imageBytes;
+  var img, imageBytes;
 
-  String selectedItem = 'Society Tweet';
+  String? selectedItem;
 
   @override
   void initState() {
     super.initState();
 
-       if(widget.image!=null)
-    {
-
-    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    if (widget.image != null) {
+      imageBytes = Uint8List.fromList(List<int>.from(widget.image));
     }
-    
-      
 
-    widget.groups.map((e) {
-      
-       setState(() {
-         
-          grps = e["SGroupName"];
-       });
-       
+    for (var group in widget.groups) {
+      var sGroupNameList = group["SGroupsName"] as List;
+      if (sGroupNameList.isNotEmpty) {
+        var sGroupName = sGroupNameList[0]["SGroupName"] as String;
+        widget.sGroupNames.add(sGroupName);
+      }
+      print(widget.sGroupNames);
+    }
 
-
-    });
-
-    print(widget.groups);
     tweetController.addListener(updateButtonState);
   }
 
@@ -84,6 +81,22 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
     });
   }
 
+  void imagesToDB() async {
+    for (int i = 0; i < images.length; i++) {
+      var result = await FlutterImageCompress.compressWithFile(
+        images[i].absolute.path,
+        minWidth: 100,
+        minHeight: 100,
+        quality: 60,
+      );
+
+      await uploadSocietyTImageToAzure(result!).then((res) {
+        socketQuery(
+            "BEGIN TRAN DECLARE @temp VARCHAR(10); SET @temp = (SELECT CONCAT('ST', COUNT(STweetImageID) + 1) FROM tb_SocietyTweetsImages); DECLARE @temp2 VARCHAR(10); SET @temp2 = (SELECT CONCAT('ST', COUNT(STweetID)) FROM tb_SocietyTweets); INSERT INTO tb_SocietyTweetsImages (STweetImageID, SocietyID, STweetID, [Image]) VALUES (@temp, '{$widget.id}', @temp2 , (SELECT TOP 1 BulkColumn FROM OPENROWSET(BULK 'societytweetspictures/$res', DATA_SOURCE = 'MyAzureBlobStorage2', SINGLE_BLOB) AS Image));");
+      });
+    }
+  }
+
   void updateTwtLimit() {
     setState(() {
       twtLimit = (500 - tweetController.text.length).toString();
@@ -92,7 +105,7 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
 
   void onPickImages() async {
     images = await pickImages();
-
+    imageEntered = true;
     setState(() {});
   }
 
@@ -103,9 +116,9 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
 
     final enabledStyle = ButtonStyle(
       padding: MaterialStateProperty.all(
-          EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
-      backgroundColor: MaterialStateProperty.all(Color(0xFF4137BD)),
-      fixedSize: MaterialStateProperty.all(Size(80, 80)),
+          const EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
+      backgroundColor: MaterialStateProperty.all(const Color(0xFF4137BD)),
+      fixedSize: MaterialStateProperty.all(const Size(80, 80)),
 
       shape: MaterialStateProperty.all(RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -114,24 +127,24 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
 
     final disabledStyle = ButtonStyle(
       padding: MaterialStateProperty.all(
-          EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
+          const EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
       backgroundColor: MaterialStateProperty.all(
-          Color.fromARGB(255, 78, 72, 160).withOpacity(0.13)),
-      fixedSize: MaterialStateProperty.all(Size(80, 80)),
+          const Color.fromARGB(255, 78, 72, 160).withOpacity(0.13)),
+      fixedSize: MaterialStateProperty.all(const Size(80, 80)),
       shape: MaterialStateProperty.all(RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       )),
     );
 
     return Scaffold(
-      backgroundColor: Color(0xFF141D26),
+      backgroundColor: const Color(0xFF141D26),
       appBar: AppBar(
-        backgroundColor: Color(0xFF141D26),
-        iconTheme: IconThemeData(
+        backgroundColor: const Color(0xFF141D26),
+        iconTheme: const IconThemeData(
           color: Color.fromRGBO(150, 183, 223, 1),
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Create a Society Tweet",
           style: TextStyle(
             color: Color.fromRGBO(150, 183, 223, 1),
@@ -148,24 +161,25 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 12, left: 12, right: 8),
+                  padding: const EdgeInsets.only(top: 12, left: 12, right: 8),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(200)),
+                    borderRadius: const BorderRadius.all(Radius.circular(200)),
                     child: Container(
-                      child:  ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(200)),
-                child: widget.image == null
-                    ? Image.asset(
-                        "lib/Assets/profile.jpg",
-                        fit: BoxFit.cover,
-                        width: 50,
-                      )
-                    : Image.memory(
-                        imageBytes,
-                        width: 50,
-                        fit: BoxFit.cover,
+                      child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(200)),
+                        child: widget.image == null
+                            ? Image.asset(
+                                "lib/Assets/profile.jpg",
+                                fit: BoxFit.cover,
+                                width: 50,
+                              )
+                            : Image.memory(
+                                imageBytes,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
                       ),
-              ),
                     ),
                   ),
                 ),
@@ -187,7 +201,7 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
                     maxLines: null,
                     controller: tweetController,
                     decoration: InputDecoration(
-                      counterStyle: TextStyle(
+                      counterStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
@@ -205,10 +219,7 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
             ),
             if (images.isNotEmpty)
               CarouselSlider(
-                items: images.map((file) => Image.file(file,
-                 width: 100,
-                  height: 150,
-                  fit: BoxFit.cover,)).toList(),
+                items: images.map((file) => Image.file(file)).toList(),
                 options:
                     CarouselOptions(height: 400, enableInfiniteScroll: false),
               ),
@@ -229,44 +240,52 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
         child: Row(
           children: [
             IconButton(
-              onPressed: onPickImages,
-              icon: Icon(
+              onPressed: () {
+                onPickImages();
+              },
+              icon: const Icon(
                 IconlyLight.image,
                 color: Colors.white,
               ),
               alignment: Alignment.centerLeft,
               iconSize: 40,
             ),
-            SizedBox(width: 8), // Add spacing between the buttons
+            const SizedBox(width: 8), // Add spacing between the buttons
 
             Expanded(
               flex: 3,
               child: Container(
-                child:  DropdownButton<String>(
-            items: widget.groups.map<DropdownMenuItem<String>>(
-              (value) {
-                return DropdownMenuItem<String>(
-                  value: value["SGroupName"],
-                  child: Text(value["SGroupName"].toString()),
-                );
-              },
-            ).toList(),
-            onChanged: (newValue) {
-              setState(() {
-                
-               selectedItem = newValue.toString();
-              });
-           
-            },
-            value: widget.groups.map((e) => e["SGroupName"]).toString(), // Initially selected value
-            isExpanded: true, // Allow the dropdown to take up the full width
-          ),
-        ),
-        ),
-              
-            
+                child: DropdownButton<String>(
+                  hint: const Text(
+                    'Society Tweet',
+                    style: TextStyle(
+                      color: Colors.white, 
+                    ),
+                  ),
+                  value: selectedItem, 
+                  items: widget.sGroupNames.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value:
+                          value, 
+                      child: Text(
+                        value,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  dropdownColor: const Color(0xff141d26),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedItem = newValue;
+                    });
+                  },
+                ),
+              ),
+            ),
 
-            SizedBox(width: 8), // Add spacing between the buttons
+            const SizedBox(width: 8), // Add spacing between the buttons
 
             Padding(
               padding: const EdgeInsets.only(
@@ -279,27 +298,32 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
                 onPressed: isButtonDisabled
                     ? null
                     : () async {
-                        ToasterController toasterController =
-                            ToasterController();
-                        ToastMe(
-                                text: "Posting",
-                                type: ToasterType.Loading,
-                                controller: toasterController)
-                            .showToast(context);
-                        String twt = tweetController.text;
-
-                        query("begin tran declare @temp varchar(10); set @temp = (select concat('ST', count(STweetID) + 1) from tb_SocietyTweets); insert into tb_SocietyTweets (STweetID, SocietyID, STweet, [Date/Time]) values (@temp, '${widget.id}', '$twt', GETDATE()) commit")
-                            .then((v) {
-                          toasterController.end();
+                        if (images.length < 5) {
+                          ToasterController toasterController =
+                              ToasterController();
                           ToastMe(
-                                  text: "Posted",
-                                  type: ToasterType.Check,
-                                  duration: 2000)
+                                  text: "Posting",
+                                  type: ToasterType.Loading,
+                                  controller: toasterController)
                               .showToast(context);
-                        });
+                          String twt = tweetController.text;
+
+                          query("begin tran declare @temp varchar(10); set @temp = (select concat('ST', count(STweetID) + 1) from tb_SocietyTweets); insert into tb_SocietyTweets (STweetID, SocietyID, STweet, [Date/Time]) values (@temp, '${widget.id}', '$twt', GETDATE()) commit")
+                              .then((v) {
+                            if (imageEntered) {
+                              imagesToDB();
+                            }
+                            toasterController.end();
+                            ToastMe(
+                                    text: "Posted",
+                                    type: ToasterType.Check,
+                                    duration: 2000)
+                                .showToast(context);
+                          });
+                        }
                       },
                 style: isButtonDisabled ? disabledStyle : enabledStyle,
-                child: Text(
+                child: const Text(
                   "Buzzit!",
                   style: TextStyle(
                       fontSize: 11,

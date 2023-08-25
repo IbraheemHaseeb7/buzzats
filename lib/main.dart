@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_1/Cache/Society.dart';
+import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 
@@ -22,6 +23,7 @@ import 'package:flutter_app_1/pages/TotalSocieties.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -50,8 +52,31 @@ class Main extends StatelessWidget {
 
 
     auth.currentUser != null ? socketConnection() : "";
-
     final textTheme = Theme.of(context).textTheme;
+
+    if (auth.currentUser != null) {
+      UserData();
+      socket.onConnect((data) {
+        (() async {
+          await socketQuery(
+                  "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'")
+              .then((value) {
+            notifications.addAll(value);
+          });
+        })();
+
+        socket.on("notifications", (data) {
+          notifications.add({
+            "Name": data["name"],
+            "NType": data["type"],
+            "Data": data["data"],
+            "Image": data["image"]["data"],
+            "time": data["time"]
+          });
+        });
+      });
+    }
+
     return MaterialApp(
       // home: Society(
       //   society: SocietyData.societies[0],
