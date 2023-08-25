@@ -6,6 +6,7 @@ import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/About.dart';
 import 'package:flutter_app_1/pages/CUonline.dart';
+import 'package:flutter_app_1/pages/HandleNotifs.dart';
 import 'package:flutter_app_1/pages/Timetable.dart';
 import 'package:flutter_app_1/pages/Rooms.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,6 +29,7 @@ class HomeDrawerState extends State<HomeDrawer> {
 
   @override
   void initState() {
+    UserData();
     UserData.fetchUser().then((value) {
       setState(() {
 
@@ -277,7 +279,12 @@ class HomeDrawerState extends State<HomeDrawer> {
                     ],
                   ),
                 ),
-                Padding(
+                (() {
+                              switch (UserData.id) {
+                                case "fa21bcs052":
+                                case "fa21bcs140":
+                                case "fa21bcs082":
+                                  return  Padding(
                   padding: const EdgeInsets.only(right: 9, left: 9),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,14 +315,19 @@ class HomeDrawerState extends State<HomeDrawer> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => About()),
+                                  builder: (context) => HandleNotifs()),
                             );
                           }, 
                         ),
                       ),
                     ],
                   ),
-                ),
+                );
+                                default:
+                                  return Container();
+                              }
+                            })(),
+               
                 SizedBox(height: screenHeight - 400),
                 Center(
                   child: Container(

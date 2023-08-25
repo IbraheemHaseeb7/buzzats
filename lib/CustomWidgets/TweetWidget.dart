@@ -3,10 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
+import 'package:flutter_app_1/CustomWidgets/ListMore.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
+import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
+import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import '../Cache/socket.dart';
 
 class TweetWidget extends StatefulWidget {
@@ -92,11 +95,15 @@ class _TweetWidgetState extends State<TweetWidget> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CommentSection(twtId: widget.twtId)),
-        );
+       showBottomSheet(context: context, 
+       backgroundColor: Colors.transparent,
+       
+       builder: ((context) => 
+       
+        CommentSection(twtId: widget.twtId)
+       ));
+
+      
       },
       child: Container(
         width: screenWidth,
@@ -246,7 +253,16 @@ class _TweetWidgetState extends State<TweetWidget> {
                               ],
                             ),
                             IconButton(
-                              onPressed: null,
+                              onPressed: (){
+                                showModalBottomSheet(context: context,
+                                backgroundColor: Color.fromARGB(255, 33, 47, 61),
+                                 builder: (context)=>
+                                    ListMore(id: widget.id, twtId: widget.twtId)
+                                 
+                                  );
+                                
+                                
+                              },
                               icon: Icon(
                                 Icons.more_vert,
                                 color: Colors.white,

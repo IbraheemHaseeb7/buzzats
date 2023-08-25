@@ -20,15 +20,7 @@ class CommentSection extends StatelessWidget {
     String q =
         "select id.UserID, Image as [image], id.[Name],reply.TweetID,reply.Comment,reply.[Date/Time] as [time] from tb_UserProfile id inner join tb_Comment reply on id.UserID = reply.UserID where TweetID = '$twtId' order by [time] desc";
 
-    return Scaffold(
-      backgroundColor: Color(0xFF141D26),
-      appBar: AppBar(
-        actions: [],
-        title: Text("Tweet"),
-        centerTitle: true,
-        backgroundColor: Color(0xFF141D26),
-      ),
-      body: Padding(
+    return Padding(
         padding: EdgeInsets.only(top: 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -160,7 +152,7 @@ class CommentSection extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
+    
   }
 }

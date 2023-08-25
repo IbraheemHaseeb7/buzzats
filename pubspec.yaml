@@ -62,6 +62,12 @@ dependencies:
   url_launcher: ^6.1.12
   web_socket_channel: ^2.4.0
   socket_io_client: ^2.0.3+1
+  dialogs: ^0.0.7
+  draggable_bottom_sheet: ^1.0.2 
+  badges: ^3.1.1
+
+
+
 
 dev_dependencies:
   flutter_test:

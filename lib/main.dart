@@ -97,6 +97,7 @@ class MyApp extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                
                 const Align(
                   alignment: Alignment.center,
                   child: Image(

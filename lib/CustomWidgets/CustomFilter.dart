@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CustomDropdown extends StatefulWidget {
+class CustomFilter extends StatefulWidget {
   final List<String> items;
   final String value,labelText;
   final double width;
   final Function(String?) onChanged;
 
-  CustomDropdown(
+  CustomFilter(
       {required this.items,
       required this.value,
       required this.onChanged,
@@ -18,7 +18,7 @@ class CustomDropdown extends StatefulWidget {
   _CustomDropdownState createState() => _CustomDropdownState();
 }
 
-class _CustomDropdownState extends State<CustomDropdown> {
+class _CustomDropdownState extends State<CustomFilter> {
   Color labelColor = Colors.white;
 
   @override
@@ -34,13 +34,13 @@ class _CustomDropdownState extends State<CustomDropdown> {
           onChanged: (newValue) {
             // Update label color on focus
             setState(() {
-              labelColor = const Color(0xffa099fc);
+              labelColor = Color.fromARGB(255, 255, 255, 255);
               widget.onChanged(newValue);
             });
           },
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1),
+              borderSide: BorderSide(color: const Color.fromARGB(255, 255, 255, 255), width: 1),
               borderRadius: BorderRadius.circular(50),
             ),
             enabledBorder: OutlineInputBorder(

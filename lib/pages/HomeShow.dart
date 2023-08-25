@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
 // import 'package:flutter_app_1/Cache/Query.dart';
+import 'package:dialogs/dialogs.dart';
+
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Notif.dart';
@@ -22,6 +24,8 @@ import '../CustomWidgets/HomeDrawer.dart';
 import '../CustomWidgets/SocietyTweet.dart';
 import '../CustomWidgets/TweetWidget.dart';
 import 'CreateTweet.dart';
+import 'package:badges/badges.dart' as badges;
+
 
 class HomeShow extends StatefulWidget {
   @override
@@ -36,6 +40,9 @@ class HomeShowState extends State<HomeShow> {
   bool isLoadingMore = false;
   UserData u = UserData();
   var renderedTweets;
+  bool hasNewNotifs = true;
+
+
   String q =
       "select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc offset 0 rows fetch next 6 rows only";
 
@@ -121,21 +128,64 @@ class HomeShowState extends State<HomeShow> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 6),
-            child: IconButton(
-                onPressed: () {
-                  isSelected = true;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Notifications()),
-                  );
-                },
-                icon: Icon(
-                  isSelected == true
-                      ? IconlyBold.notification
-                      : IconlyLight.notification,
-                  size: 30,
-                  color: Color.fromRGBO(150, 183, 223, 1),
-                )),
+            child: hasNewNotifs ?  badges.Badge(
+              position: badges.BadgePosition.topEnd(top: 7, end: 12),
+            showBadge: true,
+            ignorePointer: false,
+            badgeAnimation: badges.BadgeAnimation.slide(
+        animationDuration: Duration(seconds: 1),
+        colorChangeAnimationDuration: Duration(seconds: 1),
+        loopAnimation: true,
+        curve: Curves.fastOutSlowIn,
+        colorChangeAnimationCurve: Curves.easeInCubic,
+      ),
+      badgeStyle: badges.BadgeStyle(
+        shape: badges.BadgeShape.circle,
+        badgeColor: Colors.red,
+       
+
+        
+        elevation: 1,
+      ),
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      
+                    isSelected = true;
+                    hasNewNotifs = false;
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Notifications()),
+                    );
+            
+                   
+                  },
+                  icon: Icon(
+                    isSelected == true
+                        ? IconlyBold.notification
+                        : IconlyLight.notification,
+                    size: 30,
+                    color: Color.fromRGBO(150, 183, 223, 1),
+                  )),
+            ):
+            IconButton(
+                  onPressed: () {
+                    isSelected = true;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Notifications()),
+                    );
+            
+                   
+                  },
+                  icon: Icon(
+                    isSelected == true
+                        ? IconlyBold.notification
+                        : IconlyLight.notification,
+                    size: 30,
+                    color: Color.fromRGBO(150, 183, 223, 1),
+                  )),
           )
         ],
       ),

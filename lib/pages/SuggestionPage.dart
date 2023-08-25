@@ -155,14 +155,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 2, right: 5),
-                child: Icon(
-                  IconlyLight.filter_2,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
+              
             ],
           ),
           Column(
