@@ -59,30 +59,30 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF141D26),
-      body: Stack(
+      body: Column(
         children: [
-          PageView(
-            controller: _pageController,
-            children: pages,
-            onPageChanged: (index) {
-              setState(() {
-                currentPageIndex = index;
-              });
-            },
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              children: pages,
+              onPageChanged: (index) {
+                setState(() {
+                  currentPageIndex = index;
+                });
+              },
+            ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 75,
-              decoration: BoxDecoration(
-                color: Color(0xFF141D26),
-                border: Border(
-                  top: BorderSide(
-                    color: Color.fromRGBO(72, 72, 72, 1),
-                    width: 0.3,
-                  ),
+          Container(
+            height: 75,
+            decoration: BoxDecoration(
+              color: Color(0xFF141D26),
+              border: Border(
+                top: BorderSide(
+                  color: Color.fromRGBO(72, 72, 72, 1),
+                  width: 0.3,
                 ),
               ),
+            ),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 0),
                 child: GNav(
@@ -136,7 +136,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
             ),
-          ),
+          
         ],
       ),
     );
