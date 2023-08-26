@@ -62,7 +62,6 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
         var sGroupName = sGroupNameList[0]["SGroupName"] as String;
         widget.sGroupNames.add(sGroupName);
       }
-      print(widget.sGroupNames);
     }
 
     tweetController.addListener(updateButtonState);
@@ -259,14 +258,13 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
                   hint: const Text(
                     'Society Tweet',
                     style: TextStyle(
-                      color: Colors.white, 
+                      color: Colors.white,
                     ),
                   ),
-                  value: selectedItem, 
+                  value: selectedItem,
                   items: widget.sGroupNames.map((String value) {
                     return DropdownMenuItem<String>(
-                      value:
-                          value, 
+                      value: value,
                       child: Text(
                         value,
                         style: const TextStyle(

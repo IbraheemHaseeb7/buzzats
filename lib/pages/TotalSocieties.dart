@@ -25,24 +25,26 @@ class TotalState extends State<TotalSocieties> {
     UserData();
     super.initState();
 
-    TotalSoc.isEmpty().then((value) {
-      if (value) {
-        socketQuery(q).then((value) {
-          setState(() {
-            TotalSoc.storeSoc(value);
-            soc = value;
-            isFetched = true;
-          });
+    // TotalSoc.isEmpty().then((value) {
+    //   if (value) {
+    (() async {
+      await socketQuery(q).then((value) {
+        setState(() {
+          TotalSoc.storeSoc(value);
+          soc = value;
+          isFetched = true;
         });
-      } else {
-        TotalSoc.fetchSoc().then((value) {
-          setState(() {
-            soc = value;
-            isFetched = true;
-          });
-        });
-      }
-    });
+      });
+    })();
+    // } else {
+    //   TotalSoc.fetchSoc().then((value) {
+    //     setState(() {
+    //       soc = value;
+    //       isFetched = true;
+    //     });
+    //   });
+    // }
+    // });
   }
 
   @override

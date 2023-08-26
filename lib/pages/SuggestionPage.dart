@@ -87,7 +87,10 @@ class _SuggestionPage extends State<SuggestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0,elevation: 0,),
+      appBar: AppBar(
+        toolbarHeight: 0,
+        elevation: 0,
+      ),
       backgroundColor: const Color(0xff141d26),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -155,7 +158,6 @@ class _SuggestionPage extends State<SuggestionPage> {
                   ),
                 ),
               ),
-              
             ],
           ),
           Column(
@@ -303,7 +305,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                             return Column(
                               children: data.map((user) {
                                 return userGet(
-                                  user["Email"]?? "",
+                                  user["Email"] ?? "",
                                   user["Image"],
                                   user["Name"] ?? "",
                                   user["Department"] ?? "",

@@ -14,15 +14,13 @@ import 'package:toast_notification/toast_notification.dart';
 import 'Replying.dart';
 
 class SocietyTweet extends StatefulWidget {
-  String name,tweet,twtId;
+  String name, tweet, twtId;
   List<Image> tweetImage;
   bool isLiked;
   int likesCount;
   var image;
   SocietyTweet({
-    
     super.key,
-
     required this.name,
     required this.tweet,
     //required this.time,
@@ -31,45 +29,33 @@ class SocietyTweet extends StatefulWidget {
     required this.tweetImage,
     required this.isLiked,
     required this.likesCount,
-    
-    });
+  });
 
   @override
   _SocietyTweet createState() => _SocietyTweet();
 }
 
 class _SocietyTweet extends State<SocietyTweet> {
-  
   bool isLiked = false;
   var imageBytes;
 
-    @override 
-    void initState(){
-      UserData();
-      
-     if(widget.image!=null)
-    {
+  @override
+  void initState() {
+    UserData();
 
-    imageBytes = Uint8List.fromList(List<int>.from(widget.image));
+    if (widget.image != null) {
+      imageBytes = Uint8List.fromList(List<int>.from(widget.image));
     }
-    
-      
 
+    super.initState();
 
-
-      
-      super.initState();
-    
-    
     setState(() {
       isLiked = widget.isLiked;
     });
-    }
-
-
+  }
 
   Future<void> handleLike() async {
-     String queryStatement;
+    String queryStatement;
     if (!isLiked) {
       queryStatement =
           "INSERT INTO STweetsLike VALUES ('${widget.twtId}', '${UserData.id}', GETDATE())";
@@ -101,7 +87,6 @@ class _SocietyTweet extends State<SocietyTweet> {
         });
       }
     });
-  
   }
 
   @override
@@ -192,19 +177,25 @@ class _SocietyTweet extends State<SocietyTweet> {
                       ),
                     ),
                   ),
-                  widget.tweetImage.isNotEmpty ? Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    width: screenWidth - 100,
-                    height: 150, // Set the desired height of the container
-                    child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(
-                    widget.tweetImage.length, // Replace with the actual number of images you have
-                    (index) => SocietyTweetImage(image: widget.tweetImage[index]),
-                  ),
-                ),
-
-                  ) : SizedBox(height: 0,),
+                  widget.tweetImage.isNotEmpty
+                      ? Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          width: screenWidth - 100,
+                          height:
+                              150, // Set the desired height of the container
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: List.generate(
+                              widget.tweetImage
+                                  .length, // Replace with the actual number of images you have
+                              (index) => SocietyTweetImage(
+                                  image: widget.tweetImage[index]),
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 0,
+                        ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: Column(
@@ -217,7 +208,7 @@ class _SocietyTweet extends State<SocietyTweet> {
                                 IconButton(
                                   onPressed: handleLike,
                                   icon: Icon(
-                                   isLiked
+                                    isLiked
                                         ? CupertinoIcons.heart_fill
                                         : CupertinoIcons.heart,
                                     color: isLiked ? Colors.red : Colors.white,
@@ -231,7 +222,6 @@ class _SocietyTweet extends State<SocietyTweet> {
                                 ),
                               ],
                             ),
-                           
                             IconButton(
                               onPressed: null,
                               icon: Icon(

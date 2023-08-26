@@ -33,15 +33,12 @@ class SearchUser extends StatefulWidget {
 class _SearchUser extends State<SearchUser> {
   Timer? _debounce;
   bool isPressed = false;
-  int count=0;
+  int count = 0;
 
-   List department = ['bcs','bse','bee'];
-   List batch = ['fa20','sp21','fa21'];
- var valueChoose= "Department" ;
- var choose = "Batch";
- 
-
-
+  List department = ['bcs', 'bse', 'bee'];
+  List batch = ['fa20', 'sp21', 'fa21'];
+  var valueChoose = "Department";
+  var choose = "Batch";
 
   final TextEditingController _queryController = TextEditingController();
 
@@ -149,13 +146,12 @@ class _SearchUser extends State<SearchUser> {
               Padding(
                 padding: EdgeInsets.only(left: 3, right: 7),
                 child: IconButton(
-                  onPressed: (){
+                  onPressed: () {
                     setState(() {
                       ++count;
-                      
-                      count%2==0 ? isPressed=false: isPressed= true;
-                    });
 
+                      count % 2 == 0 ? isPressed = false : isPressed = true;
+                    });
                   },
                   icon: Icon(
                     isPressed ? IconlyBold.filter_2 : IconlyLight.filter_2,
@@ -167,69 +163,59 @@ class _SearchUser extends State<SearchUser> {
             ],
           ),
           //adding the filters
-          isPressed ? Row(
-            children: [
-             Container(
-            padding: EdgeInsets.only(bottom: 20,left: 20,),
-            height: 70,
-            color: Color(0xff141d26),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomFilter(
-                  
-                  
-                  items: department.map((e) => e.toString()).toList(),
-                  value: valueChoose,
-                    onChanged:(newValue){
-                      setState(() {
-                      valueChoose = newValue.toString();
-                        
-                      });
-                    },
-               width: 140,
-                labelText: valueChoose),
-                CustomFilter(
-                  
-                  
-                  items: batch.map((e) => e.toString()).toList(),
-                  value: choose,
-                    onChanged:(newValue){
-                      setState(() {
-                      valueChoose = newValue.toString();
-                        
-                      });
-                    },
-                    width: 140,
-                      labelText: choose),
-                      ],
-            ),
-
-
-    ),
-    
-             
-            ],
-          ) : Container(),
-
-
+          isPressed
+              ? Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                        bottom: 20,
+                        left: 20,
+                      ),
+                      height: 70,
+                      color: Color(0xff141d26),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CustomFilter(
+                              items:
+                                  department.map((e) => e.toString()).toList(),
+                              value: valueChoose,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueChoose = newValue.toString();
+                                });
+                              },
+                              width: 140,
+                              labelText: valueChoose),
+                          CustomFilter(
+                              items: batch.map((e) => e.toString()).toList(),
+                              value: choose,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueChoose = newValue.toString();
+                                });
+                              },
+                              width: 140,
+                              labelText: choose),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
 
           FutureBuilder<List<dynamic>>(
-            future: 
-            (valueChoose == "Department") && (choose == "Batch") ?    
-         socketQuery(
-                "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
-                :  (valueChoose == "Department") ?   
-                 socketQuery(
-                "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' and u.UserID like '%$choose%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
-                : (choose == "Batch") ?
-                 socketQuery(
-                "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' and u.UserID like '%$valueChoose%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
-                 : 
-                 socketQuery(
-                "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name LIKE '%Musa%' AND (u.UserID LIKE '%bcs%' OR u.UserID LIKE '%fa21%') GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;") 
-                  
-                  ,
+            future: (valueChoose == "Department") && (choose == "Batch")
+                ? socketQuery(
+                    "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
+                : (valueChoose == "Department")
+                    ? socketQuery(
+                        "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' and u.UserID like '%$choose%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
+                    : (choose == "Batch")
+                        ? socketQuery(
+                            "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name like '%$query%' and u.UserID like '%$valueChoose%' GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;")
+                        : socketQuery(
+                            "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name LIKE '%Musa%' AND (u.UserID LIKE '%bcs%' OR u.UserID LIKE '%fa21%') GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;"),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SingleChildScrollView(

@@ -101,15 +101,12 @@ class SocietyState extends State<Society> {
 
     GroupsCache.fetchGc().then((value) {
       widget.groups = value;
-      print(widget.groups);
 
       for (int index = 0; index < value.length; index++) {
         print(value[index]["SocietyID"]);
         if (value[index]["SocietyID"] == widget.id) {
           setState(() {
-            print("fghhjfegfvgjevj  $value");
             isGroup = true;
-            print("neyvhwev    ${value[index]["SGroupsName"]}");
             sameGroups = value[index]["SGroupsName"];
           });
           return;

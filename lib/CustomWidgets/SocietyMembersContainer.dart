@@ -15,69 +15,44 @@ class SocietyMembersContainer extends StatefulWidget {
 }
 
 class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
-  
-  late String  q2 = " select prof.UserID,prof.[Name],prof.BIO, prof.[Image]	from tb_UserProfile prof inner join tb_SocietyMembers members on members.UserID = prof.UserID where members.SocietyID = '${widget.id}'";
+  late String q2 =
+      " select prof.UserID,prof.[Name],prof.BIO, prof.[Image]	from tb_UserProfile prof inner join tb_SocietyMembers members on members.UserID = prof.UserID where members.SocietyID = '${widget.id}'";
 
   bool isMember = false;
   List<dynamic> sameMembers = [];
 
-
   @override
   void initState() {
-
-
-
-      
     MembersCache.fetchM().then((value) {
- 
-  
-    for(int index =0;index<value.length;index++)
-    {
-
+      for (int index = 0; index < value.length; index++) {
         print(value[index]["SocietyID"]);
-        if(value[index]["SocietyID"]==widget.id)
-        {
+        if (value[index]["SocietyID"] == widget.id) {
           setState(() {
-          print("fghhjfegfvgjevj  $value");
-          isMember = true; 
-          print("neyvhwev    ${value[index]["Member"]}");
-          sameMembers = value[index]["Member"];
-          }  );
-           return;
-        }
-      
-
-    }
-    
-    socketQuery(q2).then((e){
-
-           setState(() {
-            
-            widget.members.add({"Member":e , "SocietyID":widget.id});
-            MembersCache.storeM(widget.members);
-            sameMembers = e;
-          
+            print("fghhjfegfvgjevj  $value");
             isMember = true;
-
-
+            print("neyvhwev    ${value[index]["Member"]}");
+            sameMembers = value[index]["Member"];
           });
-       
+          return;
+        }
+      }
 
+      socketQuery(q2).then((e) {
+        setState(() {
+          widget.members.add({"Member": e, "SocietyID": widget.id});
+          MembersCache.storeM(widget.members);
+          sameMembers = e;
+
+          isMember = true;
+        });
+      });
     });
-    
-    });
-
-
-
-
-
-
 
     super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
@@ -135,8 +110,8 @@ class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
               child: Column(
                   children: sameMembers
                       .map((e) => SocietyMember(
-                          image: e["Image"],
-                          name: e["Name"],
+                            image: e["Image"],
+                            name: e["Name"],
                           ))
                       .toList()),
             )

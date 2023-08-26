@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int currentPageIndex = 0;
-    PageController _pageController = PageController(initialPage: 0);
+  PageController _pageController = PageController(initialPage: 0);
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -61,28 +61,28 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       backgroundColor: Color(0xFF141D26),
       body: Column(
         children: [
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              children: pages,
-              onPageChanged: (index) {
-                setState(() {
-                  currentPageIndex = index;
-                });
-              },
-            ),
+          PageView(
+            controller: _pageController,
+            children: pages,
+            onPageChanged: (index) {
+              setState(() {
+                currentPageIndex = index;
+              });
+            },
           ),
-          Container(
-            height: 75,
-            decoration: BoxDecoration(
-              color: Color(0xFF141D26),
-              border: Border(
-                top: BorderSide(
-                  color: Color.fromRGBO(72, 72, 72, 1),
-                  width: 0.3,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 75,
+              decoration: BoxDecoration(
+                color: Color(0xFF141D26),
+                border: Border(
+                  top: BorderSide(
+                    color: Color.fromRGBO(72, 72, 72, 1),
+                    width: 0.3,
+                  ),
                 ),
               ),
-            ),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 0),
                 child: GNav(
@@ -136,7 +136,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
             ),
-          
+          ),
         ],
       ),
     );
