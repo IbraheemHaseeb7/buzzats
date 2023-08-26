@@ -58,32 +58,25 @@ class Main extends StatelessWidget {
 
     if (auth.currentUser != null) {
       UserData();
-      Timer(const Duration(seconds: 0), () {
-        socket.onConnect((data) {
-          socket.emit("query", [
-            "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'",
-            UserData.id,
-            "Notification"
-          ]);
-          socket.on("query", (data) {
-            if (data[1] == "Notification") {
-              notifications.addAll(data[0]["data"]);
-            }
-          });
-          // socketQuery(
-          //         "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'",
-          //         "Notification")
-          //     .then((value) {
-          //   notifications.addAll(value);
-          // });
-          socket.on("notifications", (data) {
-            notifications.add({
-              "Name": data["name"],
-              "NType": data["type"],
-              "Data": data["data"],
-              "Image": data["image"]["data"],
-              "time": data["time"]
-            });
+      socket.onConnect((data) {
+        socket.emit("notificationQuery", [
+          "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'",
+          UserData.id,
+          "Notification"
+        ]);
+        socket.on("notificationQuery", (data) {
+          if (data[1] == "Notification") {
+            socket.off("notificationQuery");
+            notifications.addAll(data[0]["data"]);
+          }
+        });
+        socket.on("notifications", (data) {
+          notifications.add({
+            "Name": data["name"],
+            "NType": data["type"],
+            "Data": data["data"],
+            "Image": data["image"]["data"],
+            "time": data["time"]
           });
         });
       });

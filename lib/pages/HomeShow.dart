@@ -48,19 +48,23 @@ class HomeShowState extends State<HomeShow> {
   void initState() {
     Feed.isEmpty().then((value) async {
       if (!value) {
-        // await socketQuery(q).then((e) {
-        socket.emit("query", [q, UserData.id, "Feed"]);
-        socket.on("query", (data) {
-          if (data[1] == "Feed") {
-            setState(() {
-              socket.clearListeners();
-              Feed.storeTweets(data[0]["data"]);
-              tweets = data[0]["data"];
-              isFetched = true;
-            });
-          }
+        socketQuery(q).then((e) {
+          // socket.emit("query", [q, UserData.id, "Feed"]);
+          // socket.on("query", (data) {
+          //   print("HOME SHOW");
+          //   print(data[1]);
+          print(e);
+          //   if (data[1] == "Feed") {
+          setState(() {
+            // Feed.storeTweets(data[0]["data"]);
+            // tweets = data[0]["data"];
+            Feed.storeTweets(e);
+            tweets = e;
+            isFetched = true;
+          });
+          // }
+          // });
         });
-        // });
       } else {
         Feed.fetchTweets().then((value) {
           setState(() {
@@ -100,11 +104,11 @@ class HomeShowState extends State<HomeShow> {
     });
   }
 
-  // @override
-  // void dispose() {
-  //   scrollController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
