@@ -238,28 +238,28 @@ class CreateTweetState extends State<CreateTweet> {
                                   duration: 2000)
                               .showToast(context);
                           Navigator.pop(context);
-                          // UserData.fetchUser().then((user) {
-                          //   setState(() {
-                          //     HomeShowState.tweets.add({
-                          //       "HasLiked": false,
-                          //       "TweetID": "TEMP",
-                          //       "Name": user[0]["Name"],
-                          //       "Image": user[0]["Image"],
-                          //       "time": DateTime.now(),
-                          //       "Tweet": twt,
-                          //       "replies": 0,
-                          //       "likes": 0
-                          //     });
-                          //   });
+                          UserData.fetchUser().then((user) {
+                            setState(() {
+                              HomeShowState.tweets.add({
+                                "HasLiked": false,
+                                "TweetID": "TEMP",
+                                "Name": user[0]["Name"],
+                                "Image": user[0]["Image"],
+                                "time": DateTime.now(),
+                                "Tweet": twt,
+                                "replies": 0,
+                                "likes": 0
+                              });
+                            });
 
-                          //   query("select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc")
-                          //       .then((value) {
-                          //     setState(() {
-                          //       Feed.storeTweets(value);
-                          //       HomeShowState.tweets = value;
-                          //     });
-                          //   });
-                          // });
+                            query("select Image as [image], id.[UserID], id.[Name],twt.TweetID,twt.Tweet, twt.[Date/Time] as [time], (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isnull('yes','no') from tb_Like tl where tl.TweetID=twt.TweetID and tl.UserID='${UserData.id}') as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies from tb_UserProfile id inner join tb_Tweets twt on id.UserID = twt.UserID order by [time] desc")
+                                .then((value) {
+                              setState(() {
+                                Feed.storeTweets(value);
+                                HomeShowState.tweets = value;
+                              });
+                            });
+                          });
                         }).catchError((err) {
                           toasterController.end();
                           ToastMe(

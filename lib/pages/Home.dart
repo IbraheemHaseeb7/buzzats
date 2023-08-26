@@ -61,78 +61,79 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       backgroundColor: Color(0xFF141D26),
       body: Column(
         children: [
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              children: pages,
-              onPageChanged: (index) {
-                setState(() {
-                  currentPageIndex = index;
-                });
-              },
-            ),
+          PageView(
+            controller: _pageController,
+            children: pages,
+            onPageChanged: (index) {
+              setState(() {
+                currentPageIndex = index;
+              });
+            },
           ),
-          Container(
-            height: 75,
-            decoration: BoxDecoration(
-              color: Color(0xFF141D26),
-              border: Border(
-                top: BorderSide(
-                  color: Color.fromRGBO(72, 72, 72, 1),
-                  width: 0.3,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 75,
+              decoration: BoxDecoration(
+                color: Color(0xFF141D26),
+                border: Border(
+                  top: BorderSide(
+                    color: Color.fromRGBO(72, 72, 72, 1),
+                    width: 0.3,
+                  ),
                 ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 0),
-              child: GNav(
-                backgroundColor: Color(0xFF141D26),
-                color: Color.fromRGBO(150, 183, 223, 1),
-                activeColor: Color(0xFF4137BD),
-                tabBackgroundColor: Color(0xFF4137BD),
-                rippleColor: Color(0xFF4137BD),
-                gap: 4,
-                tabs: [
-                  GButton(
-                    icon: currentPageIndex == 0
-                        ? IconlyBold.home
-                        : IconlyLight.home,
-                    iconSize: 35.0,
-                    backgroundColor: Color(0xFF141D26),
-                    onPressed: () {
-                      _animateToPage(0);
-                    },
-                  ),
-                  GButton(
-                    icon: IconlyLight.search,
-                    backgroundColor: Color(0xFF141D26),
-                    iconSize: 35.0,
-                    onPressed: () {
-                      _animateToPage(1);
-                    },
-                  ),
-                  GButton(
-                    icon: currentPageIndex == 2
-                        ? IconlyBold.user_3
-                        : IconlyLight.user_1,
-                    backgroundColor: Color(0xFF141D26),
-                    iconSize: 35.0,
-                    onPressed: () {
-                      _animateToPage(2);
-                    },
-                  ),
-                  GButton(
-                    icon: currentPageIndex == 3
-                        ? IconlyBold.profile
-                        : IconlyLight.profile,
-                    backgroundColor: Color(0xFF141D26),
-                    iconSize: 35.0,
-                    onPressed: () {
-                      _animateToPage(3);
-                    },
-                  ),
-                ],
-                selectedIndex: currentPageIndex,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: GNav(
+                  backgroundColor: Color(0xFF141D26),
+                  color: Color.fromRGBO(150, 183, 223, 1),
+                  activeColor: Color(0xFF4137BD),
+                  tabBackgroundColor: Color(0xFF4137BD),
+                  rippleColor: Color(0xFF4137BD),
+                  gap: 4,
+                  tabs: [
+                    GButton(
+                      icon: currentPageIndex == 0
+                          ? IconlyBold.home
+                          : IconlyLight.home,
+                      iconSize: 35.0,
+                      backgroundColor: Color(0xFF141D26),
+                      onPressed: () {
+                        _animateToPage(0);
+                      },
+                    ),
+                    GButton(
+                      icon: IconlyLight.search,
+                      backgroundColor: Color(0xFF141D26),
+                      iconSize: 35.0,
+                      onPressed: () {
+                        _animateToPage(1);
+                      },
+                    ),
+                    GButton(
+                      icon: currentPageIndex == 2
+                          ? IconlyBold.user_3
+                          : IconlyLight.user_1,
+                      backgroundColor: Color(0xFF141D26),
+                      iconSize: 35.0,
+                      onPressed: () {
+                        _animateToPage(2);
+                      },
+                    ),
+                    GButton(
+                      icon: currentPageIndex == 3
+                          ? IconlyBold.profile
+                          : IconlyLight.profile,
+                      backgroundColor: Color(0xFF141D26),
+                      iconSize: 35.0,
+                      onPressed: () {
+                        _animateToPage(3);
+                      },
+                    ),
+                  ],
+                  selectedIndex: currentPageIndex,
+                ),
               ),
             ),
           ),
