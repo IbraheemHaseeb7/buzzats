@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/pages/OTP.dart';
 
 import 'Home.dart';
 
 void main() {
-  runApp(ForgotPassScreen());
+  runApp(const ForgotPassScreen());
 }
 
 class ForgotPassScreen extends StatelessWidget {
+  const ForgotPassScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xff141d26),
+        backgroundColor: const Color(0xff141d26),
         body: Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -47,12 +48,12 @@ class ForgotPassScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 40, 0, 30),
+                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 30),
                     child: TextField(
                       obscureText: true,
                       textAlign: TextAlign.start,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
@@ -62,36 +63,36 @@ class ForgotPassScreen extends StatelessWidget {
                         disabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
                           borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                              const BorderSide(color: Color(0xff7b7b7b), width: 2),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
                           borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                              const BorderSide(color: Color(0xff7b7b7b), width: 2),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24.0),
                           borderSide:
-                              BorderSide(color: Color(0xff7b7b7b), width: 2),
+                              const BorderSide(color: Color(0xff7b7b7b), width: 2),
                         ),
                         labelText: "Password",
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                           fontSize: 15,
                           color: Color(0xffa099fc),
                         ),
                         hintText: "••••••••",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
                           color: Color.fromARGB(129, 255, 255, 255),
                         ),
                         filled: true,
-                        fillColor: Color(0x00ffffff),
+                        fillColor: const Color(0x00ffffff),
                         isDense: false,
-                        contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                        contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                       ),
                     ),
                   ),
@@ -99,7 +100,7 @@ class ForgotPassScreen extends StatelessWidget {
                     obscureText: true,
                     textAlign: TextAlign.start,
                     maxLines: 1,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                       fontSize: 14,
@@ -109,54 +110,57 @@ class ForgotPassScreen extends StatelessWidget {
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                            const BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                            const BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.0),
                         borderSide:
-                            BorderSide(color: Color(0xff7b7b7b), width: 2),
+                            const BorderSide(color: Color(0xff7b7b7b), width: 2),
                       ),
                       labelText: "Confirm Password",
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
                         fontSize: 15,
                         color: Color(0xffa099fc),
                       ),
                       hintText: "••••••••",
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 14,
                         color: Color.fromARGB(129, 255, 255, 255),
                       ),
                       filled: true,
-                      fillColor: Color(0x00ffffff),
+                      fillColor: const Color(0x00ffffff),
                       isDense: false,
-                      contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                     child: MaterialButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(builder: (context) => const Home()),
                         );
                       },
-                      color: Color.fromRGBO(102, 26, 255, 0.612),
+                      color: const Color.fromRGBO(102, 26, 255, 0.612),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0),
                       ),
-                      padding: EdgeInsets.all(25),
-                      child: Text(
+                      padding: const EdgeInsets.all(25),
+                      textColor: const Color(0xffffffff),
+                      height: 20,
+                      minWidth: MediaQuery.of(context).size.width,
+                      child: const Text(
                         "Next",
                         style: TextStyle(
                           fontSize: 16,
@@ -164,9 +168,6 @@ class ForgotPassScreen extends StatelessWidget {
                           fontStyle: FontStyle.normal,
                         ),
                       ),
-                      textColor: Color(0xffffffff),
-                      height: 20,
-                      minWidth: MediaQuery.of(context).size.width,
                     ),
                   ),
                 ],

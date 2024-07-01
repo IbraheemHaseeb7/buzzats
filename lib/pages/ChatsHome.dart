@@ -1,15 +1,9 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/SlideChat.dart';
 import 'package:flutter_app_1/CustomWidgets/UserChat.dart';
-import 'package:flutter_app_1/Skeletons/ChatSkeleton.dart';
-import 'package:flutter_app_1/pages/SearchChat.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:http/http.dart';
 import 'package:iconly/iconly.dart';
 
-import '../CustomWidgets/Requests.dart';
 
 class ChatsHome extends StatelessWidget {
   const ChatsHome({super.key});
@@ -18,11 +12,11 @@ class ChatsHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Messages"),
+          title: const Text("Messages"),
           
-          actions: [
+          actions: const [
             Padding(
-              padding: const EdgeInsets.only(right: 10),
+              padding: EdgeInsets.only(right: 10),
               child: IconButton(onPressed: null, icon: Icon(IconlyLight.message, size: 30,color: Colors.white,)),
             )
 
@@ -33,10 +27,10 @@ class ChatsHome extends StatelessWidget {
 
 
 
-      backgroundColor: Color(0xff141d26),
-      body: SingleChildScrollView(
+      backgroundColor: const Color(0xff141d26),
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 15,right: 15),
+          padding: EdgeInsets.only(left: 15,right: 15),
           child: Column(
             children: [
              
@@ -60,8 +54,8 @@ class ChatsHome extends StatelessWidget {
                       //   MaterialPageRoute(builder: (context) =>SearchChat()),
                       // );
         },
-        child: Icon(IconlyLight.search),
-        backgroundColor: Color(0xFF4137BD),
+        backgroundColor: const Color(0xFF4137BD),
+        child: const Icon(IconlyLight.search),
     ),
     );
 }

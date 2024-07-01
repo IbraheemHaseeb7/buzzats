@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -8,9 +7,8 @@ class Days extends StatelessWidget{
   String day;
   Color color;
 
-  Days({
+  Days({super.key, 
     required this.color,
-    Key? key,
     required this.day,
 
   });
@@ -28,12 +26,12 @@ class Days extends StatelessWidget{
           color: color,
           borderRadius: BorderRadius.circular(30)
         ),
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: MaterialButton(
           onPressed: null,
           child: Text(
               day,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15
               ),

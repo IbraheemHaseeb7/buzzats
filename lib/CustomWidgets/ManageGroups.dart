@@ -16,7 +16,7 @@ class ManageGroupsState extends State<ManageGroups> {
     double screenHeight = MediaQuery.of(context).size.height;
     double appbarHeight = AppBar().preferredSize.height;
 
-    return Container(
+    return SizedBox(
       width: screenWidth,
       height: screenHeight - appbarHeight - 40,
       child: ListView.builder(

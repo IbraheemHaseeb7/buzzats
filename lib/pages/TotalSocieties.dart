@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/TotalSoc.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
@@ -6,11 +5,11 @@ import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/MySoc.dart';
 import 'package:flutter_app_1/Skeletons/SuggestUserSkel.dart';
 
-import '../Cache/Query.dart';
 
 class TotalSocieties extends StatefulWidget {
   @override
-  TotalSocieties({super.key});
+  const TotalSocieties({super.key});
+  @override
   TotalState createState() => TotalState();
 }
 
@@ -60,13 +59,13 @@ class TotalState extends State<TotalSocieties> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Text("My Societies"),
+          title: const Text("My Societies"),
         ),
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           width: screenWidth,
           height: screenHeight,
-          color: Color(0xff141d26),
+          color: const Color(0xff141d26),
           child: isFetched
               ? Column(
                   children: soc
@@ -80,7 +79,7 @@ class TotalState extends State<TotalSocieties> {
                             image: e["Picture"],
                           ))
                       .toList())
-              : SuggestUserSkel(),
+              : const SuggestUserSkel(),
         ));
   }
 }

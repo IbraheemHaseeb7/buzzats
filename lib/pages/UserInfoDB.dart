@@ -31,11 +31,11 @@ class _UserInfoDB extends State<UserInfoDB> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xff141d26),
+        backgroundColor: const Color(0xff141d26),
         body: Center(
           child: bytes != null
               ? Image.memory(bytes!, width: 200, height: 200)
-              : CircularProgressIndicator(),
+              : const CircularProgressIndicator(),
         ),
       ),
     );
@@ -145,5 +145,5 @@ Future<void> getUserInfo(String email) async {
   print(department);
   print(semester);
   print(bio);
-  runApp(UserInfoDB());
+  runApp(const UserInfoDB());
 }

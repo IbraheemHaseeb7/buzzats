@@ -5,6 +5,8 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
 class ForgotOTP extends StatelessWidget {
+  const ForgotOTP({super.key});
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -67,7 +69,7 @@ class ForgotOTP extends StatelessWidget {
                 textFieldAlignment: MainAxisAlignment.spaceAround,
                 fieldStyle: FieldStyle.box,
                 onCompleted: (pin) {
-                  print("Completed: " + pin);
+                  print("Completed: $pin");
                 },
               ),
             ),
@@ -91,7 +93,7 @@ class ForgotOTP extends StatelessWidget {
                           color: Colors.transparent,
                         )),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xff141d26))),
+                            MaterialStateProperty.all(const Color(0xff141d26))),
                     child: const Text(
                       "Resend",
                       style: TextStyle(
@@ -109,7 +111,7 @@ class ForgotOTP extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ForgotPassScreen()),
+                                builder: (context) => const ForgotPassScreen()),
                           );
                         },
                     style: ButtonStyle(

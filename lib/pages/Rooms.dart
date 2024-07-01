@@ -187,9 +187,9 @@ class _RoomsState extends State<Rooms> {
 
     return Scaffold(
         appBar: AppBar(),
-        backgroundColor: Color(0xff141d26),
+        backgroundColor: const Color(0xff141d26),
         body: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
           width: screenWidth,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [

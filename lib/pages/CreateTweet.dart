@@ -1,26 +1,24 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/HomeShow.dart';
-import "package:http/http.dart" as http;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_1/CustomWidgets/Imagepicker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
 class CreateTweet extends StatefulWidget {
+  const CreateTweet({super.key});
+
+  @override
   CreateTweetState createState() => CreateTweetState();
 }
 
@@ -111,9 +109,9 @@ class CreateTweetState extends State<CreateTweet> {
             fontSize: 17,
           ),
         ),
-        actions: [],
+        actions: const [],
       ),
-      body: Container(
+      body: SizedBox(
         width: screenWidth,
         height: screenHeight,
         child: Column(

@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UploadPicture.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
@@ -16,6 +14,9 @@ import 'package:toast_notification/toast_notification.dart';
 import '../CustomWidgets/Imagepicker.dart';
 
 class EditProfile extends StatefulWidget {
+  const EditProfile({super.key});
+
+  @override
   EditProfileState createState() => EditProfileState();
 }
 
@@ -33,9 +34,9 @@ class EditProfileState extends State<EditProfile> {
 
   final enabledStyle = ButtonStyle(
     padding: MaterialStateProperty.all(
-        EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
-    backgroundColor: MaterialStateProperty.all(Color(0xFF4137BD)),
-    fixedSize: MaterialStateProperty.all(Size(80, 30)),
+        const EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
+    backgroundColor: MaterialStateProperty.all(const Color(0xFF4137BD)),
+    fixedSize: MaterialStateProperty.all(const Size(80, 30)),
 
     shape: MaterialStateProperty.all(RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
@@ -44,10 +45,10 @@ class EditProfileState extends State<EditProfile> {
 
   final disabledStyle = ButtonStyle(
     padding: MaterialStateProperty.all(
-        EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
+        const EdgeInsets.symmetric(vertical: 8)), // Adjust vertical padding
     backgroundColor: MaterialStateProperty.all(
-        Color.fromARGB(255, 78, 72, 160).withOpacity(0.13)),
-    fixedSize: MaterialStateProperty.all(Size(80, 30)),
+        const Color.fromARGB(255, 78, 72, 160).withOpacity(0.13)),
+    fixedSize: MaterialStateProperty.all(const Size(80, 30)),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
     )),
@@ -154,20 +155,20 @@ class EditProfileState extends State<EditProfile> {
     List<int> semesters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
     return Scaffold(
-        backgroundColor: Color(0xFF141D26),
+        backgroundColor: const Color(0xFF141D26),
         appBar: AppBar(
-          backgroundColor: Color(0xFF141D26),
+          backgroundColor: const Color(0xFF141D26),
           elevation: 0.5,
-          title: Text("Edit Profile"),
+          title: const Text("Edit Profile"),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               // Add the functionality to navigate back here
               Navigator.pop(
                   context); // This will pop the current route and go back
             },
           ),
-          actions: [],
+          actions: const [],
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -185,7 +186,7 @@ class EditProfileState extends State<EditProfile> {
                           fontSize: 40,
                           color: Color(0xffffffff),
                         ))),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
                 FrostedTwt(
@@ -209,7 +210,7 @@ class EditProfileState extends State<EditProfile> {
                               Expanded(
                                 child: TextFormField(
                                   controller: usernameController,
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                   decoration: const InputDecoration(
                                     filled: true,
                                     alignLabelWithHint: true,
@@ -223,7 +224,7 @@ class EditProfileState extends State<EditProfile> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               GestureDetector(
                                 onTap: onPickImages,
                                 child: ClipRRect(
@@ -246,7 +247,7 @@ class EditProfileState extends State<EditProfile> {
                           Expanded(
                             child: TextFormField(
                               controller: phoneController,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
                                 filled: true,
                                 labelText: "Phone Number",
@@ -302,7 +303,7 @@ class EditProfileState extends State<EditProfile> {
                           Expanded(
                             child: TextFormField(
                               controller: emailController,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
                                 filled: true,
                                 labelText: "Recovery Email",
@@ -320,13 +321,13 @@ class EditProfileState extends State<EditProfile> {
                             height: 7,
                           ),
                           Expanded(
-                            child: Container(
+                            child: SizedBox(
                               width: screenWidth - 50,
                               child: TextFormField(
                                 controller: descriptionController,
                                 keyboardType: TextInputType.multiline,
                                 maxLines: null,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 decoration: const InputDecoration(
                                   filled: true,
                                   labelText: "Buzzio",

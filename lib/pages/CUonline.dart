@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/Home.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -11,6 +9,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 
 class CUonline extends StatefulWidget {
+  const CUonline({super.key});
+
    
   @override
   State<CUonline> createState() => _CUonlineState();
@@ -44,7 +44,7 @@ class _CUonlineState extends State<CUonline> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Home()),
+                MaterialPageRoute(builder: (context) => const Home()),
               );
             },
             icon: const Icon(
@@ -52,7 +52,7 @@ class _CUonlineState extends State<CUonline> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Color(0xff141d26),
+          backgroundColor: const Color(0xff141d26),
           title: const Text(
             'CU online',
             style: TextStyle(

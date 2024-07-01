@@ -1,7 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:azblob/azblob.dart';
 import 'package:mime/mime.dart';
 
@@ -16,10 +14,10 @@ Future<String> uploadImageToAzure(Uint8List image) async {
     await storage.putBlob('/$container/$fileName',
         bodyBytes: image, contentType: contentType, type: BlobType.BlockBlob);
     return fileName;
-  } on AzureStorageException catch (ex) {
-    throw ex;
+  } on AzureStorageException {
+    rethrow;
   } catch (err) {
-    throw err;
+    rethrow;
   }
 }
 
@@ -34,9 +32,9 @@ Future<String> uploadSocietyTImageToAzure(Uint8List image) async {
     await storage.putBlob('/$container/$fileName',
         bodyBytes: image, contentType: contentType, type: BlobType.BlockBlob);
     return fileName;
-  } on AzureStorageException catch (ex) {
-    throw ex;
+  } on AzureStorageException {
+    rethrow;
   } catch (err) {
-    throw err;
+    rethrow;
   }
 }

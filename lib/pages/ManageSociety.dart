@@ -66,7 +66,7 @@ class ManageSocietyState extends State<ManageSociety> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xff141d26),
+      backgroundColor: const Color(0xff141d26),
       appBar: AppBar(
         title: const Text("Manage Society"),
       ),
@@ -84,7 +84,7 @@ class ManageSocietyState extends State<ManageSociety> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         height: 35,
                         width: screenWidth * 0.4,
                         child: OutlinedButton(
@@ -98,7 +98,7 @@ class ManageSocietyState extends State<ManageSociety> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 35,
                         width: screenWidth * 0.4,
                         child: OutlinedButton(
@@ -112,7 +112,7 @@ class ManageSocietyState extends State<ManageSociety> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 35,
                         width: screenWidth * 0.4,
                         child: OutlinedButton(
@@ -126,7 +126,7 @@ class ManageSocietyState extends State<ManageSociety> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 35,
                         width: screenWidth * 0.4,
                         child: OutlinedButton(

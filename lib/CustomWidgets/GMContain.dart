@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/GMembers.dart';
 
-import 'GroupsApplied.dart';
-import 'SocietyMember.dart';
 
 class GMContain extends StatefulWidget {
   
-  GMContain({super.key});
+  const GMContain({super.key});
 
   @override
  GMState createState() =>
@@ -30,7 +28,7 @@ class GMState extends State<GMContain> {
     return Container(
         constraints: const BoxConstraints(minHeight: 500),
         width: screenWidth,
-        child: Column(
+        child: const Column(
           children: [
                     GMembers(),
                     GMembers(),

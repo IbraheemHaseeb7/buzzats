@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/AppliedContain.dart';
 import 'package:flutter_app_1/CustomWidgets/GMContain.dart';
-import 'package:flutter_app_1/CustomWidgets/Groups.dart';
-import 'package:flutter_app_1/CustomWidgets/GroupsApplied.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyGroupsContainer.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyMember.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyMembersContainer.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyMutualsContainer.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyMutual.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyTweet.dart';
-import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
-import 'package:flutter_app_1/CustomWidgets/UserSuggest.dart';
 import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
-import 'package:flutter_app_1/pages/Apply.dart';
-import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:iconly/iconly.dart';
 
-import '../Cache/Query.dart';
-import '../Cache/SocietyMain.dart';
-import '../Cache/UserProfile.dart';
 
 class GroupsMain extends StatefulWidget {
   
  
-  GroupsMain({
+  const GroupsMain({
   
     super.key, 
    
@@ -46,6 +31,7 @@ class GState extends State<GroupsMain> {
 
 
 
+  @override
   void initState(){
     super.initState();
 
@@ -86,6 +72,7 @@ void handleApplied() {
 
  
 
+  @override
   void dispose(){
     super.dispose();
   }
@@ -115,10 +102,10 @@ void handleApplied() {
                       margin: const EdgeInsets.only(bottom: 20),
                       width: screenWidth * 0.35,
                       height: screenWidth * 0.35,
-                      child: Icon(IconlyLight.camera,color: Colors.white,size: 60,)     ),
-                  Text(
+                      child: const Icon(IconlyLight.camera,color: Colors.white,size: 60,)     ),
+                  const Text(
                     "Photography Team",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -126,7 +113,7 @@ void handleApplied() {
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                   
@@ -134,13 +121,13 @@ void handleApplied() {
                           children: [
                             Text(
                              "50",
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   decoration: TextDecoration.none),
                             ),
-                            const Text(
+                            Text(
                               "members",
                               style: TextStyle(
                                   fontSize: 15,
@@ -155,10 +142,10 @@ void handleApplied() {
                   Container(
                     padding: const EdgeInsets.only(top: 15),
                     width: screenWidth * 0.7,
-                    child: Text(
+                    child: const Text(
                       "Down Since day one ish",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: Color(0xff6080A7),
                           decoration: TextDecoration.none,
                           fontSize: 15),
@@ -185,7 +172,7 @@ void handleApplied() {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.4,
                                 child: OutlinedButton(
@@ -201,7 +188,7 @@ void handleApplied() {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.4,
                                 child: OutlinedButton(
@@ -218,7 +205,7 @@ void handleApplied() {
                                 ),
                               ),
                              
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.4,
                                 child: OutlinedButton(
@@ -243,7 +230,7 @@ void handleApplied() {
                         return Container(
                           width: screenWidth,
                           constraints: const BoxConstraints(minHeight: 500),
-                          child: Column(
+                          child: const Column(
                             children: [
                               //SocietyTweet(name: "name", tweet: "tweet")
 
@@ -252,18 +239,18 @@ void handleApplied() {
                         );
                       
                       case Displayed.applied:
-                        return AppliedContain();
+                        return const AppliedContain();
                      
 
                       case Displayed.members:
-                        return GMContain();
+                        return const GMContain();
 
                          
                       default:
                         return Container(
                           constraints: const BoxConstraints(minHeight: 500),
                           width: screenWidth,
-                          child: Column(children: [
+                          child: const Column(children: [
                             SocietyTwtSkeleton()
                           ]),
                         );

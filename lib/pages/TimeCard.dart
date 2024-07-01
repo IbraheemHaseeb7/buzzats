@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -28,17 +27,17 @@ String room,teacher,start,end,course;
                 builder: (context, constraints) {
                   return Container(
                     width: 300,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     
                     decoration: BoxDecoration(
                       boxShadow:[
                         BoxShadow(
-                          color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.2), // Shadow color
+                          color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2), // Shadow color
                           blurRadius: 9, // Spread of the shadow
-                          offset: Offset(0, 4), // Offset in x and y direction
+                          offset: const Offset(0, 4), // Offset in x and y direction
                         ),
                       ],
-                                        color: Color.fromRGBO(65, 55, 189, 102 / 255.0),
+                                        color: const Color.fromRGBO(65, 55, 189, 102 / 255.0),
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Column(
@@ -48,7 +47,7 @@ String room,teacher,start,end,course;
                           padding: const EdgeInsets.only(top: 10, left: 17),
                           child: Text(
                            room,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 42,
                               fontWeight: FontWeight.w900,
@@ -59,19 +58,19 @@ String room,teacher,start,end,course;
                           padding: const EdgeInsets.only(top: 0, left: 17),
                           child: Text(
                             "$start - $end",
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 30,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
                         ),
-                        SizedBox(height: 135),
+                        const SizedBox(height: 135),
                         Padding(
                           padding: const EdgeInsets.only(top: 0, left: 17),
                           child: Text(
                             teacher,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 22,
                               fontWeight: FontWeight.w600,
@@ -82,7 +81,7 @@ String room,teacher,start,end,course;
                           padding: const EdgeInsets.only(top: 0, left: 17, bottom: 9),
                           child: Text(
                             course,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 26,
                               fontWeight: FontWeight.w900,

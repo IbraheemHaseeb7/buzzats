@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/Messagefield.dart';
 import 'package:flutter_app_1/CustomWidgets/RecieveMessage.dart';
 import 'package:flutter_app_1/CustomWidgets/SendMessage.dart';
-import 'package:iconly/iconly.dart';
 
 
 
@@ -18,14 +17,14 @@ class ChatIn extends StatelessWidget {
 
 
     return Scaffold(
-       backgroundColor: Color(0xff141d26),
+       backgroundColor: const Color(0xff141d26),
       body: Column(
         children: [
           Container(
             
             height: 100,
-            padding: EdgeInsets.only(top: 25, left: 8),
-            decoration:BoxDecoration(
+            padding: const EdgeInsets.only(top: 25, left: 8),
+            decoration:const BoxDecoration(
               border: Border(
                 bottom: BorderSide(color: Colors.white)
               ),
@@ -37,25 +36,25 @@ class ChatIn extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     
-                    IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(CupertinoIcons.back, color: Colors.white,)),
-                    SizedBox(width: 3,),
+                    IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(CupertinoIcons.back, color: Colors.white,)),
+                    const SizedBox(width: 3,),
                     ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(200)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(200)),
                                   child: Image.asset(
                                     "lib\\Assets\\abdu.jpg",
                                     width: 45,
                                   ),
                                 ),
 
-                                        SizedBox(width: 10,),
-                                 Text("Abdullah Sajjad", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
-                                        SizedBox(width: 4,),
-                                        Icon(Icons.verified_rounded, color: Colors.white,size: 18,),
+                                        const SizedBox(width: 10,),
+                                 const Text("Abdullah Sajjad", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+                                        const SizedBox(width: 4,),
+                                        const Icon(Icons.verified_rounded, color: Colors.white,size: 18,),
                                         SizedBox(width: screenWidth-310,),
-                                        IconButton(onPressed: null, icon: Icon(Icons.more_vert, color: Colors.white,)),
+                                        const IconButton(onPressed: null, icon: Icon(Icons.more_vert, color: Colors.white,)),
                 
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
               ],
             ),
@@ -66,7 +65,7 @@ class ChatIn extends StatelessWidget {
           Expanded(
             child: ListView(
               
-              children: [
+              children: const [
                 SizedBox(height: 20),
                 SendMessage(),
                 SizedBox(height: 20),
@@ -88,7 +87,7 @@ class ChatIn extends StatelessWidget {
             ),
           ),
                 
-          Messagefield(),
+          const Messagefield(),
 
         ],
       ),

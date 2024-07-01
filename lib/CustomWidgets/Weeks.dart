@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
@@ -20,7 +19,7 @@ class Weeks extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(25)
           ),
-      child: ElevatedButton(
+      child: const ElevatedButton(
         
         onPressed: null,
         

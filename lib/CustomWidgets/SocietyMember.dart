@@ -17,7 +17,7 @@ class SocietyMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    var imageBytes;
+    Uint8List? imageBytes;
 
      if(image!=null)
     {
@@ -38,10 +38,10 @@ class SocietyMember extends StatelessWidget {
               width: 60,
               margin: const EdgeInsets.only(left: 15, right: 15),
               child: ClipOval(
-                child: Image.memory(imageBytes),
+                child: Image.memory(imageBytes!),
               ),
             ),
-            Container(
+            SizedBox(
               width: screenWidth - 100,
               height: 80,
               child: Column(

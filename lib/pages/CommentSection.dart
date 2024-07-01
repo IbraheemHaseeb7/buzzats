@@ -1,17 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Reply.dart';
-import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
-import 'package:flutter_app_1/Skeletons/CommentSkeleton.dart';
 import 'package:flutter_app_1/pages/SearchUser.dart';
 import 'package:intl/intl.dart';
-import '../Cache/Query.dart';
 
 class CommentSection extends StatelessWidget {
   final String twtId;
 
-  CommentSection({
+  const CommentSection({super.key, 
     required this.twtId,
   });
 
@@ -21,7 +17,7 @@ class CommentSection extends StatelessWidget {
         "select id.UserID, Image as [image], id.[Name],reply.TweetID,reply.Comment,reply.[Date/Time] as [time] from tb_UserProfile id inner join tb_Comment reply on id.UserID = reply.UserID where TweetID = '$twtId' order by [time] desc";
 
     return Padding(
-      padding: EdgeInsets.only(top: 0),
+      padding: const EdgeInsets.only(top: 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +25,7 @@ class CommentSection extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFF141D26),
               ),
               alignment: Alignment.topCenter,
@@ -41,8 +37,8 @@ class CommentSection extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 33, 47, 61),
-                borderRadius: BorderRadius.only(
+                color: const Color.fromARGB(255, 33, 47, 61),
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -51,7 +47,7 @@ class CommentSection extends StatelessWidget {
                     color: Colors.black.withOpacity(0.2),
                     spreadRadius: 5,
                     blurRadius: 10,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -60,8 +56,8 @@ class CommentSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 12, left: 20),
-                    child: Text(
+                    padding: const EdgeInsets.only(top: 12, left: 20),
+                    child: const Text(
                       "Comments",
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -71,7 +67,7 @@ class CommentSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 14),
+                  const SizedBox(height: 14),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
@@ -82,14 +78,14 @@ class CommentSection extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Container(
+                            return SizedBox(
                                 width: screenWidth,
                                 child: const Center(
                                     child: CircularProgressIndicator(
                                   color: Colors.white,
                                 )));
                           } else if (snapshot.hasError) {
-                            return Container(
+                            return SizedBox(
                                 width: screenWidth,
                                 child: const Center(
                                   child: Text(
@@ -99,7 +95,7 @@ class CommentSection extends StatelessWidget {
                                 ));
                           } else if (snapshot.hasData &&
                               snapshot.data!.isEmpty) {
-                            return Container(
+                            return SizedBox(
                                 width: screenWidth,
                                 child: const Center(
                                   child: Text(
@@ -120,13 +116,9 @@ class CommentSection extends StatelessWidget {
                                           image: e["image"] ?? "",
                                           time: DateTime.parse(e["time"]).day ==
                                                   DateTime.now().day
-                                              ? DateTime.parse(e["time"])
-                                                      .hour
-                                                      .toString() +
-                                                  ":" +
-                                                  DateTime.parse(e["time"])
-                                                      .minute
-                                                      .toString()
+                                              ? "${DateTime.parse(e["time"])
+                                                      .hour}:${DateTime.parse(e["time"])
+                                                      .minute}"
                                               : DateTime.parse(e["time"])
                                                       .day
                                                       .toString() +
@@ -139,7 +131,7 @@ class CommentSection extends StatelessWidget {
                               ),
                             );
                           } else {
-                            return Text('No data available');
+                            return const Text('No data available');
                           }
                         },
                       ),

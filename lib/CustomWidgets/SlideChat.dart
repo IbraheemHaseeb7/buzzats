@@ -4,17 +4,19 @@ import 'package:iconly/iconly.dart';
 
 import 'UserChat.dart';
 
-class SlideChat extends StatelessWidget { 
+class SlideChat extends StatelessWidget {
+  const SlideChat({super.key});
+ 
    @override
   Widget build(BuildContext context) {
-    return Slidable(
+    return const Slidable(
                 startActionPane: ActionPane(
-                  motion: const StretchMotion(), 
+                  motion: StretchMotion(), 
                  children:
                  [
                   SlidableAction(
                     onPressed: null,
-                    backgroundColor: const Color.fromARGB(255, 130, 12, 3),
+                    backgroundColor: Color.fromARGB(255, 130, 12, 3),
                     icon: IconlyLight.delete,
                     
                     )

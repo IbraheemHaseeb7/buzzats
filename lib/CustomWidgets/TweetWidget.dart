@@ -1,15 +1,12 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/CustomWidgets/ListMore.dart';
 import 'package:flutter_app_1/CustomWidgets/Replying.dart';
 import 'package:flutter_app_1/pages/CommentSection.dart';
-import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
-import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import '../Cache/socket.dart';
 
 class TweetWidget extends StatefulWidget {
@@ -109,7 +106,7 @@ class _TweetWidgetState extends State<TweetWidget> {
       },
       child: Container(
         width: screenWidth,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFF141D26),
           border: Border(
             top: BorderSide(color: Colors.grey, width: 0.2),
@@ -120,9 +117,9 @@ class _TweetWidgetState extends State<TweetWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 12, left: 12, right: 8),
+              padding: const EdgeInsets.only(top: 12, left: 12, right: 8),
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(200)),
+                borderRadius: const BorderRadius.all(Radius.circular(200)),
                 child: widget.image == null
                     ? Image.asset(
                         "lib/Assets/profile.jpg",
@@ -143,7 +140,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth - 110,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,7 +150,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                           children: [
                             Text(
                               widget.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w900,
@@ -179,8 +176,8 @@ class _TweetWidgetState extends State<TweetWidget> {
                         ),
                         Text(
                           widget.time,
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 114, 114, 114),
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 114, 114, 114),
                               fontSize: 13,
                               fontWeight: FontWeight.w600),
                         ),
@@ -192,7 +189,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                     width: screenWidth - 100,
                     child: Text(
                       widget.content,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                         fontSize: 15,
                       ),
@@ -224,7 +221,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 ),
                                 Text(
                                   widget.likesCount.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.grey, fontSize: 12),
                                 ),
                               ],
@@ -240,7 +237,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                         builder: (context) =>
                                             Replying(twtId: widget.twtId));
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     CupertinoIcons.arrow_counterclockwise,
                                     color: Colors.white,
                                   ),
@@ -249,7 +246,7 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 ),
                                 Text(
                                   widget.repliesCount.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.grey, fontSize: 12),
                                 ),
                               ],
@@ -259,11 +256,11 @@ class _TweetWidgetState extends State<TweetWidget> {
                                 showModalBottomSheet(
                                     context: context,
                                     backgroundColor:
-                                        Color.fromARGB(255, 33, 47, 61),
+                                        const Color.fromARGB(255, 33, 47, 61),
                                     builder: (context) => ListMore(
                                         id: widget.id, twtId: widget.twtId));
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.more_vert,
                                 color: Colors.white,
                               ),

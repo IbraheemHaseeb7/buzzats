@@ -1,17 +1,10 @@
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_app_1/Cache/Query.dart';
-import 'package:flutter_app_1/Cache/UserProfile.dart';
-import 'package:flutter_app_1/CustomWidgets/MySoc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import "package:http/http.dart" as http;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_1/CustomWidgets/Imagepicker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
@@ -19,7 +12,6 @@ import 'package:toast_notification/toast_notification.dart';
 
 import '../Cache/UploadPicture.dart';
 import '../Cache/socket.dart';
-import '../CustomWidgets/CustomDropDownMenu.dart';
 
 class CreateSocietyTweet extends StatefulWidget {
   String id;
@@ -150,9 +142,9 @@ class CreateSocietyTweetState extends State<CreateSocietyTweet> {
             fontSize: 17,
           ),
         ),
-        actions: [],
+        actions: const [],
       ),
-      body: Container(
+      body: SizedBox(
         width: screenWidth,
         height: screenHeight,
         child: Column(

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'GroupsApplied.dart';
-import 'SocietyMember.dart';
 
 class AppliedContain extends StatefulWidget {
   
-  AppliedContain({super.key});
+  const AppliedContain({super.key});
 
   @override
  AppConState createState() =>
@@ -29,7 +28,7 @@ class AppConState extends State<AppliedContain> {
     return Container(
         constraints: const BoxConstraints(minHeight: 500),
         width: screenWidth,
-        child: Column(
+        child: const Column(
           children: [
                     GroupsApplied(),
                     GroupsApplied(),

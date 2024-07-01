@@ -1,23 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
-import 'package:flutter_app_1/CustomWidgets/FilterContainer.dart';
 import 'package:flutter_app_1/Skeletons/ChatSkeleton.dart';
-import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
-import 'package:flutter_app_1/pages/SuggestionPage.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
-import 'package:http/http.dart' as http;
 import 'package:iconly/iconly.dart';
 import '../CustomWidgets/CustomFilter.dart';
-import '../CustomWidgets/UserSuggest.dart';
-import '../Skeletons/SuggestUserSkel.dart';
-import 'SearchedUser.dart';
-import 'Userlist.dart';
 
 String? batchFinal;
 String query = 'test';
@@ -58,7 +47,7 @@ class _SearchUser extends State<SearchUser> {
     screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xff141d26),
+      backgroundColor: const Color(0xff141d26),
       appBar: AppBar(
         toolbarHeight: 3,
       ),
@@ -73,12 +62,12 @@ class _SearchUser extends State<SearchUser> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(6, 0, 0, 6),
+                padding: const EdgeInsets.fromLTRB(6, 0, 0, 6),
                 child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(IconlyLight.arrow_left_2),
+                  icon: const Icon(IconlyLight.arrow_left_2),
                   color: Colors.white,
                   iconSize: 24,
                 ),
@@ -86,7 +75,7 @@ class _SearchUser extends State<SearchUser> {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(1, 15, 10, 20),
+                  padding: const EdgeInsets.fromLTRB(1, 15, 10, 20),
                   child: TextField(
                     controller: _queryController,
                     autofocus: true,
@@ -144,7 +133,7 @@ class _SearchUser extends State<SearchUser> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 3, right: 7),
+                padding: const EdgeInsets.only(left: 3, right: 7),
                 child: IconButton(
                   onPressed: () {
                     setState(() {
@@ -167,12 +156,12 @@ class _SearchUser extends State<SearchUser> {
               ? Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         bottom: 20,
                         left: 20,
                       ),
                       height: 70,
-                      color: Color(0xff141d26),
+                      color: const Color(0xff141d26),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -218,7 +207,7 @@ class _SearchUser extends State<SearchUser> {
                             "SELECT COUNT(f.FriendUserID) AS 'Connections', u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section FROM tb_UserProfile u INNER JOIN tb_Friends f ON f.FriendUserID = u.UserID WHERE u.Name LIKE '%Musa%' AND (u.UserID LIKE '%bcs%' OR u.UserID LIKE '%fa21%') GROUP BY u.UserID, u.[Name], u.Email, u.Image, u.Department, u.Semester, u.RecoveryEmail, u.BIO, u.DeviceID, u.Token, u.Section;"),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SingleChildScrollView(
+                return const SingleChildScrollView(
                   child: Column(
                     children: [
                       ChatSkeleton(),

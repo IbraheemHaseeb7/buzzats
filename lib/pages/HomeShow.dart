@@ -1,32 +1,25 @@
-import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
 // import 'package:flutter_app_1/Cache/Query.dart';
-import 'package:dialogs/dialogs.dart';
 
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
-import 'package:flutter_app_1/CustomWidgets/Notif.dart';
-import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
 import 'package:flutter_app_1/pages/Notifcations.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
-import '../Cache/Likes.dart';
 import '../CustomWidgets/HomeDrawer.dart';
-import '../CustomWidgets/SocietyTweet.dart';
 import '../CustomWidgets/TweetWidget.dart';
 import 'CreateTweet.dart';
 import 'package:badges/badges.dart' as badges;
 
 class HomeShow extends StatefulWidget {
+  const HomeShow({super.key});
+
   @override
   HomeShowState createState() => HomeShowState();
 }
@@ -117,11 +110,11 @@ class HomeShowState extends State<HomeShow> {
     bool isSelected = false;
 
     return Scaffold(
-      backgroundColor: Color(0xFF141D26),
+      backgroundColor: const Color(0xFF141D26),
 
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xFF141D26),
+        backgroundColor: const Color(0xFF141D26),
         toolbarHeight: 50,
         iconTheme: const IconThemeData(
           color: Color.fromRGBO(150, 183, 223, 1),
@@ -131,7 +124,7 @@ class HomeShowState extends State<HomeShow> {
           "Buzzats",
           style: GoogleFonts.dmSans(
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(150, 183, 223, 1)),
+              color: const Color.fromRGBO(150, 183, 223, 1)),
         ),
         actions: [
           Padding(
@@ -162,7 +155,7 @@ class HomeShowState extends State<HomeShow> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Notifications()),
+                                builder: (context) => const Notifications()),
                           );
                         },
                         icon: Icon(
@@ -170,7 +163,7 @@ class HomeShowState extends State<HomeShow> {
                               ? IconlyBold.notification
                               : IconlyLight.notification,
                           size: 30,
-                          color: Color.fromRGBO(150, 183, 223, 1),
+                          color: const Color.fromRGBO(150, 183, 223, 1),
                         )),
                   )
                 : IconButton(
@@ -179,7 +172,7 @@ class HomeShowState extends State<HomeShow> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Notifications()),
+                            builder: (context) => const Notifications()),
                       );
                     },
                     icon: Icon(
@@ -187,7 +180,7 @@ class HomeShowState extends State<HomeShow> {
                           ? IconlyBold.notification
                           : IconlyLight.notification,
                       size: 30,
-                      color: Color.fromRGBO(150, 183, 223, 1),
+                      color: const Color.fromRGBO(150, 183, 223, 1),
                     )),
           )
         ],
@@ -223,9 +216,7 @@ class HomeShowState extends State<HomeShow> {
                           image: e["image"] ?? "",
                           time: DateTime.parse(e["time"]).day ==
                                   DateTime.now().day
-                              ? DateTime.parse(e["time"]).hour.toString() +
-                                  ":" +
-                                  DateTime.parse(e["time"]).minute.toString()
+                              ? "${DateTime.parse(e["time"]).hour}:${DateTime.parse(e["time"]).minute}"
                               : DateTime.parse(e["time"]).day.toString() +
                                   DateFormat.MMM()
                                       .format(DateTime.parse(e["time"])),
@@ -256,17 +247,17 @@ class HomeShowState extends State<HomeShow> {
 
       //drawer for extra functions like cui portal
 
-      drawer: HomeDrawer(),
+      drawer: const HomeDrawer(),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateTweet()),
+            MaterialPageRoute(builder: (context) => const CreateTweet()),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF4137BD),
+        backgroundColor: const Color(0xFF4137BD),
+        child: const Icon(Icons.add),
       ),
     );
   }

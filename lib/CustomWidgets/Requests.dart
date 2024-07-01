@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/RequestHome.dart';
 import 'package:iconly/iconly.dart';
@@ -15,22 +14,22 @@ class Requests extends StatelessWidget {
 
 
     return Padding(
-      padding: EdgeInsets.only(top: 2),
+      padding: const EdgeInsets.only(top: 2),
       child: GestureDetector(
         child: Container(
-            padding: EdgeInsets.only(right: 6,left: 6,top:3),
+            padding: const EdgeInsets.only(right: 6,left: 6,top:3),
             height: 60,
             width: screenWidth-20,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xff141d26),
                 //border: Border( bottom: BorderSide(color: Colors.grey)),
                ),
-              child: Row(
+              child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 5,right: 4),
+                  padding: EdgeInsets.only(left: 5,right: 4),
                   child: Icon(IconlyLight.message,color: Colors.white,size: 27,),
                 ),
                               SizedBox(width: 15,),
@@ -48,7 +47,7 @@ class Requests extends StatelessWidget {
                                       
                                     ],
                                   ),
-                                      Text("10 requests", style: TextStyle(color: const Color.fromARGB(255, 84, 84, 84), fontSize: 13, fontWeight: FontWeight.w600),),
+                                      Text("10 requests", style: TextStyle(color: Color.fromARGB(255, 84, 84, 84), fontSize: 13, fontWeight: FontWeight.w600),),
                                  
                                 ],
                               )
@@ -59,7 +58,7 @@ class Requests extends StatelessWidget {
             onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => RequestHome()),
+                        MaterialPageRoute(builder: (context) => const RequestHome()),
                       );
         },
       ),

@@ -7,17 +7,17 @@ class LogoutWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Are you sure you want to logout?'),
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style:
-                    TextStyle(color: const Color.fromARGB(255, 120, 255, 125)),
+                    TextStyle(color: Color.fromARGB(255, 120, 255, 125)),
               ),
             ),
             TextButton(
@@ -25,9 +25,9 @@ class LogoutWidget {
                 Navigator.of(context).pop(); // Close the dialog
                 performLogout(context);
               },
-              child: Text(
+              child: const Text(
                 'Logout',
-                style: TextStyle(color: const Color.fromARGB(255, 143, 11, 2)),
+                style: TextStyle(color: Color.fromARGB(255, 143, 11, 2)),
               ),
             ),
           ],

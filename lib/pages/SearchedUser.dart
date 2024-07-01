@@ -1,15 +1,6 @@
-import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Classes/User.dart';
-import 'package:flutter_app_1/CustomWidgets/Reply.dart';
-import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
-import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 
-import 'EditProfile.dart';
 
 
 
@@ -32,8 +23,8 @@ class SearchedUserState extends UserProfileState {
         const Color.fromARGB(255, 33, 243, 117) // Default background color
 
         ),
-    foregroundColor: MaterialStatePropertyAll(Colors.transparent),
-    fixedSize: MaterialStatePropertyAll(Size(95, 10)),
+    foregroundColor: const MaterialStatePropertyAll(Colors.transparent),
+    fixedSize: const MaterialStatePropertyAll(Size(95, 10)),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
     )),
@@ -42,10 +33,10 @@ class SearchedUserState extends UserProfileState {
 
   final disabledStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(
-        Color(0xFF5F80A6)), // Default background color
+        const Color(0xFF5F80A6)), // Default background color
 
-    foregroundColor: MaterialStatePropertyAll(Colors.transparent),
-    fixedSize: MaterialStatePropertyAll(Size(95, 10)),
+    foregroundColor: const MaterialStatePropertyAll(Colors.transparent),
+    fixedSize: const MaterialStatePropertyAll(Size(95, 10)),
     shape: MaterialStateProperty.all(RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
     )),
@@ -71,27 +62,27 @@ class SearchedUserState extends UserProfileState {
           style: isPressed ? enabledStyle : disabledStyle,
           child: Text(
             isPressed ? "Connected" : "Connect",
-            style: TextStyle(color: Colors.white, fontSize: 12),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         ElevatedButton(
           onPressed: null,
           style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.transparent),
-            foregroundColor: MaterialStatePropertyAll(Colors.transparent),
-            fixedSize: MaterialStatePropertyAll(Size(95, 10)),
+            backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
+            foregroundColor: const MaterialStatePropertyAll(Colors.transparent),
+            fixedSize: const MaterialStatePropertyAll(Size(95, 10)),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
-              side: BorderSide(
+              side: const BorderSide(
                 color: Color(0xFF5F80A6),
               ),
             )),
           ),
-          child: Text(
+          child: const Text(
             "Message",
             style: TextStyle(
               color: Colors.white,

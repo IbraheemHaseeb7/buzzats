@@ -1,5 +1,4 @@
 import 'package:dialogs/dialogs.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/SearchedUser.dart';
@@ -19,7 +18,7 @@ class ListMore extends StatelessWidget {
     UserData();
     return Container(
       height: 200,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color.fromARGB(255, 33, 47, 61),
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(300), topRight: Radius.circular(40)),
@@ -31,7 +30,7 @@ class ListMore extends StatelessWidget {
               ? GestureDetector(
                   onTap: () {
                     ChoiceDialog(
-                      dialogBackgroundColor: Color.fromARGB(255, 33, 47, 61),
+                      dialogBackgroundColor: const Color.fromARGB(255, 33, 47, 61),
                       title: "Delete",
                       titleColor: Colors.white,
                       message: "Are you sure you want to delete this post?",
@@ -71,10 +70,10 @@ class ListMore extends StatelessWidget {
                       buttonCancelOnPressed: () {
                         Navigator.pop(context);
                       },
-                      buttonCancelBorderColor: Color.fromARGB(255, 33, 47, 61),
+                      buttonCancelBorderColor: const Color.fromARGB(255, 33, 47, 61),
                     ).show(context);
                   },
-                  child: ListTile(
+                  child: const ListTile(
                     leading: Icon(
                       IconlyLight.delete,
                       color: Color.fromARGB(255, 179, 12, 0),
@@ -95,7 +94,7 @@ class ListMore extends StatelessWidget {
                         SearchedUser(myself: id == UserData.id ? true : false)),
               );
             },
-            child: ListTile(
+            child: const ListTile(
               leading: Icon(
                 IconlyLight.user_1,
                 color: Color.fromARGB(255, 255, 255, 255),
@@ -106,7 +105,7 @@ class ListMore extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
+          const ListTile(
             leading: Icon(
               IconlyLight.plus,
               color: Color.fromARGB(255, 255, 255, 255),

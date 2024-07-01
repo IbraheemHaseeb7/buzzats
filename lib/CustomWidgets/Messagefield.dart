@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
 
 class Messagefield extends StatefulWidget{
+  const Messagefield({super.key});
+
   @override
   Message createState() => Message();
 
@@ -11,8 +11,8 @@ class Messagefield extends StatefulWidget{
 class Message extends State<Messagefield>{
 
   
-  final disabledStyle =   Color.fromARGB(255, 123, 123, 123);
-  final enabledStyle =  Color(0xFF96B7DF);
+  final disabledStyle =   const Color.fromARGB(255, 123, 123, 123);
+  final enabledStyle =  const Color(0xFF96B7DF);
           
 
   bool isEmpty = true;

@@ -1,46 +1,66 @@
-import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_1/Cache/Society.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
-import 'package:flutter_app_1/pages/EditProfile.dart';
 
 import 'package:flutter_app_1/pages/GettingStarted.dart';
-import 'package:flutter_app_1/pages/HandleNotifs.dart';
 import 'package:flutter_app_1/pages/Home.dart';
 import 'package:flutter_app_1/pages/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:flutter_app_1/pages/Notifcations.dart';
-import 'package:flutter_app_1/pages/Rooms.dart';
-import 'package:flutter_app_1/pages/Signup.dart';
-import 'package:flutter_app_1/pages/Society.dart';
 
-import 'package:flutter_app_1/pages/TimeCard.dart';
-import 'package:flutter_app_1/pages/TotalSocieties.dart';
 
-import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'firebase_options.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+
+
+
+//   runApp(const Main());
+//   // socketConnection();
+// }
+
+
+Future<void> main() async {
+  await Supabase.initialize(
+    url: 'https://ihmnenvcrzyesjpwmsdw.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlobW5lbnZjcnp5ZXNqcHdtc2R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTg5MTQxNzMsImV4cCI6MjAzNDQ5MDE3M30.X-dmdCnLuxNY7D6l28LMG3vhnHz2AnGOxE_3LpQsWMI',
   );
 
-  runApp(Main());
-  // socketConnection();
+  runApp(MyApp());
 }
 
+// Get a reference your Supabase client
+
+
 class Main extends StatelessWidget {
-  static FirebaseAuth auth = FirebaseAuth.instance;
-  static final localStorage = new FlutterSecureStorage();
+  // static FirebaseAuth auth = FirebaseAuth.instance;
+    
+    
+    static final supabase = Supabase.instance.client;
+    Future<void> signUp(String password,String email) async{
+      try {
+        await supabase.auth.signUp(
+          password: password, 
+          email: email,
+          );
+      } on AuthException catch (e) {
+        print(e);
+      }
+    }
+  static const localStorage = FlutterSecureStorage();
+
+  const Main({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,40 +73,15 @@ class Main extends StatelessWidget {
 
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
 
-    auth.currentUser != null ? socketConnection() : "";
+    // auth.currentUser != null ? socketConnection() : "";
     final textTheme = Theme.of(context).textTheme;
 
-    if (auth.currentUser != null) {
-      UserData();
-      socket.onConnect((data) {
-        socket.emit("notificationQuery", [
-          "select [Data],[Date/Time] as [time], NType, u.[Name], u.[Image] from tb_Notification n inner join tb_UserProfile u on u.UserID=n.UserID where n.ReceiverID='${UserData.id}'",
-          UserData.id,
-          "Notification"
-        ]);
-        socket.on("notificationQuery", (data) {
-          if (data[1] == "Notification") {
-            socket.off("notificationQuery");
-            notifications.addAll(data[0]["data"]);
-          }
-        });
-        socket.on("notifications", (data) {
-          notifications.add({
-            "Name": data["name"],
-            "NType": data["type"],
-            "Data": data["data"],
-            "Image": data["image"]["data"],
-            "time": data["time"]
-          });
-        });
-      });
-    }
 
     return MaterialApp(
       // home: Society(
       //   society: SocietyData.societies[0],
       // ),
-      home: auth.currentUser == null ? MyApp() : Home(),
+      home: MyApp(),
 
       // home: TotalSocieties(), // add your page for quick testing
 
@@ -98,7 +93,7 @@ class Main extends StatelessWidget {
       theme: ThemeData().copyWith(
           textTheme: GoogleFonts.dmSansTextTheme(textTheme).copyWith(),
           colorScheme:
-              ThemeData().colorScheme.copyWith(primary: Color(0xff141d26)),
+              ThemeData().colorScheme.copyWith(primary: const Color(0xff141d26)),
           hintColor: Colors.white),
     );
   }
@@ -109,6 +104,8 @@ class MyApp extends StatelessWidget {
       r'^[s,f]{1}[a,p]{1}[0-9]{2}-[a-zA-Z]{3}-[0-9]{3}@cuilahore.edu.pk$');
   bool isLoggedIn = false;
 
+  MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -116,7 +113,7 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 0,
       ),
-      backgroundColor: Color(0xff141d26),
+      backgroundColor: const Color(0xff141d26),
       body: Align(
         alignment: Alignment.topCenter,
         child: Padding(
@@ -243,17 +240,17 @@ class MyApp extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => GettingStarted()),
+                              builder: (context) => const GettingStarted()),
                         );
                       },
-                      color: Color(0xff4137bd),
+                      color: const Color(0xff4137bd),
                       elevation: 1,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0),
-                        side: BorderSide(color: Color(0xff4137bd), width: 1),
+                        side: const BorderSide(color: Color(0xff4137bd), width: 1),
                       ),
-                      padding: EdgeInsets.all(16),
-                      textColor: Color(0xffffffff),
+                      padding: const EdgeInsets.all(16),
+                      textColor: const Color(0xffffffff),
                       height: 55,
                       minWidth: MediaQuery.of(context).size.width,
                       child: const Text(
@@ -279,10 +276,10 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         "Have an account already?",
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.clip,
@@ -293,13 +290,13 @@ class MyApp extends StatelessWidget {
                           color: Color(0xffffffff),
                         ),
                       ),
-                      SizedBox(width: 2),
+                      const SizedBox(width: 2),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                                builder: (context) => const LoginScreen()),
                           );
                         },
                         style: ButtonStyle(
@@ -307,10 +304,10 @@ class MyApp extends StatelessWidget {
                             const BorderSide(color: Colors.transparent),
                           ),
                           backgroundColor:
-                              MaterialStateProperty.all(Color(0xff141d26)),
-                          minimumSize: MaterialStateProperty.all(Size(20, 20)),
+                              MaterialStateProperty.all(const Color(0xff141d26)),
+                          minimumSize: MaterialStateProperty.all(const Size(20, 20)),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Login Here",
                           style: TextStyle(color: Color(0xff4137bd)),
                         ),

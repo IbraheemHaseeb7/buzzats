@@ -18,7 +18,7 @@ class ConUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    var imageBytes;
+    Uint8List? imageBytes;
 
      if(image!=null)
     {
@@ -39,20 +39,20 @@ class ConUser extends StatelessWidget {
               width: 60,
               margin: const EdgeInsets.only(left: 15, right: 15),
               child: ClipOval(
-                child: Image.memory(imageBytes),
+                child: Image.memory(imageBytes!),
               ),
             ),
             Container(
               width: screenWidth - 100,
               height: 80,
-              padding: EdgeInsets.only(top:10),
-              child: Column(
+              padding: const EdgeInsets.only(top:10),
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "VEJHEFHE",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   // Container(

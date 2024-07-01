@@ -16,7 +16,7 @@ class Notif extends StatefulWidget {
   String? data;
   var image;
   Notif(
-      {required this.type,
+      {super.key, required this.type,
       required this.name,
       this.data,
       required this.image,
@@ -63,7 +63,7 @@ class NotifState extends State<Notif> {
           Flexible(
             child: Container(
               width: screenWidth - 100,
-              padding: EdgeInsets.only(right: 13),
+              padding: const EdgeInsets.only(right: 13),
               child: Text(
                 widget.type == NotificationTypes.Like
                     ? "${widget.name} liked this post"
@@ -73,7 +73,7 @@ class NotifState extends State<Notif> {
                             ? "${widget.name} requested the connection"
                             : "${widget.name} viewed your profile",
                 // Add more cases if needed
-                style: TextStyle(color: Colors.white, fontSize: 14),
+                style: const TextStyle(color: Colors.white, fontSize: 14),
                 maxLines: null,
               ),
             ),

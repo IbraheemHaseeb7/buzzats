@@ -1,20 +1,16 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
-import 'package:flutter_app_1/pages/ForgotOTP.dart';
 import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
-import 'package:http/http.dart' as http;
 
 import 'Home.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   _LoginScreen createState() => _LoginScreen();
@@ -100,7 +96,7 @@ class _LoginScreen extends State<LoginScreen> {
       });
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => const Home()),
       );
       tempController.end();
     }).catchError((error) {
@@ -138,13 +134,13 @@ class _LoginScreen extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Container(
           height: screenHeight,
-          decoration: BoxDecoration(color: Color(0xFF141D26)),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: const BoxDecoration(color: Color(0xFF141D26)),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
               Padding(
-                  padding: EdgeInsets.only(bottom: 140),
+                  padding: const EdgeInsets.only(bottom: 140),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,9 +160,9 @@ class _LoginScreen extends State<LoginScreen> {
                             fontWeight: FontWeight.normal,
                             color: Color.fromARGB(255, 255, 255, 255)),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       TextFormField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: emailController,
                         onChanged: (text) {
                           handleEmail(text);
@@ -175,8 +171,8 @@ class _LoginScreen extends State<LoginScreen> {
                           hintStyle: const TextStyle(
                               color: Color.fromARGB(255, 110, 110, 110)),
                           hintText: "COMSATS Email Address",
-                          labelStyle: TextStyle(color: Colors.white),
-                          floatingLabelStyle: TextStyle(
+                          labelStyle: const TextStyle(color: Colors.white),
+                          floatingLabelStyle: const TextStyle(
                               color: Color.fromRGBO(148, 95, 255, 0.612)),
                           labelText: "Email",
                           disabledBorder: OutlineInputBorder(
@@ -193,10 +189,10 @@ class _LoginScreen extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       TextFormField(
                         cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: passwordController,
                         onChanged: handlePassword,
                         decoration: InputDecoration(
@@ -214,11 +210,11 @@ class _LoginScreen extends State<LoginScreen> {
                                       passObscure = !passObscure;
                                     });
                                   })),
-                          hintStyle: TextStyle(
-                              color: const Color.fromARGB(255, 110, 110, 110)),
+                          hintStyle: const TextStyle(
+                              color: Color.fromARGB(255, 110, 110, 110)),
                           hintText: "Password",
-                          labelStyle: TextStyle(color: Colors.white),
-                          floatingLabelStyle: TextStyle(
+                          labelStyle: const TextStyle(color: Colors.white),
+                          floatingLabelStyle: const TextStyle(
                               color: Color.fromRGBO(148, 95, 255, 0.612)),
                           labelText: "Password",
                           disabledBorder: OutlineInputBorder(
@@ -245,10 +241,10 @@ class _LoginScreen extends State<LoginScreen> {
                         onPressed: handleLogin,
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              Color.fromRGBO(102, 26, 255, 0.612)),
+                              const Color.fromRGBO(102, 26, 255, 0.612)),
                           foregroundColor: MaterialStateProperty.all(
-                              Color.fromRGBO(255, 255, 255, 1)),
-                          fixedSize: MaterialStateProperty.all(Size(400, 55)),
+                              const Color.fromRGBO(255, 255, 255, 1)),
+                          fixedSize: MaterialStateProperty.all(const Size(400, 55)),
                           shape:
                               MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24.0),

@@ -1,8 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/MembersCache.dart';
-import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/pages/Society.dart';
 
 import '../Cache/Society.dart';
@@ -68,7 +66,7 @@ class SocState extends State<MySoc> {
             context,
             MaterialPageRoute(
                 builder: (context) => Society(
-                      memberss: [],
+                      memberss: const [],
                       name: widget.name,
                       groups: groups,
                       id: widget.id,

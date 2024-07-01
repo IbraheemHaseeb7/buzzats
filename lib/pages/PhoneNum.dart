@@ -1,10 +1,7 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
-import 'package:toast_notification/ToasterType.dart';
-import 'package:toast_notification/toast_notification.dart';
 
 import '../CustomWidgets/CustomDropDownMenu.dart';
 import 'Home.dart';
@@ -44,7 +41,7 @@ class PhoneNumber extends StatelessWidget {
                         color: Color(0xffffffff),
                       ))),
               Container(
-                padding: EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15),
                 child: const Text(
                   "Set up your profile to get buzzin",
                   style: TextStyle(
@@ -73,7 +70,7 @@ class PhoneNumber extends StatelessWidget {
                         color: Color.fromARGB(255, 110, 110, 110)),
                     hintText: "03XXXXXXXXX",
                     labelStyle: const TextStyle(color: Colors.white),
-                    floatingLabelStyle: TextStyle(color: Color(0xffa099fc)),
+                    floatingLabelStyle: const TextStyle(color: Color(0xffa099fc)),
                     labelText: "Phone Number",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
@@ -104,7 +101,7 @@ class PhoneNumber extends StatelessWidget {
                         color: Color.fromARGB(255, 110, 110, 110)),
                     hintText: "kuch@bhi.com",
                     labelStyle: const TextStyle(color: Colors.white),
-                    floatingLabelStyle: TextStyle(color: Color(0xffa099fc)),
+                    floatingLabelStyle: const TextStyle(color: Color(0xffa099fc)),
                     labelText: "Recovery Email",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
@@ -179,20 +176,20 @@ class PhoneNumber extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(builder: (context) => const Home()),
                         );
                       },
-                      child: Text("Let's Buzzz!!"),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(102, 26, 255, 0.612)),
+                            const Color.fromRGBO(102, 26, 255, 0.612)),
                         foregroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(255, 255, 255, 1)),
-                        fixedSize: MaterialStateProperty.all(Size(400, 55)),
+                            const Color.fromRGBO(255, 255, 255, 1)),
+                        fixedSize: MaterialStateProperty.all(const Size(400, 55)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24.0),
                         )),
                       ),
+                      child: const Text("Let's Buzzz!!"),
                     )),
               ),
             ],

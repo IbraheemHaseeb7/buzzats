@@ -1,24 +1,17 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter_app_1/CustomWidgets/SocietySuggest.dart';
-import 'package:flutter_app_1/CustomWidgets/UserSuggest.dart';
 import 'package:flutter_app_1/Skeletons/SuggestSocSkel.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/UserProfile.dart';
 import 'package:iconly/iconly.dart';
 import 'package:flutter_app_1/pages/SearchUser.dart';
-import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
-import '../Cache/Suggestions.dart';
 import 'Userlist.dart';
 
 class SuggestionPage extends StatefulWidget {
@@ -149,7 +142,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                         color: Color(0xffffffff),
                       ),
                       filled: true,
-                      fillColor: Color.fromARGB(36, 73, 72, 99),
+                      fillColor: const Color.fromARGB(36, 73, 72, 99),
                       isDense: false,
                       contentPadding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
                       prefixIcon: const Icon(IconlyLight.search,
@@ -329,7 +322,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Column(
+                            return const Column(
                               children: [
                                 SuggestSocSkel(),
                                 SuggestSocSkel(),
@@ -407,7 +400,7 @@ class _SuggestionPage extends State<SuggestionPage> {
   Future<List<Userlist>?> showSuggestions(String q2) async {
     List<Userlist>? users;
 
-    final url = 'https://great-resonant-year.glitch.me/query';
+    const url = 'https://great-resonant-year.glitch.me/query';
     final headers = {'Content-Type': 'application/json'};
     final body = {
       'query': q2,
@@ -434,7 +427,7 @@ class _SuggestionPage extends State<SuggestionPage> {
 
   GestureDetector userGet(String email, Uint8List? bytes, String name,
       String department, int semester) {
-    batchFinal = email!.substring(0, 4);
+    batchFinal = email.substring(0, 4);
     batchFinal = batchFinal!.toUpperCase();
 
     return GestureDetector(
@@ -468,7 +461,7 @@ class _SuggestionPage extends State<SuggestionPage> {
                   ),
                   child: bytes != null
                       ? Image.memory(bytes, width: 200, height: 200)
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 ),
               ),
               Padding(

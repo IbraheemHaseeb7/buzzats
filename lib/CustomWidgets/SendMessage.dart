@@ -12,7 +12,7 @@ class SendMessage extends StatelessWidget {
      double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    final decoration = BoxDecoration(
+    const decoration = BoxDecoration(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(30),
               topLeft: Radius.circular(30)
@@ -31,20 +31,20 @@ class SendMessage extends StatelessWidget {
           child: Container(
             width: screenWidth-150,
             
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             decoration: decoration,
         
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Good morning! Kesi hain ap? I nees to knqow rfvh dfbhkwfhkrhk weefkwebk ",
-                  style: TextStyle(color: const Color(0xFF141D26), fontSize: 15),
+                  style: TextStyle(color: Color(0xFF141D26), fontSize: 15),
         
                 ),
                 SizedBox(height: 6,),
     
-              Text("7:44 pm", style: TextStyle(color: const Color(0xFF141D26), fontSize: 12,fontWeight: FontWeight.bold),),
+              Text("7:44 pm", style: TextStyle(color: Color(0xFF141D26), fontSize: 12,fontWeight: FontWeight.bold),),
     
               ],
             ),

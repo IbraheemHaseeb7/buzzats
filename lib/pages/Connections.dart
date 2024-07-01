@@ -3,8 +3,6 @@ import 'package:flutter_app_1/Cache/Query.dart';
 import 'package:flutter_app_1/CustomWidgets/ConUser.dart';
 import 'package:flutter_app_1/Skeletons/ChatSkeleton.dart';
 
-import '../Cache/MembersCache.dart';
-import '../Cache/socket.dart';
 
 class Connections extends StatefulWidget {
  // List<dynamic> members;
@@ -69,7 +67,7 @@ q2= " select * from tb_Friends friend inner join tb_UserProfile us on friend.Fri
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        color: Color(0xff141d26),
+        color: const Color(0xff141d26),
           constraints: const BoxConstraints(minHeight: 500),
           width: screenWidth,
           child: Column(
@@ -99,7 +97,7 @@ q2= " select * from tb_Friends friend inner join tb_UserProfile us on friend.Fri
                               color: Color(0xff6080A7), width: 1)),
                       hintText: "Search Connections",
                       hintStyle:
-                          TextStyle(color: Color(0xff6080A7), fontSize: 12)),
+                          const TextStyle(color: Color(0xff6080A7), fontSize: 12)),
                 ),
               ),
               Container(
@@ -116,10 +114,10 @@ q2= " select * from tb_Friends friend inner join tb_UserProfile us on friend.Fri
 
                     }).toList() : 
                     [
-                      ChatSkeleton(),
-                      ChatSkeleton(),
-                      ChatSkeleton(),
-                      ChatSkeleton(),
+                      const ChatSkeleton(),
+                      const ChatSkeleton(),
+                      const ChatSkeleton(),
+                      const ChatSkeleton(),
 
                     ]
                     

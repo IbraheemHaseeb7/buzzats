@@ -6,8 +6,8 @@ class CustomDropdown extends StatefulWidget {
   final double width;
   final Function(String?) onChanged;
 
-  CustomDropdown(
-      {required this.items,
+  const CustomDropdown(
+      {super.key, required this.items,
       required this.value,
       required this.onChanged,
       required this.width,
@@ -40,11 +40,11 @@ class _CustomDropdownState extends State<CustomDropdown> {
           },
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1),
+              borderSide: const BorderSide(color: Colors.grey, width: 1),
               borderRadius: BorderRadius.circular(50),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: 1),
+              borderSide: const BorderSide(color: Colors.white, width: 1),
               borderRadius: BorderRadius.circular(50),
             ),
             labelText: widget.labelText,

@@ -103,7 +103,7 @@ class _SocietyMembersContainerState extends State<SocietyMembersContainer> {
                             color: Color(0xff6080A7), width: 1)),
                     hintText: "Search Members",
                     hintStyle:
-                        TextStyle(color: Color(0xff6080A7), fontSize: 12)),
+                        const TextStyle(color: Color(0xff6080A7), fontSize: 12)),
               ),
             ),
             Container(

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/CustomWidgets/Confirmation.dart';
 
 
 class RecieveMessage extends StatelessWidget{
+  const RecieveMessage({super.key});
+
   @override
   Widget build(BuildContext context) {
   double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    final decoration = BoxDecoration(
+    const decoration = BoxDecoration(
             borderRadius: BorderRadius.only(
               bottomRight: Radius.circular(30),
               topRight: Radius.circular(30)
@@ -25,20 +26,20 @@ class RecieveMessage extends StatelessWidget{
           child: Container(
             width: screenWidth-150,
             
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             decoration: decoration,
         
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Life is boring man!!",
-                  style: TextStyle(color: const Color(0xFF141D26), fontSize: 15),
+                  style: TextStyle(color: Color(0xFF141D26), fontSize: 15),
         
                 ),
                 SizedBox(height: 6,),
     
-              Text("7:44 pm", style: TextStyle(color: const Color(0xFF141D26), fontSize: 12,fontWeight: FontWeight.bold),),
+              Text("7:44 pm", style: TextStyle(color: Color(0xFF141D26), fontSize: 12,fontWeight: FontWeight.bold),),
     
               ],
             ),

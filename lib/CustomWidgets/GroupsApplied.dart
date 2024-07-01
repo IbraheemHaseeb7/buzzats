@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GroupsApplied extends StatefulWidget {
-  GroupsApplied({Key? key}) : super(key: key);
+  const GroupsApplied({Key? key}) : super(key: key);
 
   @override
   GroupsState createState() => GroupsState();
@@ -28,56 +28,56 @@ class GroupsState extends State<GroupsApplied> {
             child: ClipOval(
               child: Container(
                 color: Colors.blue, // Change this color to your desired color
-                child: Icon(
+                child: const Icon(
                   Icons.person,
                   color: Colors.white,
                 ),
               ),
             ),
           ),
-          Container(
+          SizedBox(
             width: screenWidth - 100,
             height: 100,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "HGHI",
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                Container(
+                SizedBox(
                   width: screenWidth,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end, // Adjust this alignment
                     children: [
-                      Container(
+                      SizedBox(
                         width: 40,
                         height: 40,
                        
                         child: IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.check,
                               color: Colors.green,
                               size: 25,
                             )),
                       ),
-                      Container(
+                      SizedBox(
                         width: 40,
                         height: 40,
                        
                         child: IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.clear_rounded,
-                              color: const Color.fromARGB(255, 255, 86, 74),
+                              color: Color.fromARGB(255, 255, 86, 74),
                               size: 26,
                             )),
                       ),

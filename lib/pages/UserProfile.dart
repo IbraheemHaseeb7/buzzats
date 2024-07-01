@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 
-import 'package:flutter_app_1/CustomWidgets/Reply.dart';
 import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
-import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/Skeletons/UserSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
-import '../Cache/UserProfile.dart';
-import '../Cache/query.dart';
 import 'package:intl/intl.dart';
 
 String userID = "";
@@ -82,7 +77,7 @@ class UserProfileState extends State<UserProfile> {
     } else {
       UserData();
       UserData.fetchUser().then((value) {
-        Timer(Duration(seconds: 2), () {
+        Timer(const Duration(seconds: 2), () {
           socketQuery(
                   "begin tran declare @temp varchar(5); set @temp = (select concat('N', count(*) + 1) from tb_Notification) insert into tb_Notification (NotificationID, UserID, STweetID, TweetID, NType, [Date/Time], [Data], ReceiverID) values (@temp, '${UserData.id}', null, null, 'View', getdate(), null, '${widget.user!["UserID"]}'); SELECT (select count(t.TweetID) from tb_Like t where t.TweetID = twt.TweetID ) as likes, (select isNull('yes', 'no') as 'HasLiked' from tb_Like tl where tl.UserID=id.UserID and tl.TweetID = twt.TweetID) as 'HasLiked', (select count(c.TweetID) from tb_Comment c  where c.TweetID = twt.TweetID) as replies, id.UserID, id.[Name], twt.TweetID, twt.Tweet, twt.[Date/Time] AS [time] FROM tb_UserProfile id INNER JOIN tb_Tweets twt ON id.UserID = twt.UserID WHERE id.userID ='${widget.user!["UserID"]}' order by [time] desc commit")
               .then((value) {
@@ -148,7 +143,7 @@ class UserProfileState extends State<UserProfile> {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    EditProfile(), // Replace with the screen you want to navigate to
+                    const EditProfile(), // Replace with the screen you want to navigate to
               ),
             );
           },
@@ -210,10 +205,10 @@ class UserProfileState extends State<UserProfile> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: screenWidth * 0.4,
                                     child: Text(
-                                      "$name",
+                                      name,
                                       textAlign: TextAlign.left,
                                       maxLines: null,
                                       style: const TextStyle(
@@ -312,7 +307,7 @@ class UserProfileState extends State<UserProfile> {
                               SizedBox(
                                 width: screenWidth - 200,
                                 child: Text(
-                                  "$bio",
+                                  bio,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -340,7 +335,7 @@ class UserProfileState extends State<UserProfile> {
                               const SizedBox(height: 20),
                               widget.myself
                                   ? generateButtons()
-                                  : SizedBox.shrink()
+                                  : const SizedBox.shrink()
                             ],
                           ),
                         ],
@@ -397,7 +392,7 @@ class UserProfileState extends State<UserProfile> {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: screenWidth,
                       child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -457,9 +452,7 @@ class UserProfileState extends State<UserProfile> {
                           image: bytes,
                           time: DateTime.parse(e["time"]).day ==
                                   DateTime.now().day
-                              ? DateTime.parse(e["time"]).hour.toString() +
-                                  ":" +
-                                  DateTime.parse(e["time"]).minute.toString()
+                              ? "${DateTime.parse(e["time"]).hour}:${DateTime.parse(e["time"]).minute}"
                               : DateTime.parse(e["time"]).day.toString() +
                                   DateFormat.MMM()
                                       .format(DateTime.parse(e["time"])),
@@ -472,6 +465,6 @@ class UserProfileState extends State<UserProfile> {
               ),
             ),
           )
-        : UserSkeleton();
+        : const UserSkeleton();
   }
 }

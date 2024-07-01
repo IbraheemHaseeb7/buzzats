@@ -1,14 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/UserProfile.dart';
-import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:flutter_app_1/CustomWidgets/Notif.dart';
 import 'package:intl/intl.dart';
 
-import '../Skeletons/NotifSkeleton.dart';
 
 class Notifications extends StatefulWidget {
-  Notifications({super.key});
+  const Notifications({super.key});
 
   @override
   createState() => NotificationsState();
@@ -25,15 +21,15 @@ class NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF141D26),
+      backgroundColor: const Color(0xFF141D26),
       appBar: AppBar(
-        backgroundColor: Color(0xFF141D26),
+        backgroundColor: const Color(0xFF141D26),
         title: const Text(
           "Buzzers",
           style: TextStyle(
               color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900),
         ),
-        actions: [],
+        actions: const [],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -66,9 +62,7 @@ class NotificationsState extends State<Notifications> {
                   name: e["Name"],
                   image: e["Image"],
                   time: DateTime.parse(e["time"]).day == DateTime.now().day
-                      ? DateTime.parse(e["time"]).hour.toString() +
-                          ":" +
-                          DateTime.parse(e["time"]).minute.toString()
+                      ? "${DateTime.parse(e["time"]).hour}:${DateTime.parse(e["time"]).minute}"
                       : DateTime.parse(e["time"]).day.toString() +
                           DateFormat.MMM().format(DateTime.parse(e["time"])),
                 );

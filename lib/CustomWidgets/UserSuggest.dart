@@ -53,7 +53,7 @@ class _UserSuggest extends State<UserSuggest> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 3, 20, 0),
               child: Container(
-                padding: EdgeInsets.only(bottom: 4,top: 4),
+                padding: const EdgeInsets.only(bottom: 4,top: 4),
                 height: 90,
                 width: 70,
                 clipBehavior: Clip.antiAlias,
@@ -62,7 +62,7 @@ class _UserSuggest extends State<UserSuggest> {
                 ),
                 child: bytes != null
               ? Image.memory(bytes!, width: 200, height: 200)
-              : CircularProgressIndicator(),
+              : const CircularProgressIndicator(),
               ),
             ),
             Padding(

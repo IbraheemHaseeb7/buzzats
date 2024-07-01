@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/ApplyGroupWidget.dart';
-import 'package:flutter_app_1/CustomWidgets/Groups.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
@@ -61,7 +60,7 @@ class _ApplyState extends State<Apply> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Container(
+      body: SizedBox(
           width: screenHeight,
           height: screenHeight - AppBar().preferredSize.height,
           child: SingleChildScrollView(
@@ -89,7 +88,7 @@ class _ApplyState extends State<Apply> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: screenWidth,
                 child: Column(
                   children: groups

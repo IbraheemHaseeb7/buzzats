@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PushN extends StatelessWidget{
+  const PushN({super.key});
+
   @override
   Widget build(BuildContext context) {
    double screenWidth = MediaQuery.of(context).size.width;
@@ -10,7 +11,7 @@ class PushN extends StatelessWidget{
 
     return Container(
         width: screenWidth,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFF141D26),
           border: Border(
             top: BorderSide(color: Colors.grey, width: 0.2),
@@ -21,9 +22,9 @@ class PushN extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 12, left: 12, right: 8),
+              padding: const EdgeInsets.only(top: 12, left: 12, right: 8),
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(200)),
+                borderRadius: const BorderRadius.all(Radius.circular(200)),
                 child: 
                     Image.asset(
                         "lib/Assets/profile.jpg",
@@ -39,9 +40,9 @@ class PushN extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth - 110,
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -81,7 +82,7 @@ class PushN extends StatelessWidget{
                   Container(
                     padding: const EdgeInsets.only(top: 13.0, right: 8),
                     width: screenWidth - 100,
-                    child: Text(    //notif body
+                    child: const Text(    //notif body
                       "Event Announcement",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -93,7 +94,7 @@ class PushN extends StatelessWidget{
                   Container(
                     padding: const EdgeInsets.only(top: 8.0, right: 8),
                     width: screenWidth - 100,
-                    child: Text(    //notif description
+                    child: const Text(    //notif description
                       "We are announcing an event that is going to happen on 24th of August,2023",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -104,10 +105,10 @@ class PushN extends StatelessWidget{
                   Container(
                     padding: const EdgeInsets.only(top: 8.0, right: 8),
                     width: screenWidth - 100,
-                    child:  Text(
+                    child:  const Text(
                           "20 August 2023",
                           style: TextStyle(
-                              color: const Color.fromARGB(255, 114, 114, 114),
+                              color: Color.fromARGB(255, 114, 114, 114),
                               fontSize: 13,
                               fontWeight: FontWeight.w600),
                         ),
@@ -118,27 +119,26 @@ class PushN extends StatelessWidget{
                 child: Row(
                   children: [
                     ElevatedButton(
-                      onPressed: null, 
-                      child: Text("Accept",style: TextStyle(color:Colors.white),),
+                      onPressed: null,
                       
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(102, 26, 255, 0.612)),
+                            const Color.fromRGBO(102, 26, 255, 0.612)),
                         foregroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(255, 255, 255, 1)),
+                            const Color.fromRGBO(255, 255, 255, 1)),
                        
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24.0),
                         )),
-                      ),
+                      ), 
+                      child: const Text("Accept",style: TextStyle(color:Colors.white),),
                     
                     
                     ),
-                    SizedBox(width: 20,),
+                    const SizedBox(width: 20,),
                     ElevatedButton(
                       
-                      onPressed: null, 
-                      child: Text("Reject",style: TextStyle(color:Colors.white)),
+                      onPressed: null,
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                             Colors.transparent),
@@ -149,7 +149,8 @@ class PushN extends StatelessWidget{
                           
                         )),
                         
-                      ),
+                      ), 
+                      child: const Text("Reject",style: TextStyle(color:Colors.white)),
                       
                       ),
                   ],

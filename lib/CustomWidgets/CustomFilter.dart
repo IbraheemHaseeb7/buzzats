@@ -6,8 +6,8 @@ class CustomFilter extends StatefulWidget {
   final double width;
   final Function(String?) onChanged;
 
-  CustomFilter(
-      {required this.items,
+  const CustomFilter(
+      {super.key, required this.items,
       required this.value,
       required this.onChanged,
       required this.width,
@@ -34,17 +34,17 @@ class _CustomDropdownState extends State<CustomFilter> {
           onChanged: (newValue) {
             // Update label color on focus
             setState(() {
-              labelColor = Color.fromARGB(255, 255, 255, 255);
+              labelColor = const Color.fromARGB(255, 255, 255, 255);
               widget.onChanged(newValue);
             });
           },
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: const Color.fromARGB(255, 255, 255, 255), width: 1),
+              borderSide: const BorderSide(color: Color.fromARGB(255, 255, 255, 255), width: 1),
               borderRadius: BorderRadius.circular(50),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: 1),
+              borderSide: const BorderSide(color: Colors.white, width: 1),
               borderRadius: BorderRadius.circular(50),
             ),
             labelText: widget.labelText,

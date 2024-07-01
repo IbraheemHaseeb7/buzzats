@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
 
 class Buzzats extends StatelessWidget {
-  Buzzats({super.key});
+  const Buzzats({super.key});
 
 
 
@@ -20,22 +19,22 @@ class Buzzats extends StatelessWidget {
 
 
     return Scaffold(
-      appBar: AppBar(title: Text("Push Notifications"), actions: [],),
+      appBar: AppBar(title: const Text("Push Notifications"), actions: const [],),
       body: SingleChildScrollView(
       child: Container(
         height: screenHeight,
         width: screenWidth,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xff141d26),
         
       ),
-      padding: EdgeInsets.all(16), // Adjust the padding as needed
+      padding: const EdgeInsets.all(16), // Adjust the padding as needed
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           Padding(
-            padding: const EdgeInsets.only(top: 2,bottom: 12,left: 12,right: 12),
+           const Padding(
+            padding: EdgeInsets.only(top: 2,bottom: 12,left: 12,right: 12),
             child: Text(
               "Buzzats",
               style: TextStyle(
@@ -123,32 +122,32 @@ class Buzzats extends StatelessWidget {
               children: [
                 ElevatedButton(
                             onPressed: (){Navigator.pop(context);},
-                            child: Text("Push"),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  Color.fromRGBO(102, 26, 255, 0.612)),
+                                  const Color.fromRGBO(102, 26, 255, 0.612)),
                               foregroundColor: MaterialStateProperty.all(
-                                  Color.fromRGBO(255, 255, 255, 1)),
-                              fixedSize: MaterialStateProperty.all(Size(100, 40)),
+                                  const Color.fromRGBO(255, 255, 255, 1)),
+                              fixedSize: MaterialStateProperty.all(const Size(100, 40)),
                               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24.0),
                               )),
                             ),
+                            child: const Text("Push"),
                           ),
-                          SizedBox(width: 25,),
+                          const SizedBox(width: 25,),
                           ElevatedButton(
                             onPressed: null,
-                            child: Text("Cancel"),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  Color.fromRGBO(255, 255, 255, 0.612)),
+                                  const Color.fromRGBO(255, 255, 255, 0.612)),
                               foregroundColor: MaterialStateProperty.all(
-                                  Color.fromRGBO(0, 0, 0, 1)),
-                              fixedSize: MaterialStateProperty.all(Size(100, 40)),
+                                  const Color.fromRGBO(0, 0, 0, 1)),
+                              fixedSize: MaterialStateProperty.all(const Size(100, 40)),
                               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24.0),
                               )),
                             ),
+                            child: const Text("Cancel"),
                           ),
               ],
             ),

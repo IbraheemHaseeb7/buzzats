@@ -5,7 +5,6 @@ import 'package:flutter_app_1/Skeletons/SuggestUserSkel.dart';
 
 import '../Cache/Query.dart';
 import '../Cache/UserProfile.dart';
-import 'SocietyMember.dart';
 
 class SocietyMutualsContainer extends StatefulWidget {
   List<dynamic> members;
@@ -136,7 +135,7 @@ class _SocietyMutualsContainerState extends State<SocietyMutualsContainer> {
                             color: Color(0xff6080A7), width: 1)),
                     hintText: "Search",
                     hintStyle:
-                        TextStyle(color: Color(0xff6080A7), fontSize: 12)),
+                        const TextStyle(color: Color(0xff6080A7), fontSize: 12)),
               ),
             ),
             Container(
@@ -149,7 +148,7 @@ class _SocietyMutualsContainerState extends State<SocietyMutualsContainer> {
 
                       }
                       )
-                      .toList() : [SuggestUserSkel(),]),
+                      .toList() : [const SuggestUserSkel(),]),
             )
           ],
         ));

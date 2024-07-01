@@ -8,6 +8,8 @@ import 'TimeCard.dart';
 
 
 class Timetable extends StatefulWidget {
+  const Timetable({super.key});
+
   @override
   TimetableState createState() => TimetableState();
 }
@@ -76,7 +78,7 @@ class TimetableState extends State<Timetable> {
 ];
 
 List<Widget> emptyDayMessage = [
-  Center(
+  const Center(
     child: Text(
       "No courses scheduled for this day.",
       style: TextStyle(fontSize: 16, color: Colors.white),
@@ -98,8 +100,8 @@ List<Widget> emptyDayMessage = [
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Color(0xFF141D26),
-      appBar: AppBar(elevation: 0.0, title: Text("TimeTable", style: TextStyle(fontSize: 25),),actions: [
+      backgroundColor: const Color(0xFF141D26),
+      appBar: AppBar(elevation: 0.0, title: const Text("TimeTable", style: TextStyle(fontSize: 25),),actions: const [
 
       ],),
 
@@ -108,15 +110,15 @@ List<Widget> emptyDayMessage = [
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 10), // Add spacing
+            const SizedBox(height: 10), // Add spacing
 
-           Container(
+           SizedBox(
   height: 60,
   child: ListView.builder(
     itemBuilder: (context, index) {
       return GestureDetector(
         onTap: () => selectDay(index),
-        child: Days(color: selectedIndex==index? Color(0xFF4137BD) :Colors.transparent , day: days[index])
+        child: Days(color: selectedIndex==index? const Color(0xFF4137BD) :Colors.transparent , day: days[index])
       );
     },
     itemCount: days.length,
@@ -125,7 +127,7 @@ List<Widget> emptyDayMessage = [
 ),
 
 
-            SizedBox(height: 20), // Add spacing
+            const SizedBox(height: 20), // Add spacing
 
             Align(
               alignment: Alignment.center,
@@ -136,7 +138,7 @@ List<Widget> emptyDayMessage = [
                   CarouselSlider(
                     items: courseCards[selectedIndex].isEmpty ? emptyDayMessage : courseCards[selectedIndex],
                     options: CarouselOptions(
-                      scrollPhysics: ClampingScrollPhysics(),
+                      scrollPhysics: const ClampingScrollPhysics(),
                       aspectRatio: 3 / 3.3,
                       enlargeCenterPage: true,
                       enableInfiniteScroll: false,
@@ -144,12 +146,12 @@ List<Widget> emptyDayMessage = [
                     ),
                   ),
 
-            SizedBox(height: 30), // Add spacing
+            const SizedBox(height: 30), // Add spacing
 
-            Align(
+            const Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: EdgeInsets.only(bottom: 30),
                 child: Weeks(),
               ),
             ),

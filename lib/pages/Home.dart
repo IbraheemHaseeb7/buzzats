@@ -1,12 +1,7 @@
 // ignore_for_file: unnecessary_string_escapes, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/Feed.dart';
-import 'package:flutter_app_1/Cache/UserProfile.dart';
-import 'package:flutter_app_1/pages/ChatsHome.dart';
 import 'package:flutter_app_1/pages/HomeShow.dart';
 
 import 'package:flutter_app_1/pages/SuggestionPage.dart';
@@ -17,13 +12,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconly/iconly.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   HomeState createState() => HomeState();
 }
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int currentPageIndex = 0;
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 

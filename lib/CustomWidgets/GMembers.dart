@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GMembers extends StatelessWidget {
  
- GMembers(
+ const GMembers(
       {super.key,
      
   }
@@ -27,23 +27,23 @@ class GMembers extends StatelessWidget {
               //   child: image,
               // ),
             ),
-            Container(
+            SizedBox(
               width: screenWidth - 100,
               height: 80,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "jbwejfb",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  Container(
+                  SizedBox(
                       width: screenWidth - 120,
-                      child: Text(
+                      child: const Text(
                         "hdbfhkhke",
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       )),
                 ],
               ),

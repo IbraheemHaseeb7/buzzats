@@ -11,7 +11,6 @@ import 'package:iconly/iconly.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
-import 'Replying.dart';
 
 class SocietyTweet extends StatefulWidget {
   String name, tweet, twtId;
@@ -129,7 +128,7 @@ class _SocietyTweet extends State<SocietyTweet> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth - 120,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

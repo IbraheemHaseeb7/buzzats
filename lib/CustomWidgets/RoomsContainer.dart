@@ -13,12 +13,12 @@ class _RoomsContainerState extends State<RoomsContainer> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
+    return SizedBox(
       width: screenWidth * 0.9,
       child: Center(
           child: Wrap(
               direction: Axis.horizontal,
-              children: widget.rooms!
+              children: widget.rooms
                   .map((e) => Box(available: e["available"], name: e["name"]))
                   .toList())),
     );

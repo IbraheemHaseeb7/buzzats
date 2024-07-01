@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/RoomsContainer.dart';
-import 'package:flutter_app_1/pages/Rooms.dart';
 
 class Block extends StatefulWidget {
   String name;

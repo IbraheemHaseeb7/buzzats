@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/CustomWidgets/CustomDropDownMenu.dart';
 import 'package:flutter_app_1/CustomWidgets/CustomFilter.dart';
 
 
 
 class FilterContainer extends StatefulWidget {
 
-  FilterContainer({super.key});
+  const FilterContainer({super.key});
 
   @override
   State<FilterContainer> createState() => _FilterContainerState();
@@ -23,9 +22,9 @@ class _FilterContainerState extends State<FilterContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 20,left: 20,),
+      padding: const EdgeInsets.only(bottom: 20,left: 20,),
       height: 70,
-      color: Color(0xff141d26),
+      color: const Color(0xff141d26),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

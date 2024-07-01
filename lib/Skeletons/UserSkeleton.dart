@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
 import 'package:flutter_app_1/Skeletons/TwtSkeleton.dart';
 import 'package:flutter_app_1/pages/EditProfile.dart';
 import 'package:shimmer/shimmer.dart';
 
 class UserSkeleton extends StatefulWidget {
+  const UserSkeleton({super.key});
+
   @override
   createState() => UserSkeletonState();
 }
@@ -39,7 +39,7 @@ class UserSkeletonState extends State<UserSkeleton> {
         ElevatedButton(
           onPressed: () {
             Navigator.push(
-              context as BuildContext,
+              context,
               MaterialPageRoute(
                 builder: (context) =>
                     EditProfile(), // Replace with the screen you want to navigate to
@@ -309,7 +309,7 @@ class UserSkeletonState extends State<UserSkeleton> {
                           left: 5,
                           bottom: 20,
                         ),
-                        child: Container(
+                        child: SizedBox(
                           height: 30,
                           width: screenWidth * 0.3,
                           child: OutlinedButton(
@@ -328,7 +328,7 @@ class UserSkeletonState extends State<UserSkeleton> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(right: 5, bottom: 20),
-                        child: Container(
+                        child: SizedBox(
                           height: 30,
                           width: screenWidth * 0.3,
                           child: OutlinedButton(

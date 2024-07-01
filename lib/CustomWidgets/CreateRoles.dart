@@ -3,7 +3,6 @@ import 'package:flutter_app_1/CustomWidgets/SimpleRoles.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
-import 'Roles.dart';
 
 class CreateRoles extends StatefulWidget {
   Map<String, dynamic> society;
@@ -103,7 +102,7 @@ class CreateRolesState extends State<CreateRoles> {
                 color: Color.fromARGB(129, 255, 255, 255),
               ),
               filled: true,
-              fillColor: Color(0x00ffffff),
+              fillColor: const Color(0x00ffffff),
               isDense: false,
               contentPadding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
             ),

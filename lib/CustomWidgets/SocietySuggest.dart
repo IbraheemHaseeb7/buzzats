@@ -7,7 +7,7 @@ class SocietySuggest extends StatefulWidget {
   int connections;
   var image;
 
-  SocietySuggest({
+  SocietySuggest({super.key, 
     required this.name,
     required this.about,
     required this.id,
@@ -34,8 +34,8 @@ class _SocietySuggest extends State<SocietySuggest> {
               MaterialPageRoute(
                   builder: (builder) => Society(
                       name: widget.name,
-                      groups: [],
-                      memberss: [],
+                      groups: const [],
+                      memberss: const [],
                       image: widget.image,
                       presidentId: widget.presidentId,
                       id: widget.id,
@@ -50,16 +50,16 @@ class _SocietySuggest extends State<SocietySuggest> {
             // mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(35, 8, 0, 12),
+                padding: const EdgeInsets.fromLTRB(35, 8, 0, 12),
                 child: Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   width: screenWidth - 60,
                   decoration: BoxDecoration(
-                    color: Color(0xff6080a7).withOpacity(0.3),
+                    color: const Color(0xff6080a7).withOpacity(0.3),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(17),
-                    border: Border.all(color: Color(0xff6080a7), width: 1),
+                    border: Border.all(color: const Color(0xff6080a7), width: 1),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -67,19 +67,19 @@ class _SocietySuggest extends State<SocietySuggest> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: EdgeInsets.fromLTRB(10, 6, 0, 2),
+                              padding: const EdgeInsets.fromLTRB(10, 6, 0, 2),
                               child: Text(
                                 widget.name,
                                 textAlign: TextAlign.left,
                                 overflow: TextOverflow.clip,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 18,
@@ -88,12 +88,12 @@ class _SocietySuggest extends State<SocietySuggest> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(10, 5, 0, 4),
+                              padding: const EdgeInsets.fromLTRB(10, 5, 0, 4),
                               child: Text(
                                 widget.about,
                                 textAlign: TextAlign.left,
                                 overflow: TextOverflow.clip,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 14,
@@ -104,21 +104,21 @@ class _SocietySuggest extends State<SocietySuggest> {
                             Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 5, 10, 2),
+                                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 2),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF6080A7),
+                                      color: const Color(0xFF6080A7),
                                       //shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(8),
                                       // border: Border.all(
                                       //     color: Color(0xff6080a7), width: 1),
                                     ),
-                                    padding: EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
                                     child: Text(
                                       "${widget.connections.toString()} Connections",
                                       textAlign: TextAlign.left,
                                       overflow: TextOverflow.clip,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontStyle: FontStyle.normal,
                                         fontSize: 14,
@@ -128,14 +128,14 @@ class _SocietySuggest extends State<SocietySuggest> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 5, 0, 2),
+                                  padding: const EdgeInsets.fromLTRB(10, 5, 0, 2),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF6080A7),
+                                      color: const Color(0xFF6080A7),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    padding: EdgeInsets.all(4),
-                                    child: Text(
+                                    padding: const EdgeInsets.all(4),
+                                    child: const Text(
                                       "20 Mutuals",
                                       textAlign: TextAlign.left,
                                       overflow: TextOverflow.clip,
@@ -157,11 +157,11 @@ class _SocietySuggest extends State<SocietySuggest> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(50, 25, 0, 4),
+                        padding: const EdgeInsets.fromLTRB(50, 25, 0, 4),
                         child: IconButton(
-                          icon: Icon(Icons
+                          icon: const Icon(Icons
                               .arrow_forward_sharp), // Replace with the desired icon
-                          color: Color(0xff6080a7),
+                          color: const Color(0xff6080a7),
                           iconSize: 35,
                           onPressed: () {},
                         ),

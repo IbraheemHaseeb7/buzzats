@@ -21,7 +21,7 @@ class Groups extends StatelessWidget {
           border: Border.all(color: const Color(0xff6080A7)),
           borderRadius: BorderRadius.circular(10)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-       Icon(IconlyLight.camera,color: Colors.white,size: 40,),
+       const Icon(IconlyLight.camera,color: Colors.white,size: 40,),
         Container(
           margin: const EdgeInsets.only(left: 10),
           child:
@@ -30,7 +30,7 @@ class Groups extends StatelessWidget {
               name,
               style: const TextStyle(color: Colors.white),
             ),
-            Container(
+            SizedBox(
               width: screenWidth - (screenWidth * 0.5),
               child: Column(
                 children: [

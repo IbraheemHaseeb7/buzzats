@@ -1,23 +1,21 @@
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/Feed.dart';
 import 'package:flutter_app_1/Cache/UserProfile.dart';
 import 'package:flutter_app_1/main.dart';
 import 'package:flutter_app_1/pages/About.dart';
-import 'package:flutter_app_1/pages/CUonline.dart';
 import 'package:flutter_app_1/pages/HandleNotifs.dart';
 import 'package:flutter_app_1/pages/Timetable.dart';
 import 'package:flutter_app_1/pages/Rooms.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawer extends StatefulWidget {
+  const HomeDrawer({super.key});
+
   @override
   createState() => HomeDrawerState();
 }
@@ -54,7 +52,7 @@ class HomeDrawerState extends State<HomeDrawer> {
         child: Container(
           height: screenHeight - 400,
           alignment: Alignment.center,
-          color: Color(0xFF141D26),
+          color: const Color(0xFF141D26),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: ListView(
@@ -62,11 +60,11 @@ class HomeDrawerState extends State<HomeDrawer> {
 
               children: [
                 DrawerHeader(
-                  padding: EdgeInsets.only(left: 6),
+                  padding: const EdgeInsets.only(left: 6),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           border:
                               Border(bottom: BorderSide(color: Colors.white))),
                       child: UserAccountsDrawerHeader(
@@ -81,7 +79,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.only(right: 9, left: 9),
                   child: Column(
@@ -89,14 +87,14 @@ class HomeDrawerState extends State<HomeDrawer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ListTile(
-                        leading: FractionalTranslation(
+                        leading: const FractionalTranslation(
                           translation: Offset(0.1, 0.5),
                           child: Icon(
                             LineIcons.alternateUser,
                             color: Colors.white,
                           ),
                         ),
-                        title: FractionalTranslation(
+                        title: const FractionalTranslation(
                           translation: Offset(0.1, 0.51),
                           child: Text(
                             "CU Online",
@@ -114,7 +112,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                           await launchUrl(url,
                               mode: LaunchMode.inAppWebView,
                               webViewConfiguration:
-                                  WebViewConfiguration(enableDomStorage: true));
+                                  const WebViewConfiguration(enableDomStorage: true));
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(builder: (context) => CUonline()),
@@ -125,7 +123,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.only(right: 9, left: 9),
                   child: Column(
@@ -138,10 +136,10 @@ class HomeDrawerState extends State<HomeDrawer> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Timetable()),
+                                  builder: (context) => const Timetable()),
                             );
                           },
-                          child: ListTile(
+                          child: const ListTile(
                             leading: FractionalTranslation(
                               translation: Offset(0.1, 0.5),
                               child: Icon(
@@ -169,7 +167,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.only(right: 9, left: 9),
                   child: Column(
@@ -178,14 +176,14 @@ class HomeDrawerState extends State<HomeDrawer> {
                     children: [
                       Center(
                         child: ListTile(
-                          leading: FractionalTranslation(
+                          leading: const FractionalTranslation(
                             translation: Offset(0.1, 0.5),
                             child: Icon(
                               Icons.door_back_door_outlined,
                               color: Colors.white,
                             ),
                           ),
-                          title: FractionalTranslation(
+                          title: const FractionalTranslation(
                             translation: Offset(0.1, 0.5),
                             child: Text(
                               "Empty Rooms",
@@ -199,16 +197,16 @@ class HomeDrawerState extends State<HomeDrawer> {
 
                           onTap: () {
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (b) => Rooms()));
+                                MaterialPageRoute(builder: (b) => const Rooms()));
                           }, //this is the on pressed property of the list tile
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.only(right: 9, left: 9),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.only(right: 9, left: 9),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -241,7 +239,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.only(right: 9, left: 9),
                   child: Column(
@@ -250,14 +248,14 @@ class HomeDrawerState extends State<HomeDrawer> {
                     children: [
                       Center(
                         child: ListTile(
-                          leading: FractionalTranslation(
+                          leading: const FractionalTranslation(
                             translation: Offset(0.1, 0.5),
                             child: Icon(
                               IconlyLight.category,
                               color: Colors.white,
                             ),
                           ),
-                          title: FractionalTranslation(
+                          title: const FractionalTranslation(
                             translation: Offset(0.1, 0.5),
                             child: Text(
                               "About Us",
@@ -271,7 +269,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => About()),
+                              MaterialPageRoute(builder: (context) => const About()),
                             );
                           },
                         ),
@@ -292,14 +290,14 @@ class HomeDrawerState extends State<HomeDrawer> {
                     children: [
                       Center(
                         child: ListTile(
-                          leading: FractionalTranslation(
+                          leading: const FractionalTranslation(
                             translation: Offset(0.1, 0.5),
                             child: Icon(
                               IconlyLight.notification,
                               color: Colors.white,
                             ),
                           ),
-                          title: FractionalTranslation(
+                          title: const FractionalTranslation(
                             translation: Offset(0.1, 0.5),
                             child: Text(
                               "Handle Notification",
@@ -315,7 +313,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HandleNotifs()),
+                                  builder: (context) => const HandleNotifs()),
                             );
                           }, 
                         ),
@@ -332,26 +330,26 @@ class HomeDrawerState extends State<HomeDrawer> {
                 Center(
                   child: Container(
                     width: 250,
-                    padding: EdgeInsets.all(
+                    padding: const EdgeInsets.all(
                         1.0), // Optional: Set padding around the text
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Color.fromARGB(255, 159, 0, 0), // Border color
+                        color: const Color.fromARGB(255, 159, 0, 0), // Border color
                         width: 0.2, // Border width
                       ),
-                      color: Color.fromARGB(255, 159, 0, 0),
+                      color: const Color.fromARGB(255, 159, 0, 0),
                       borderRadius: BorderRadius.circular(
                           10.0), // Optional: Border radius
                     ),
                     child: ListTile(
-                      leading: FractionalTranslation(
+                      leading: const FractionalTranslation(
                         translation: Offset(0.6, 0.0),
                         child: Icon(
                           IconlyLight.logout,
                           color: Color.fromARGB(255, 255, 255, 255),
                         ),
                       ),
-                      title: FractionalTranslation(
+                      title: const FractionalTranslation(
                         translation: Offset(0.1, 0.0),
                         child: Text(
                           "Logout",

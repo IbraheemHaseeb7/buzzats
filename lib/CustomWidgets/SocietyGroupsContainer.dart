@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Skeletons/SuggestSocSkel.dart';
 
-import '../Cache/GroupsCache.dart';
-import '../Cache/Query.dart';
 import 'Groups.dart';
 
 
@@ -57,9 +55,9 @@ class SocietyGroups extends State<SocietyGroupsContainer> {
           );
         }).toList():
         [
-          SuggestSocSkel(),
-          SuggestSocSkel(),
-          SuggestSocSkel(),
+          const SuggestSocSkel(),
+          const SuggestSocSkel(),
+          const SuggestSocSkel(),
           
            ] ) );
   }

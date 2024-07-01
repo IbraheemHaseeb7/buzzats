@@ -1,15 +1,11 @@
-import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
 import 'package:toast_notification/ToasterController.dart';
 import 'package:toast_notification/ToasterType.dart';
 import 'package:toast_notification/toast_notification.dart';
 
-import '../Cache/Query.dart';
 import '../Cache/UserProfile.dart';
-import 'Imagepicker.dart';
 
 class Replying extends StatefulWidget {
   String twtId;
@@ -23,16 +19,16 @@ class Replying extends StatefulWidget {
 class ReplyingState extends State<Replying> {
   TextEditingController cmnt = TextEditingController();
 
-  final enabledStyle = TextStyle(
+  final enabledStyle = const TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
-  final disabledStyle = TextStyle(
+  final disabledStyle = const TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.bold,
-    color: const Color.fromARGB(255, 123, 123, 123),
+    color: Color.fromARGB(255, 123, 123, 123),
   );
 
   bool isEmpty = true;
@@ -65,19 +61,19 @@ class ReplyingState extends State<Replying> {
       child: Container(
         width: screenWidth,
         height: screenHeight,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color.fromARGB(255, 33, 47, 61),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
         ),
-        padding: EdgeInsets.all(16), // Adjust the padding as needed
+        padding: const EdgeInsets.all(16), // Adjust the padding as needed
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
+            const Padding(
+              padding: EdgeInsets.all(12.0),
               child: Text(
                 "Reply to Abdullah's tweet",
                 style: TextStyle(
@@ -102,10 +98,6 @@ class ReplyingState extends State<Replying> {
                 },
                 decoration: InputDecoration(
                   suffix: GestureDetector(
-                    child: Text(
-                      "Post",
-                      style: isEmpty ? disabledStyle : enabledStyle,
-                    ),
                     onTap: isEmpty
                         ? null
                         : () async {
@@ -136,6 +128,10 @@ class ReplyingState extends State<Replying> {
                                   .showToast(context);
                             });
                           },
+                    child: Text(
+                      "Post",
+                      style: isEmpty ? disabledStyle : enabledStyle,
+                    ),
                   ),
                   hintStyle: const TextStyle(
                     color: Color.fromARGB(255, 110, 110, 110),

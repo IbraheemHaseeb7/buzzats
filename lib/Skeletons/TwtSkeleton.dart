@@ -15,7 +15,7 @@ class TweetSkeleton extends StatelessWidget {
 
     return Container(
         width: screenWidth,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           //color: Color(0xFF141D26),
           border: Border(
                 top: BorderSide(color: Colors.grey, width: 0.2),
@@ -27,14 +27,14 @@ class TweetSkeleton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 12, left: 12, right: 5),
+              padding: const EdgeInsets.only(top: 12, left: 12, right: 5),
               child: Shimmer.fromColors(
-                baseColor: Color(0xFF2E3D4C) ,
+                baseColor: const Color(0xFF2E3D4C) ,
                        highlightColor: Colors.white.withOpacity(0.5),
                 child: Container(
                 width:60,
                 height: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color:Color(0xFF2E3D4C) ,
                   shape: BoxShape.circle,
                 
@@ -54,21 +54,21 @@ class TweetSkeleton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Shimmer.fromColors(
-                       baseColor: Color(0xFF2E3D4C) ,
+                       baseColor: const Color(0xFF2E3D4C) ,
                        highlightColor: Colors.white.withOpacity(0.5),
                         child: Container( width: 100,height: 10,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color:Color(0xFF2E3D4C),),),
+                          color:const Color(0xFF2E3D4C),),),
                       ),
                       SizedBox(width: screenWidth-250,),
                       Shimmer.fromColors(
-                        baseColor: Color(0xFF2E3D4C) ,
+                        baseColor: const Color(0xFF2E3D4C) ,
                        highlightColor: Colors.white.withOpacity(0.5),
                         child: Container( width: 40,height: 10,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color:Color(0xFF2E3D4C),),),
+                          color:const Color(0xFF2E3D4C),),),
                       ),
                                     
                     ],
@@ -76,41 +76,41 @@ class TweetSkeleton extends StatelessWidget {
                    Padding(
                      padding: const EdgeInsets.only(top: 13),
                      child: Shimmer.fromColors(
-                      baseColor: Color(0xFF2E3D4C) ,
+                      baseColor: const Color(0xFF2E3D4C) ,
                        highlightColor: Colors.white.withOpacity(0.5),
                        child: Container( width: screenWidth-103,height: 12,
                         
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color:Color(0xFF2E3D4C),),),
+                            color:const Color(0xFF2E3D4C),),),
                      ),
                    ),
                     Padding(
                      padding: const EdgeInsets.only(top: 10),
                      child: Shimmer.fromColors(
-                      baseColor: Color(0xFF2E3D4C) ,
+                      baseColor: const Color(0xFF2E3D4C) ,
                        highlightColor: Colors.white.withOpacity(0.5),
                        child: Container( width: screenWidth-103,height: 12,
                         
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color:Color(0xFF2E3D4C),),),
+                            color:const Color(0xFF2E3D4C),),),
                      ),
                    ),
                     Padding(
                      padding: const EdgeInsets.only(top: 10),
                      child: Shimmer.fromColors(
-                      baseColor: Color(0xFF2E3D4C) ,
+                      baseColor: const Color(0xFF2E3D4C) ,
                        highlightColor: Colors.white.withOpacity(0.5),
                        child: Container( width: screenWidth-200,height: 12,
                         
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color:Color(0xFF2E3D4C),),),
+                            color:const Color(0xFF2E3D4C),),),
                      ),
                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 14.0, bottom: 6),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 14.0, bottom: 6),
                     child: Column(
                                                     mainAxisAlignment: MainAxisAlignment.start,
 

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ImageOverlay extends StatefulWidget {
   Image image;
   OverlayEntry overlayEntry;
-  ImageOverlay({required this.image, required this.overlayEntry});
+  ImageOverlay({super.key, required this.image, required this.overlayEntry});
 
   @override
   createState() => ImageOverlayState();
@@ -43,11 +43,11 @@ class ImageOverlayState extends State<ImageOverlay> {
             onTap: () {
               closeImage(context);
             },
-            child: Container(
+            child: SizedBox(
               width: screenWidth,
               height: screenHeight,
               child: Center(
-                child: Container(
+                child: SizedBox(
                   width: screenWidth - 20,
                   height: screenHeight - 20,
                   child: widget.image,

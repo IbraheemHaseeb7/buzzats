@@ -24,7 +24,7 @@ class ApplyGroupWidgetState extends State<ApplyGroupWidget> {
 
     setState(() {
       if (widget.group["applied"]) {
-        background = Color.fromARGB(73, 96, 128, 167);
+        background = const Color.fromARGB(73, 96, 128, 167);
       } else {
         background = const Color(0xff141D26);
       }
@@ -39,7 +39,7 @@ class ApplyGroupWidgetState extends State<ApplyGroupWidget> {
       widget.group["applied"] = !widget.group["applied"];
       setState(() {
         if (widget.group["applied"]) {
-          background = Color.fromARGB(73, 96, 128, 167);
+          background = const Color.fromARGB(73, 96, 128, 167);
         } else {
           background = const Color(0xff141D26);
         }
@@ -74,7 +74,7 @@ class ApplyGroupWidgetState extends State<ApplyGroupWidget> {
                       widget.group["name"],
                       style: const TextStyle(color: Colors.white),
                     ),
-                    Container(
+                    SizedBox(
                       width: screenWidth - (screenWidth * 0.3),
                       child: Text(
                         widget.group["description"],

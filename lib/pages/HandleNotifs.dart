@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_1/CustomWidgets/PushN.dart';
-import 'package:flutter_app_1/CustomWidgets/PushNotif.dart';
 import 'package:flutter_app_1/pages/Buzzats.dart';
 
 class HandleNotifs extends StatelessWidget {
@@ -15,12 +13,12 @@ class HandleNotifs extends StatelessWidget {
 
 
     return Scaffold(
-      backgroundColor: Color(0xff141d26),
-      appBar: AppBar(toolbarHeight: 50,elevation: 0, title: Text("Handle"),),
-      body: Container(
+      backgroundColor: const Color(0xff141d26),
+      appBar: AppBar(toolbarHeight: 50,elevation: 0, title: const Text("Handle"),),
+      body: SizedBox(
         width: screenWidth,
         height: screenHeight,
-        child: Column(
+        child: const Column(
           children: [
             PushN(),
             PushN(),
@@ -35,11 +33,11 @@ class HandleNotifs extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Buzzats()),
+            MaterialPageRoute(builder: (context) => const Buzzats()),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF4137BD),
+        backgroundColor: const Color(0xFF4137BD),
+        child: const Icon(Icons.add),
       ),
       );
   }

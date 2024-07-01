@@ -1,28 +1,19 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_1/Cache/MembersCache.dart';
-import 'package:flutter_app_1/Cache/MutualsCache.dart';
 import 'package:flutter_app_1/Cache/socket.dart';
-import 'package:flutter_app_1/CustomWidgets/Groups.dart';
 import 'package:flutter_app_1/Cache/GroupsCache.dart';
 import 'package:flutter_app_1/CustomWidgets/PushNotif.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyGroupsContainer.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyMember.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyMembersContainer.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyMutualsContainer.dart';
-import 'package:flutter_app_1/CustomWidgets/SocietyMutual.dart';
 import 'package:flutter_app_1/CustomWidgets/SocietyTweet.dart';
-import 'package:flutter_app_1/CustomWidgets/TweetWidget.dart';
-import 'package:flutter_app_1/CustomWidgets/UserSuggest.dart';
 import 'package:flutter_app_1/Skeletons/SocietyTwtSkeleton.dart';
 import 'package:flutter_app_1/pages/Apply.dart';
 import 'package:flutter_app_1/pages/ManageSociety.dart';
 import 'package:iconly/iconly.dart';
-import 'package:intl/intl.dart';
 
 import '../Cache/Query.dart';
-import '../Cache/GroupsCache.dart';
 import '../Cache/SocietyMain.dart';
 import '../Cache/UserProfile.dart';
 import 'CreateSocietyTweet.dart';
@@ -80,6 +71,7 @@ class SocietyState extends State<Society> {
   int groupsCount = 0;
   var imageBytes;
 
+  @override
   void initState() {
     if (widget.image != null) {
       imageBytes = Uint8List.fromList(List<int>.from(widget.image));
@@ -251,6 +243,7 @@ class SocietyState extends State<Society> {
             builder: (context) => ManageSociety(society: widget.society)));
   }
 
+  @override
   void dispose() {
     super.dispose();
   }
@@ -268,13 +261,13 @@ class SocietyState extends State<Society> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(IconlyLight.notification), // Change the icon as needed
+            icon: const Icon(IconlyLight.notification), // Change the icon as needed
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        PushNotif()), // Replace YourNewPage with the actual page you want to navigate to
+                        const PushNotif()), // Replace YourNewPage with the actual page you want to navigate to
               );
             },
           ),
@@ -401,7 +394,7 @@ class SocietyState extends State<Society> {
                           //                     const Color(0xff141D26))),
                           //         onPressed: handleFollow,
                           //         child: const Text("follow"))),
-                          Container(
+                          SizedBox(
                               height: 35,
                               width: screenWidth * 0.4,
                               child: ElevatedButton(
@@ -479,7 +472,7 @@ class SocietyState extends State<Society> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.3,
                                 child: OutlinedButton(
@@ -495,7 +488,7 @@ class SocietyState extends State<Society> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.3,
                                 child: OutlinedButton(
@@ -511,7 +504,7 @@ class SocietyState extends State<Society> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.3,
                                 child: OutlinedButton(
@@ -527,7 +520,7 @@ class SocietyState extends State<Society> {
                                   ),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 height: 35,
                                 width: screenWidth * 0.3,
                                 child: OutlinedButton(
@@ -574,8 +567,8 @@ class SocietyState extends State<Society> {
                                   }).toList()
                                 : tweetsWithSameId.isEmpty
                                     ? [
-                                        Padding(
-                                          padding: const EdgeInsets.all(20.0),
+                                        const Padding(
+                                          padding: EdgeInsets.all(20.0),
                                           child: Center(
                                               child: Text(
                                             "No tweets available",
@@ -585,9 +578,9 @@ class SocietyState extends State<Society> {
                                         ),
                                       ]
                                     : [
-                                        SocietyTwtSkeleton(),
-                                        SocietyTwtSkeleton(),
-                                        SocietyTwtSkeleton(),
+                                        const SocietyTwtSkeleton(),
+                                        const SocietyTwtSkeleton(),
+                                        const SocietyTwtSkeleton(),
 
                                         // SocietyTweet()
                                       ],
@@ -614,7 +607,7 @@ class SocietyState extends State<Society> {
                         return Container(
                           constraints: const BoxConstraints(minHeight: 500),
                           width: screenWidth,
-                          child: Column(children: [SocietyTwtSkeleton()]),
+                          child: const Column(children: [SocietyTwtSkeleton()]),
                         );
                     }
                   })(),
@@ -632,8 +625,8 @@ class SocietyState extends State<Society> {
                     )),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF4137BD),
+        backgroundColor: const Color(0xFF4137BD),
+        child: const Icon(Icons.add),
       ),
     );
   }

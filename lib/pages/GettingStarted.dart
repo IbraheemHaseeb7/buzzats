@@ -4,6 +4,8 @@ import 'package:flutter_app_1/pages/PhoneNum.dart';
 import 'package:flutter_app_1/pages/Signup.dart';
 
 class GettingStarted extends StatefulWidget {
+  const GettingStarted({super.key});
+
   @override
   _GettingStarted createState() => _GettingStarted();
 }
