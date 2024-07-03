@@ -68,16 +68,17 @@ dependencies:
   supabase_flutter: ^2.5.6
   device_info_plus:
   firebase_messaging:
-
-
-
-
   mime: any
   image_picker: 
   image_picker_web: 
   carousel_slider: any
   google_nav_bar: any
   fluttertoast: any
+
+
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
